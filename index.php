@@ -1,3 +1,5 @@
+<?php
+?>
 <!DOCTYPE html>
 <head>
 	<head>
