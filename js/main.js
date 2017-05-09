@@ -1,6 +1,6 @@
 function loginFade(button_clicked){
     var elem;
-    document.getElementById("test").className = "card hide"
+    document.getElementById("test").className = "card hide";
     if (button_clicked == 0)
     {
          elem = document.getElementById("login_as_school");
@@ -11,6 +11,6 @@ function loginFade(button_clicked){
     {
         elem = document.getElementById("login_as_student");
     }
-    elem.className = "card"
+    elem.className = "card";
 }
   
