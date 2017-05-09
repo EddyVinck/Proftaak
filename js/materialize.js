@@ -4756,7 +4756,7 @@ if (jQuery) {
 }( jQuery ));
 ;(function ($) {
   // Image transition function
-  Materialize.fadeInImage = function(selectorOrEl) {
+  Materialize.fadeInImage = function(selectorOrEl, durr) {
     var element;
     if (typeof(selectorOrEl) === 'string') {
       element = $(selectorOrEl);
@@ -4772,7 +4772,7 @@ if (jQuery) {
       easing: 'easeOutSine'
     });
     $(element).velocity({opacity: 1}, {
-      duration: 1300,
+      duration: durr,
       queue: false,
       easing: 'swing',
       step: function(now, fx) {
