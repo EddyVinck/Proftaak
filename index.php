@@ -13,7 +13,7 @@
 </head>
 <body>
   <div class="container">
-    
+    <img src="http://baconmockup.com/1920/1080/"class="backgroundImg">
   </div>
   <script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
