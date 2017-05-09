@@ -13,12 +13,12 @@
 </head>
 <body>
   <ul id="slide-out" class="side-nav">
-      <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-      <li><a href="#! " class="waves-effect">Second Link</a></li>
-      <li><div class="divider"></div></li>
-      <li><a class="subheader waves-effect">Subheader</a></li>
-      <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-    </ul>
+    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+    <li><a href="#! " class="waves-effect">Second Link</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader waves-effect">Subheader</a></li>
+    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  </ul>
   <div style="width:100vw;height:200vh;"></div>
   <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
   <script type="text/javascript" src="js/main.js"></script>
