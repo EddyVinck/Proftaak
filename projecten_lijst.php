@@ -12,7 +12,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
 </head>
-<body>
+<body >
 <header>    
     <nav class="top-nav teal">
         <div class="nav-wrapper">
@@ -20,7 +20,7 @@
             <div class="col s12" style="padding: 0 .75rem;">                
                 <a href="#" class="brand-logo">Logo</a>        
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#"><i class="small material-icons left">home</i>Mijn College</a></li>
+                <li><a href="#" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
                 <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
                 <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>
                 <li><a href="#"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
@@ -50,15 +50,13 @@
         <li><a class="subheader">Subheader</a></li>
         <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
   </ul>
-  <!--<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>-->
 </sidenav>
 <main>
   <div class="container">
     <div class="section">
-      <div class="row">
-            <div class="col s8"></div>
-            <div class="col s4">
-                <a class="btn waves-effect waves-light" name="action" >Maak een nieuw project
+      <div class="row" style="padding: 0 24px;">            
+            <div class="col s4 offset-s8">
+                <a class="btn waves-effect waves-light purple darken-1 right" name="action" >Nieuw Project
                     <!--<i class="material-icons right">open_in_new</i>-->
                     <i class="material-icons right">library_add</i>                    
                 </a>
@@ -68,7 +66,7 @@
           <div class="col s12">
             <ul class="collapsible popout" data-collapsible="accordion">                
                 <li>
-                    <div class="card-panel teal">
+                    <div class="card-panel teal lighten-2 black-text">
                         <div class="row valign-wrapper " style="margin-bottom: 0">
                             <div class="col s2 truncate">Projectnaam</div>
                             <div class="col s2">Projectstarter</div>
@@ -107,15 +105,9 @@
                             </div>
                         </div>
                         <div class="row">
-                            <!--<div class="col s4">Ga naar dit project</div>-->
                             <div class="col s4 center">
-                            <a class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Ga naar dit project</a>
+                            <a class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Bekijk dit project</a>
                             </div>
-                            <!--<div class="col s6">
-                                <button class="btn waves-effect waves-light" type="submit" name="action">Ga naar dit project
-                                    <i class="material-icons right">send</i>
-                                </button>
-                            </div>-->
                         </div>
                     </div>
                 </li>
@@ -137,18 +129,37 @@
                         </span>
                     </div>
                 </li>
-                <!--<li>
-                    <div class="collapsible-header"><i class="material-icons">whatshot</i>Project Naam</div>
-                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                </li>-->
             </ul>
           </div>
       </div>
     </div>
   </div>
 </main>
-  <!--<div style="width:100vw;height:200vh;"></div>-->
-  <!--<a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>-->
+<footer class="page-footer teal">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+            <h5 class="white-text">Footer Content</h5>
+            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">Links</h5>
+            <ul>
+                <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+            </ul>
+            </div>
+        </div>
+        </div>
+        <div class="footer-copyright">
+        <div class="container">
+        &copy 2014 Copyright Text
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        </div>
+    </div>
+</footer>
   <script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
