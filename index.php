@@ -1,10 +1,63 @@
 <?php
 include('inc/functions.php');
 $db = ConnectToDatabase();
+session_start();
+if (!isset($_SESSION['loggedIn'])){
+  $_SESSION['loggedIn'] = false;
+  $_SESSION['rol'] = '';
+  $_SESSION['id'] = '';
+  $_SESSION['naam'] = '';
+}
+//some vars used
+$loginSuccess = false; //checks later if this is false or true (after login attempt)
+$loginAttempt = false;
+$hideCards = ['','hide','hide','hide']; //this array is used in the HTML to hide or show a specific window
+/*
+  0=welkom
+  1=schoolLogin
+  2=DocentLogin
+  3=StudentLogin
+*/
+
+// naam van user id, user rol, naam. komen in de sessie 
+if (isset($_POST['rol'])){
+  $email = $_POST['email'];
+  $formRol = $_POST['rol'];
+  $pass  = $_POST['password'];
+  if($email != '' && $pass != ''){
+    $loginSuccess = true;
+    $queryVar = "SELECT `id` , `rol` , `naam` FROM users 
+      WHERE `email` = '$email' AND `wachtwoord` = '$pass'";
+    $sqlResult = mysqli_query($db, $queryVar);
+    $data = [];
+    if (mysqli_num_rows($sqlResult)== 1) {
+      while($result = mysqli_fetch_assoc($sqlResult))
+      {
+        $data[] = $result;
+      }
+      dump($data);
+    }
+    else{
+      $loginSuccess = false;
+      $loginAttempt = true;
+      $hideCards = ['hide','hide','hide','hide'];
+      if ($formRol != 0){
+        $hideCards[$formRol] = '';
+      }
+      else{
+        $hideCards[0]='';
+      }
+    }
+  }
+  else{
+    $loginSuccess = false;
+  }
+}
+
 //hieronder de query voor projecten lijst
 //
 //$result = mysqli_query($db,
-//"SELECT  projecten.naam AS projectnaam, projecten.omschrijving, users.naam AS usernaam, colleges.naam AS collegenaam,colleges.idFROM (((projectenINNER JOIN users ON projecten.users_id = users.id) INNER JOIN klassen ON users.klassen_id = klassen.id) INNER JOIN colleges on klassen.colleges_id = colleges.id) WHERE colleges.id = 1");
+//"SELECT  projecten.naam AS projectnaam, projecten.omschrijving, users.naam AS usernaam, colleges.naam AS collegenaam,colleges.idFROM (((projecten INNER JOIN users ON projecten.users_id = users.id) INNER JOIN klassen ON users.klassen_id = klassen.id) INNER JOIN colleges on klassen.colleges_id = colleges.id) WHERE colleges.id = 1");
 // while($result2 = mysqli_fetch_assoc($result)){
 //     $data[] = $result2; 	//places everything in the array
 // }
@@ -25,9 +78,9 @@ $db = ConnectToDatabase();
 <body>
 <main>
   <div class="container section ">
-    <div class="row ">
+    <div class="row">
         <div class="col l4 offset-l4 s12 center-align ">
-          <div class="card" id="home">
+          <div class="card <?= $hideCards[0]?>" id="home">
             <div class="card-content ">
               <span class="card-title">Log in als:</span>
               <div class="row">
@@ -50,7 +103,7 @@ $db = ConnectToDatabase();
             </div>
           </div>
         </div>
-        <div class="col s12 card hide" id="login_as_school">
+        <div class="col s12 card <?= $hideCards[1]?>" id="login_as_school">
           <div class="card-content center">
             <span class="card-title">Log in als school:</span>
             <div class="divider"></div>
@@ -74,16 +127,25 @@ $db = ConnectToDatabase();
                   </button>
                 </div>
                 <div class="col">
-                  <button class="btn waves-effect waves-light" type="submit" value="school" name="rol">Log in
+                  <button class="btn waves-effect waves-light" type="submit" value="1" name="rol">Log in
                     <i class="material-icons right">send</i>
                   </button>
                 </div>
               </div>
+              <?php if($loginSuccess == false && $loginAttempt == true){?>
+                <div class="row">
+                  <div class="divider"></div>
+                  
+                  <div class="invalid col offset-l2 offset-s2 offset-m2">
+                    Het ingevulde email of wachtwoord is fout.
+                  </div>
+                </div>
+              <?php }?>
             </form>
           </div>
         </div>
         <div class="col s12">
-          <div class="card hide" id="login_as_leraar">
+          <div class="card <?= $hideCards[2]?>" id="login_as_leraar">
             <div class="card-content center">
               <span class="card-title">Log in als leraar:</span>
               <div class="divider"></div>
@@ -107,17 +169,26 @@ $db = ConnectToDatabase();
                     </button>
                   </div>
                   <div class="col">
-                    <button class="btn waves-effect waves-light" type="submit" value="leraar" name="rol">Log in
+                    <button class="btn waves-effect waves-light" type="submit" value="2" name="rol">Log in
                       <i class="material-icons right">send</i>
                     </button>
                   </div>
                 </div>
+              <?php if($loginSuccess == false && $loginAttempt == true){?>
+                <div class="row">
+                  <div class="divider "></div>
+                  
+                  <div class="invalid col offset-l2 offset-s2 offset-m2">
+                    Het ingevulde email of wachtwoord is fout.
+                  </div>
+                </div>
+              <?php }?>
               </form>
             </div>
           </div>
         </div>
         <div class="col s12">
-          <div class="card hide" id="login_as_student">
+          <div class="card <?= $hideCards[3]?>" id="login_as_student">
             <div class="card-content center">
               <span class="card-title">Log in als student:</span>
               <div class="divider"></div>
@@ -141,17 +212,27 @@ $db = ConnectToDatabase();
                     </button>
                   </div>
                   <div class="col">
-                    <button class="btn waves-effect waves-light" type="submit" value="student" name="rol">Log in
+                    <button class="btn waves-effect waves-light" type="submit" value="3" name="rol">Log in
                       <i class="material-icons right">send</i>
                     </button>
                   </div>
                 </div>
+                <?php if($loginSuccess == false && $loginAttempt == true){?>
+                <div class="row">
+                  <div class="divider"></div>
+                  
+                  <div class="invalid col offset-l2 offset-s2 offset-m2 ">
+                    Het ingevulde email of wachtwoord is fout.
+                  </div>
+                </div>
+              <?php }?>
                 <div class="divider"></div>
                 <div class="card-action row acRow">
                   <div class="noPadLeft col offset-xl2 offset-l2 offset-m2 offset-s1">
                     <a class="remPad" href="#">Of klik hier om te registreren</a>
                   </div>
                 </div>
+                
               </form>
             </div>
           </div>

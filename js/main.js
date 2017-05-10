@@ -7,9 +7,7 @@ var elemarray =[
 function loginFade(array_val){
     for(var x = 0;x < elemarray.length;x++){
         elemarray[x].className = "card hide";
-        console.log(elemarray[x].innerHTML);
     }
-    console.log(elemarray);
     elemarray[array_val].className = "card";
 }
   

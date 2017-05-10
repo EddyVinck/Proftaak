@@ -7,3 +7,7 @@
 .remPad{
     padding-left:.93rem !important;
 }
+.invalid{
+    color:red;
+    
+}
