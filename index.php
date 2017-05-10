@@ -1,6 +1,12 @@
 <?php
 include('inc/functions.php');
 $db = ConnectToDatabase();
+//$result = mysqli_query($db,
+//"SELECT  projecten.naam AS projectnaam, projecten.omschrijving, users.naam AS usernaam, colleges.naam AS collegenaam,colleges.idFROM (((projectenINNER JOIN users ON projecten.users_id = users.id) INNER JOIN klassen ON users.klassen_id = klassen.id) INNER JOIN colleges on klassen.colleges_id = colleges.id) WHERE colleges.id = 1");
+// while($result2 = mysqli_fetch_assoc($result)){
+//     $data[] = $result2; 	//places everything in the array
+// }
+// dump($data);
 ?>
 <!DOCTYPE html>
 <head>
