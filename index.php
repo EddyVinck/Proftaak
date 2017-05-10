@@ -269,8 +269,8 @@ if (isset($_POST['rol'])){
     <div class="container">
       <div class="row">
         <div class="col s12">
-          <h1 class="center-align">Wat is deze website?</h1>
-          <h4 class="center-align">Ondertitels zijn cool</h4>
+          <h3 class="center-align">Wat is deze website?</h3>
+          <h5 class="center-align">Ondertitels zijn cool</h5>
         </div>
       </div>
       <div class="row">
