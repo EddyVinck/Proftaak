@@ -8,6 +8,14 @@
     padding-left:.93rem !important;
 }
 .invalid{
-    color:red;
-    
+    color:red;    
+}
+.center-with-bg {
+    height: 70vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(../img/bg.jpg);
+    background-size: cover;
 }
