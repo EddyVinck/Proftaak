@@ -1,5 +1,6 @@
 <?php
-include("inc/connectToDB.php");
+include('inc/functions.php');
+$db = ConnectToDatabase();
 ?>
 <!DOCTYPE html>
 <head>
