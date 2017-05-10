@@ -7,14 +7,63 @@
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <link rel="stylesheet" href="font-awesome-4.7.0\css\font-awesome.min.css">
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
 </head>
 <body>
+<header>    
+    <nav class="top-nav teal">
+        <div class="nav-wrapper">
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+            <div class="col s12" style="padding: 0 .75rem;">                
+                <a href="#" class="brand-logo">Logo</a>        
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#"><i class="small material-icons left">home</i>Mijn College</a></li>
+                <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>
+                <li><a href="#"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+            </ul>
+            </div>       
+            <!--<a href="#" class="brand-logo">Logo</a>-->        
+        </div>        
+    </nav>    
+</header>
+<sidenav>
+    <ul id="slide-out" class="side-nav">
+        <li><div class="userView">
+            <div class="background">
+                <img src="images/office.jpg">
+            </div>
+                <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+                <a href="#!name"><span class="white-text name">John Doe</span></a>
+                <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+        <li><a href="#"><i class="small material-icons left">home</i>Mijn College</a></li>
+        <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
+        <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>
+        <li><a href="#"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+        <li><a href="#!">Second Link</a></li>
+        <li><div class="divider"></div></li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  </ul>
+  <!--<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>-->
+</sidenav>
+<main>
   <div class="container">
     <div class="section">
-       
+      <div class="row">
+            <div class="col s8"></div>
+            <div class="col s4">
+                <a class="btn waves-effect waves-light" name="action" >Maak een nieuw project
+                    <!--<i class="material-icons right">open_in_new</i>-->
+                    <i class="material-icons right">library_add</i>                    
+                </a>
+            </div>
+      </div>       
       <div class="row">
           <div class="col s12">
             <ul class="collapsible popout" data-collapsible="accordion">                
@@ -59,7 +108,7 @@
                         </div>
                         <div class="row">
                             <!--<div class="col s4">Ga naar dit project</div>-->
-                            <div class="col s5">
+                            <div class="col s4 center">
                             <a class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Ga naar dit project</a>
                             </div>
                             <!--<div class="col s6">
@@ -97,8 +146,9 @@
       </div>
     </div>
   </div>
-  <div style="width:100vw;height:200vh;"></div>
-  <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
+</main>
+  <!--<div style="width:100vw;height:200vh;"></div>-->
+  <!--<a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>-->
   <script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
