@@ -1,4 +1,9 @@
-.backgroundImg{
-    position: fixed;
-    
+.noPadLeft{
+    padding-left: 0px !important;
+}
+.acRow{
+    padding-left:0px !important;
+}
+.remPad{
+    padding-left:.93rem !important;
 }
