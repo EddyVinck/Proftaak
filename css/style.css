@@ -19,3 +19,6 @@
     background: url(../img/bg.jpg);
     background-size: cover;
 }
+#login_as_student{
+    margin-top: 1.93rem !important;
+}
