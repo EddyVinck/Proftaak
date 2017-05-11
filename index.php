@@ -35,7 +35,11 @@ if (isset($_POST['rol'])){
       {
         $data[] = $result;
       }
-      dump($data);
+      $_SESSION['loggedIn'] = true;
+      $_SESSION['rol'] = $data[0]['rol'];
+      $_SESSION['id'] = $data[0]['id'];
+      $_SESSION['naam'] = $data[0]['naam'];
+      dump($_SESSION);
     }
     else{
       $loginSuccess = false;
