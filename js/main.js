@@ -15,9 +15,9 @@ function initializeSelects(){
         $('select').material_select();
     });
 }
-function showUser(str) {
+function getSelect_Ajax(str,table,id,elemName) {
     if (str == "") {
-        document.getElementById("collegeSelect").innerHTML = "";
+        document.getElementById(elemName).innerHTML = "";
         return;
     } else { 
         if (window.XMLHttpRequest) {
@@ -29,13 +29,13 @@ function showUser(str) {
         }
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) { //eerlijk gezegt geen idee wat dit doet, maar t werkt
-                document.getElementById("collegeSelect").innerHTML = this.responseText; 
+                document.getElementById(elemName).innerHTML = this.responseText; 
                 console.log(this.responseText);
                 //responsetext komt terug vanuit t PHP bestand
                 initializeSelects(); //functie die nodig is om de Select's te herladen
             }
         };
-        xmlhttp.open("GET","getKlas.php?q="+ str,true); //q= get variabele die  in php bestand wordt gebruikt
+        xmlhttp.open("GET","getKlas.php?q="+ str+"&tableName=" + table + "&idName="+ id,true); //q= get variabele die  in php bestand wordt gebruikt
         //de 'str' variabele wordt meegegeven vanuit HTML onchange.
         xmlhttp.send();
     }

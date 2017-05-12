@@ -69,7 +69,7 @@ while($result = mysqli_fetch_assoc($sqlResult))
                 </div>
                 <div class="row">
                     <div class="input-field col s8 offset-s2">
-                        <select name="school" onchange="showUser(this.value)">
+                        <select name="school" onchange="getSelect_Ajax(this.value,'colleges','scholen_id','collegeSelect')">
                             <option value="" disabled selected>Kies je school</option>
                             <?php 
                             for($x=0;$x < count($data); $x++)
@@ -83,10 +83,18 @@ while($result = mysqli_fetch_assoc($sqlResult))
                 </div>
                 <div class="row">
                     <div class="input-field col s8 offset-s2">
-                        <select name="school" id="collegeSelect">
+                        <select name="college" id="collegeSelect" onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect')">
                             <option value="" disabled selected>Kies je college</option>
                         </select>
                         <label>Kies je college</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s8 offset-s2">
+                        <select name="klas" id="klasSelect">
+                            <option value="" disabled selected>Kies je klas</option>
+                        </select>
+                        <label>Kies je klas</label>
                     </div>
                 </div>
                 <div class="row ">
