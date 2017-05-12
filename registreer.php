@@ -1,5 +1,13 @@
 <?php
-
+include("inc/functions.php");
+$db = ConnectToDatabase();
+$queryVar = "SELECT `id` , `naam` FROM scholen";
+$sqlResult = mysqli_query($db, $queryVar);
+$data = [];
+while($result = mysqli_fetch_assoc($sqlResult))
+{
+    $data[] = $result;
+}
 ?>
 <!DOCTYPE html>
 <head>
@@ -34,6 +42,70 @@
     </nav>    
 </header>
 <main>
+    <div class="container section">
+        <div class="row">
+          <div class="col s12 card">
+            <div class="card-content center">
+              <span class="card-title">Registreer als student:</span>
+              <div class="divider"></div>
+              <form method="POST">
+                <div class="row">
+                  <div class="input-field col s8 offset-s2">
+                    <input name="naam" id="naam" type="text" class="validate">
+                    <label for="naam">Voor en achternaam</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s8 offset-s2">
+                    <input name="email" id="email" type="email" class="validate">
+                    <label for="email">Email</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s8 offset-s2">
+                    <input name="password" id="password" type="password" class="validate">
+                    <label for="password">Wachtwoord</label>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s8 offset-s2">
+                        <select name="school" onchange="showUser(this.value)">
+                            <option value="" disabled selected>Kies je school</option>
+                            <?php 
+                            for($x=0;$x < count($data); $x++)
+                            {?>
+                                <option value="<?= $data[$x]['id']?>"><?= $data[$x]['naam']?></option>
+                            <?php }
+                            ?>a
+                        </select>
+                        <label>Kies je school</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s8 offset-s2">
+                        <select name="school" id="collegeSelect">
+                            <option value="" disabled selected>Kies je college</option>
+                        </select>
+                        <label>Kies je college</label>
+                    </div>
+                </div>
+                <div class="row ">
+                  <div class="col offset-l2 offset-s1 offset-m2 center">
+                    <button class="btn waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
+                      <i class="material-icons left">arrow_back</i>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button class="btn waves-effect waves-light" type="submit" value="1" name="submit">Log in
+                      <i class="material-icons right">send</i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
 </main>
 <footer class="page-footer teal">
     <div class="container">
@@ -60,10 +132,12 @@
         </div>
     </div>
 </footer>
-  
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <!--https://code.jquery.com/jquery-3.2.1.js ???-->
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
+<script>
+initializeSelects();
+</script>
 </body>
 </html>
