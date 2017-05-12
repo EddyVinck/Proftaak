@@ -69,15 +69,14 @@ if (isset($_POST['rol'])){
 ?>
 <!DOCTYPE html>
 <head>
-	<head>
-      <!--Import Google Icon Font-->
-      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-      <link type="text/css" rel="stylesheet" href = "css/style.css"/>
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
+  <!--Import Google Icon Font-->
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href = "css/style.css"/>
+  <link type="text/css" rel="stylesheet" href = "css/footer.css"/>
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
 <header>    
@@ -256,7 +255,7 @@ if (isset($_POST['rol'])){
                   <div class="divider"></div>
                   <div class="card-action row acRow">
                     <div class="noPadLeft col offset-xl2 offset-l2 offset-m2 offset-s1">
-                      <a class="remPad" href="#">Of klik hier om te registreren</a>
+                      <a class="remPad" href="registreer.php">Of klik hier om te registreren</a>
                     </div>
                   </div>
                   <!-- end of login form-->
