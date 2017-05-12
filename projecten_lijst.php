@@ -18,12 +18,12 @@
         <div class="nav-wrapper">
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
             <div class="col s12" style="padding: 0 .75rem;">                
-                <a href="#" class="brand-logo">Logo</a>        
+                <a href="index.php" class="brand-logo">Logo</a>        
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="#" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
-                <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
-                <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>
-                <li><a href="#"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+                <li><a href="#" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                <li><a href="#" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
+                <li><a href="#" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             </ul>
             </div>       
             <!--<a href="#" class="brand-logo">Logo</a>-->        
