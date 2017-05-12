@@ -1,0 +1,39 @@
+/*********************
+  Media Query Classes
+**********************/
+@media only screen and (max-width: 600px) {
+  .vpadding-on-s-only {
+      padding-top: 7px !important;
+      padding-bottom: 7px !important;
+  }
+}
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+  .vpadding-on-m-only {
+      padding-top: 7px !important;
+      padding-bottom: 7px !important;
+  }
+}
+@media only screen and (min-width: 993px) {
+  .vpadding-on-l-only {
+      padding-top: 7px !important;
+      padding-bottom: 7px !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .left-on-s-only {
+        float: left !important;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+  .left-on-m-only {
+        float: left !important;
+    }
+}
+@media only screen and (min-width: 600px) {
+  .left-on-m-and-up {
+        float: left !important;
+    }
+}
+
+

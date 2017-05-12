@@ -15,6 +15,8 @@ while($result = mysqli_fetch_assoc($sqlResult))
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/materializeAddons.css"  media="screen,projection"/>
+    
     <link type="text/css" rel="stylesheet" href = "css/style.css"/>
     <link type="text/css" rel="stylesheet" href = "css/footer.css"/>
     <!--Let browser know website is optimized for mobile-->
@@ -50,25 +52,25 @@ while($result = mysqli_fetch_assoc($sqlResult))
               <div class="divider"></div>
               <form method="POST">
                 <div class="row">
-                  <div class="input-field col s8 offset-s2">
+                  <div class="input-field col s12 m8 offset-m2">
                     <input name="naam" id="naam" type="text" class="validate">
                     <label for="naam">Voor en achternaam</label>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="input-field col s8 offset-s2">
+                  <div class="input-field col s12 m8 offset-m2">
                     <input name="email" id="email" type="email" class="validate">
                     <label for="email">Email</label>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="input-field col s8 offset-s2">
+                  <div class="input-field col s12 m8 offset-m2">
                     <input name="password" id="password" type="password" class="validate">
                     <label for="password">Wachtwoord</label>
                   </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s8 offset-s2">
+                    <div class="input-field col s12 m8 offset-m2">
                         <select name="school" onchange="getSelect_Ajax(this.value,'colleges','scholen_id','collegeSelect')">
                             <option value="" disabled selected>Kies je school</option>
                             <?php 
@@ -82,7 +84,7 @@ while($result = mysqli_fetch_assoc($sqlResult))
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s8 offset-s2">
+                    <div class="input-field col s12 m8 offset-m2">
                         <select name="college" id="collegeSelect" onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect')">
                             <option value="" disabled selected>Kies je college</option>
                         </select>
@@ -90,7 +92,7 @@ while($result = mysqli_fetch_assoc($sqlResult))
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s8 offset-s2">
+                    <div class="input-field col s12 m8 offset-m2">
                         <select name="klas" id="klasSelect">
                             <option value="" disabled selected>Kies je klas</option>
                         </select>
@@ -98,15 +100,16 @@ while($result = mysqli_fetch_assoc($sqlResult))
                     </div>
                 </div>
                 <div class="row ">
-                  <div class="col offset-l2 offset-s1 offset-m2 center">
-                    <button class="btn waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
-                      <i class="material-icons left">arrow_back</i>
+                  
+                  <div class="col s10 m4 offset-m2 offset-s1 vpadding-on-s-only">
+                    <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="1" name="submit">Aanmelden
+                      <!--<i class="material-icons right">send</i>-->
                     </button>
                   </div>
-                  <div class="col">
-                    <button class="btn waves-effect waves-light" type="submit" value="1" name="submit">Log in
-                      <i class="material-icons right">send</i>
-                    </button>
+                  <div class="col s10 offset-s1 m4 vpadding-on-s-only">
+                    <a class="btn white black-text waves-effect waves-light" href="index.php">Terug
+                      <i class="material-icons left">arrow_back</i>
+                    </a>
                   </div>
                 </div>
               </form>
@@ -145,7 +148,7 @@ while($result = mysqli_fetch_assoc($sqlResult))
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
 <script>
-initializeSelects();
+initializeSelectElements();
 </script>
 </body>
 </html>
