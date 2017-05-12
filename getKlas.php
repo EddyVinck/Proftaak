@@ -13,8 +13,10 @@ echo "<option value='' disabled selected>Kies je college</option>";
 $sql="SELECT id, naam FROM $tableName WHERE $idName = $q";
 $result2 = mysqli_query($con,$sql);
 
-while($row = mysqli_fetch_array($result2)) {?>
-    <option value="<?=$row['id']?>"><?=$row['naam']?></option>
-<?php }
+while($row = mysqli_fetch_array($result2)) {
+    if($row['naam'] != 'docenten'){?>
+        <option value="<?=$row['id']?>"><?=$row['naam']?></option>
+    <?php }
+}
 mysqli_close($con);
 ?>
