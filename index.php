@@ -73,6 +73,7 @@ if (isset($_POST['rol'])){
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize.css-->
   <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/materializeAddons.css"  media="screen,projection"/>
   <link type="text/css" rel="stylesheet" href = "css/style.css"/>
   <link type="text/css" rel="stylesheet" href = "css/footer.css"/>
   <!--Let browser know website is optimized for mobile-->
@@ -83,7 +84,7 @@ if (isset($_POST['rol'])){
     <nav class="top-nav teal">
       <div class="container">
         <div class="nav-wrapper">
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        <!--<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>-->
             <div class="col s12" style="padding: 0 .75rem;">                
                 <a href="#" class="brand-logo">Logo</a>        
             <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -102,61 +103,62 @@ if (isset($_POST['rol'])){
 <main>
   <div class="center-with-bg">
     <!--log in selector-->
-    <div class="container section">
+    <div class="container">
       <div class="row">
-          <div class="col l4 offset-l4 s12 center-align ">
-            <div class="card <?= $hideCards[0]?>" id="home">
-              <div class="card-content ">
-                <span class="card-title">Log in als:</span>
-                <div class="row">
-                  <div class="divider"></div>
-                </div>
-                <p>
-                  <div class="row">
-                    <a class="waves-effect waves-light btn col s10 offset-s1" 
-                    onclick="loginFade(1);Materialize.fadeInImage('#login_as_school',400);">school</a>
-                  </div>
-                  <div class="row">
-                    <a class="waves-effect waves-light btn col s10 offset-s1" 
-                    onclick="loginFade(2);Materialize.fadeInImage('#login_as_leraar',400);">leraar</a>
-                    </div>
-                  <div class="row">
-                    <a class="waves-effect waves-light btn col s10 offset-s1" 
-                    onclick="loginFade(3);Materialize.fadeInImage('#login_as_student',400);">student</a>
-                  </div>
-                </p>
+        <div class="col s12 m6 offset-m3 l4 offset-l4 center-align">
+          <!--login home -->
+          <div class="card" id="home">
+            <div class="card-content ">
+              <span class="card-title">Log in als</span>
+              <div class="row">
+                <div class="divider"></div>
               </div>
+              <p>
+                <div class="row">
+                  <a class="waves-effect waves-light btn col s10 offset-s1" 
+                  onclick="loginFade2(1);Materialize.fadeInImage('#login_as_school',400);">school</a>
+                </div>
+                <div class="row">
+                  <a class="waves-effect waves-light btn col s10 offset-s1" 
+                  onclick="loginFade2(2);Materialize.fadeInImage('#login_as_leraar',400);">leraar</a>
+                  </div>
+                <div class="row">
+                  <a class="waves-effect waves-light btn col s10 offset-s1" 
+                  onclick="loginFade2(3);Materialize.fadeInImage('#login_as_student',400);">student</a>
+                </div>
+              </p>
             </div>
           </div>
-          <!--logging in as school-->
-          <div class="col s12 card <?= $hideCards[1]?>" id="login_as_school">
-            <div class="card-content center">
-              <span class="card-title">Log in als school:</span>
-              <div class="divider"></div>
+          <!--end of login home -->
+          <!--login as school -->
+          <div class="card hide" id="login_as_school">
+            <div class="card-content">
+            <span class="card-title center-align">Log in als school</span>
+            <div class="divider"></div>
               <form method="POST">
                 <div class="row">
-                  <div class="input-field col s8 offset-s2">
+                  <div class="input-field col s12">
                     <input name="email" id="email" type="email" class="validate">
                     <label for="email">Email</label>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="input-field col s8 offset-s2">
+                  <div class="input-field col s12">
                     <input name="password" id="password" type="password" class="validate">
                     <label for="password">Wachtwoord</label>
                   </div>
                 </div>
-                <div class="row ">
-                  <div class="col offset-l2 offset-s1 offset-m2 center">
-                    <button class="btn waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
-                      <i class="material-icons left">arrow_back</i>
-                    </button>
-                  </div>
-                  <div class="col">
-                    <button class="btn waves-effect waves-light" type="submit" value="1" name="rol">Log in
+                <div class="row">
+                  <div class="col s12 m6 center-on-small-only vpadding-on-s-only">
+                    <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="1" name="rol">Log in
                       <i class="material-icons right">send</i>
                     </button>
                   </div>
+                  <div class="col s12 m6 center-on-small-only">
+                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
+                      <i class="material-icons left">arrow_back</i>
+                    </button>
+                  </div>                  
                 </div>
                 <?php if($loginSuccess == false && $loginAttempt == true){?>
                   <div class="row">
@@ -168,102 +170,92 @@ if (isset($_POST['rol'])){
                 <?php }?>
               </form>
             </div>
-          </div>
-          <!--logging in as teacher -->
-          <div class="col s12">
-            <div class="card <?= $hideCards[2]?>" id="login_as_leraar">
-              <div class="card-content center">
-                <span class="card-title">Log in als leraar:</span>
-                <div class="divider"></div>
+          </div><!-- end of #login_as_school -->
+          <div class="card hide" id="login_as_leraar">
+            <div class="card-content">
+              <span class="card-title center-align">Log in als leraar</span>
+              <div class="divider"></div>
                 <form method="POST">
                   <div class="row">
-                    <div class="input-field col s8 offset-s2">
+                    <div class="input-field col s12">
                       <input name="email" id="email" type="email" class="validate">
                       <label for="email">Email</label>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="input-field col s8 offset-s2">
+                    <div class="input-field col s12">
                       <input name="password" id="password" type="password" class="validate">
                       <label for="password">Wachtwoord</label>
                     </div>
                   </div>
-                  <div class="row ">
-                    <div class="col offset-l2 offset-s1 offset-m2 center">
-                      <button class="btn waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
-                        <i class="material-icons left">arrow_back</i>
-                      </button>
-                    </div>
-                    <div class="col">
-                      <button class="btn waves-effect waves-light" type="submit" value="2" name="rol">Log in
+                  <div class="row">
+                    <div class="col s12 m6 center-on-small-only vpadding-on-s-only">
+                      <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="1" name="rol">Log in
                         <i class="material-icons right">send</i>
                       </button>
                     </div>
-                  </div>
-                <?php if($loginSuccess == false && $loginAttempt == true){?>
-                  <div class="row">
-                    <div class="divider "></div>
-                    
-                    <div class="invalid col offset-l2 offset-s2 offset-m2">
-                      Het ingevulde email of wachtwoord is fout.
-                    </div>
-                  </div>
-                <?php }?>
-                </form>
-              </div>
-            </div>
-          </div>
-          <!--logging in as student-->
-          <div class="col s12">
-            <div class="card <?= $hideCards[3]?>" id="login_as_student">
-              <div class="card-content center">
-                <span class="card-title">Log in als student:</span>
-                <div class="divider"></div>
-                <form method="POST">
-                  <div class="row">
-                    <div class="input-field col s8 offset-s2">
-                      <input name="email" id="email" type="email" class="validate">
-                      <label for="email">Email</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="input-field col s8 offset-s2">
-                      <input name="password" id="password" type="password" class="validate">
-                      <label for="password">Wachtwoord</label>
-                    </div>
-                  </div>
-                  <div class="row ">
-                    <div class="col offset-l2 offset-s1 offset-m2 center">
-                      <button class="btn waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
+                    <div class="col s12 m6 center-on-small-only">
+                      <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
                         <i class="material-icons left">arrow_back</i>
                       </button>
-                    </div>
-                    <div class="col">
-                      <button class="btn waves-effect waves-light" type="submit" value="3" name="rol">Log in
-                        <i class="material-icons right">send</i>
-                      </button>
-                    </div>
+                    </div>                  
                   </div>
                   <?php if($loginSuccess == false && $loginAttempt == true){?>
-                  <div class="row">
-                    <div class="divider"></div>                  
-                    <div class="invalid col offset-l2 offset-s2 offset-m2 ">
-                      Het ingevulde email of wachtwoord is fout.
+                    <div class="row">
+                      <div class="divider"></div>                  
+                      <div class="invalid col offset-l2 offset-s2 offset-m2">
+                        Het ingevulde email of wachtwoord is fout.
+                      </div>
                     </div>
-                  </div>
-                <?php }?>
-                  <div class="divider"></div>
-                  <div class="card-action row acRow">
-                    <div class="noPadLeft col offset-xl2 offset-l2 offset-m2 offset-s1">
-                      <a class="remPad" href="registreer.php">Of klik hier om te registreren</a>
-                    </div>
-                  </div>
-                  <!-- end of login form-->
+                  <?php }?>
                 </form>
-              </div>
             </div>
-          </div>
-        </div>
+          </div><!-- end of #login_as_leraar -->
+          <div class="card hide" id="login_as_student">
+            <div class="card-content">
+              <span class="card-title center-align">Log in als student</span>
+              <div class="divider"></div>
+              <form method="POST">
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input name="email" id="email" type="email" class="validate">
+                    <label for="email">Email</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input name="password" id="password" type="password" class="validate">
+                    <label for="password">Wachtwoord</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12 m6 center-on-small-only vpadding-on-s-only">
+                    <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="1" name="rol">Log in
+                      <i class="material-icons right">send</i>
+                    </button>
+                  </div>
+                  <div class="col s12 m6 center-on-small-only">
+                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
+                      <i class="material-icons left">arrow_back</i>
+                    </button>
+                  </div>                  
+                </div>
+                <div class="">                    
+                    <a class="" href="registreer.php">Of klik hier om te registreren</a>                    
+                </div>
+                <?php if($loginSuccess == false && $loginAttempt == true){?>
+                <div class="row">
+                  <div class="divider"></div>                  
+                  <div class="invalid col offset-l2 offset-s2 offset-m2">
+                    Het ingevulde email of wachtwoord is fout.
+                  </div>
+                </div>
+                <?php }?>
+              </form>
+            </div>
+          </div><!-- end of #login_as_student -->
+        </div>  <!-- end of column -->
+      </div>
     </div>
   </div>
   <!--end of center with background image-->
@@ -272,34 +264,35 @@ if (isset($_POST['rol'])){
     <div class="container">
       <div class="row">
         <div class="col s12">
-          <h3 class="center-align">Wat is deze website?</h3>
-          <h5 class="center-align">Ondertitels zijn cool</h5>
+          <h3 class="center-align">Waarom deze website?</h3>
+          <h5 class="center-align">Dit zijn de voordelen</h5>
         </div>
       </div>
       <div class="row">
-        <div class="col s4">
-          <div class="center">
-            <i class="material-icons">flash_on</i>
-            <p class="promo-caption">Speeds up development</p>
-            <p class="light center">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components.</p>
+            <div class="col s12 m4">
+              <div class="center promo">
+                <i class="material-icons purple-text text-darken-1">flash_on</i>
+                <p class="promo-caption">Speeds up development</p>
+                <p class="light center">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+              </div>
+            </div>
+
+            <div class="col s12 m4">
+              <div class="center promo">
+                <i class="material-icons purple-text text-darken-1">group</i>
+                <p class="promo-caption">User Experience Focused</p>
+                <p class="light center">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+              </div>
+            </div>
+
+            <div class="col s12 m4">
+              <div class="center promo">
+                <i class="material-icons purple-text text-darken-1">settings</i>
+                <p class="promo-caption">Easy to work with</p>
+                <p class="light center">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col s4">
-          <div class="center">
-            <i class="material-icons">group</i>
-            <p class="promo-caption">User Experience Focused</p>
-            <p class="light center">By utilizing elements and principles of Material Design, we were able to create a framework that focuses on User Experience.</p>
-          </div>
-        </div>
-        <div class="col s4">
-          <div class="center">
-            <i class="material-icons">settings</i>
-            <p class="promo-caption">Easy to work with</p>
-            <p class="light center">We have provided detailed documentation as well as specific code examples to help new users get started.</p>
-          </div>
-        </div>
-      </div>
-      <!-- end of promo row -->
       <div class="row">
         <div class="col s12">
           <h3 class="center-align">Featured Projects</h3>
@@ -312,7 +305,7 @@ if (isset($_POST['rol'])){
               <div class="card-image">
                 <img src="https://baconmockup.com/999/749/">
                 <span class="card-title">Featured project</span>
-                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                <a class="btn-floating halfway-fab waves-effect waves-light purple darken-1"><i class="material-icons">add</i></a>
               </div>
               <div class="card-content">
                 <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
@@ -324,7 +317,7 @@ if (isset($_POST['rol'])){
               <div class="card-image">
                 <img src="https://baconmockup.com/999/749/">
                 <span class="card-title">Featured project</span>
-                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                <a class="btn-floating halfway-fab waves-effect waves-light purple darken-1"><i class="material-icons">add</i></a>
               </div>
               <div class="card-content">
                 <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>

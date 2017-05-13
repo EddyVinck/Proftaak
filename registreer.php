@@ -99,7 +99,7 @@ while($result = mysqli_fetch_assoc($sqlResult))
                         <label>Kies je klas</label>
                     </div>
                 </div>
-                <div class="row ">
+                <div class="row">
                   
                   <div class="col s10 m4 offset-m2 offset-s1 vpadding-on-s-only">
                     <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="1" name="submit">Aanmelden

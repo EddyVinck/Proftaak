@@ -11,7 +11,7 @@
     color:red;    
 }
 .center-with-bg {
-    height: 70vh;
+    height: 78vh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -21,7 +21,4 @@
 }
 #login_as_student{
     margin-top: 1.93rem !important;
-}
-.btn-padding {
-    
 }

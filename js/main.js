@@ -1,14 +1,14 @@
-var elemarray =[
+var elemArray =[
     document.getElementById("home"),
     document.getElementById("login_as_school"),
     document.getElementById("login_as_leraar"),
     document.getElementById("login_as_student")
 ];
 function loginFade(array_val){
-    for(var x = 0;x < elemarray.length;x++){
-        elemarray[x].className = "card hide";
+    for(var x = 0;x < elemArray.length;x++){
+        elemArray[x].className = "card hide";
     }
-    elemarray[array_val].className = "card";
+    elemArray[array_val].className = "card";
 }
 function initializeSelectElements(){
     $(document).ready(function() {
@@ -39,4 +39,11 @@ function getSelect_Ajax(str,table,id,elemName) {
         //de 'str' variabele wordt meegegeven vanuit HTML onchange.
         xmlhttp.send();
     }
+}
+function loginFade2(array_val){
+    for(var x = 0; x < elemArray.length; x++){
+        console.log(elemArray[x]);
+        elemArray[x].classList.add("hide");
+    }
+    elemArray[array_val].classList.remove("hide");
 }

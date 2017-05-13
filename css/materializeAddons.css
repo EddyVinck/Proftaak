@@ -1,3 +1,22 @@
+/* stolen from Materialize website*/
+.promo-caption {
+    font-size: 1.7rem;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+.promo{width:100%}
+.promo i{margin:40px 0;color:#ee6e73;font-size:7rem;display:block}
+.promo-caption{font-size:1.7rem;font-weight:500;margin-top:5px;margin-bottom:0}
+#front-page-nav{background-color:#FFF;position:relative}
+#front-page-nav a{color:#ee6e73}
+#front-page-nav li:hover{background-color:#fdeaeb}
+#front-page-nav li.active{background-color:#fdeaeb}
+#front-page-nav .container{height:inherit}
+.col.grid-example{border:1px solid #eee;margin:7px 0;text-align:center;line-height:50px;font-size:28px;background-color:tomato;color:white;padding:0}
+.col.grid-example span{font-weight:100;line-height:50px}
+.promo-example{overflow:hidden}
+
 /*********************
   Media Query Classes
 **********************/
