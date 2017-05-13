@@ -1,16 +1,16 @@
-var elemarray =[
+var elemArray =[
     document.getElementById("home"),
     document.getElementById("login_as_school"),
     document.getElementById("login_as_leraar"),
     document.getElementById("login_as_student")
 ];
 function loginFade(array_val){
-    for(var x = 0;x < elemarray.length;x++){
-        elemarray[x].className = "card hide";
+    for(var x = 0;x < elemArray.length;x++){
+        elemArray[x].className = "card hide";
     }
-    elemarray[array_val].className = "card";
+    elemArray[array_val].className = "card";
 }
-function initializeSelects(){
+function initializeSelectElements(){
     $(document).ready(function() {
         $('select').material_select();
     });
@@ -32,11 +32,18 @@ function getSelect_Ajax(str,table,id,elemName) {
                 document.getElementById(elemName).innerHTML = this.responseText; 
                 console.log(this.responseText);
                 //responsetext komt terug vanuit t PHP bestand
-                initializeSelects(); //functie die nodig is om de Select's te herladen
+                initializeSelectElements(); //functie die nodig is om de Select's te herladen
             }
         };
         xmlhttp.open("GET","getKlas.php?q="+ str+"&tableName=" + table + "&idName="+ id,true); //q= get variabele die  in php bestand wordt gebruikt
         //de 'str' variabele wordt meegegeven vanuit HTML onchange.
         xmlhttp.send();
     }
+}
+function loginFade2(array_val){
+    for(var x = 0; x < elemArray.length; x++){
+        console.log(elemArray[x]);
+        elemArray[x].classList.add("hide");
+    }
+    elemArray[array_val].classList.remove("hide");
 }
