@@ -97,14 +97,9 @@ while($result = mysqli_fetch_assoc($sqlResult))
                         <label>Kies je klas</label>
                     </div>
                 </div>
-                <div class="row ">
+                <div class="row">
                   <div class="col offset-l2 offset-s1 offset-m2 center">
-                    <button class="btn waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
-                      <i class="material-icons left">arrow_back</i>
-                    </button>
-                  </div>
-                  <div class="col">
-                    <button class="btn waves-effect waves-light" type="submit" value="1" name="submit">Log in
+                    <button class="btn waves-effect waves-light" type="submit" value="1" name="submit">Registreer
                       <i class="material-icons right">send</i>
                     </button>
                   </div>
