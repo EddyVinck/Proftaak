@@ -305,7 +305,7 @@ if (isset($_POST['rol'])){
               <div class="card-image">
                 <img src="https://baconmockup.com/999/749/">
                 <span class="card-title">Featured project</span>
-                <a class="btn-floating halfway-fab waves-effect waves-light purple darken-1"><i class="material-icons">add</i></a>
+                <a href="project.php" class="btn-floating halfway-fab waves-effect waves-light purple darken-1"><i class="material-icons">add</i></a>
               </div>
               <div class="card-content">
                 <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
@@ -317,7 +317,7 @@ if (isset($_POST['rol'])){
               <div class="card-image">
                 <img src="https://baconmockup.com/999/749/">
                 <span class="card-title">Featured project</span>
-                <a class="btn-floating halfway-fab waves-effect waves-light purple darken-1"><i class="material-icons">add</i></a>
+                <a href="project.php" class="btn-floating halfway-fab waves-effect waves-light purple darken-1"><i class="material-icons">add</i></a>
               </div>
               <div class="card-content">
                 <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>

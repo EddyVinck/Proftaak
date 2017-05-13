@@ -17,6 +17,7 @@
 <header>    
     <nav class="top-nav teal">
         <div class="nav-wrapper">
+            <div class="container">
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
             <div class="col s12" style="padding: 0 .75rem;">                
                 <a href="index.php" class="brand-logo">Logo</a>        
@@ -27,7 +28,8 @@
                 <li><a href="#" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             </ul>
             </div>       
-            <!--<a href="#" class="brand-logo">Logo</a>-->        
+            <!--<a href="#" class="brand-logo">Logo</a>-->
+            </div>        
         </div>        
     </nav>    
 </header>
@@ -69,32 +71,57 @@
                 <li>
                     <div class="card-panel teal lighten-2 black-text">
                         <div class="row valign-wrapper " style="margin-bottom: 0">
-                            <div class="col s2 truncate">Projectnaam</div>
-                            <div class="col s2">Projectstarter</div>
-                            <div class="col s3">Opleiding</div>
-                            <div class="col s2">Status</div>    
-                            <div class="col s1"></div>
+                            <div class="col m2 s12 truncate no-padding">Projectnaam</div>
+                            <div class="col m2 hide-on-small-only">Projectstarter</div>
+                            <div class="col m3 hide-on-small-only">Opleiding</div>
+                            <div class="col m2 hide-on-small-only">Status</div>    
+                            <div class="col m1 hide-on-small-only"></div>
                         </div>
                     </div>
                 </li>
-
                 <li>
                     <div class="collapsible-header">
                         <div class="row valign-wrapper" style="margin-bottom: 0">
-                            <div class="col s2 truncate">Bacon maken</div>
-                            <div class="col s2 truncate">Jackie Chan</div>
-                            <div class="col s3 truncate">Particuliere Beveiliging</div>
-                            <div class="col s2 truncate">Klaar!</div>    
-                            <div class="col s1 truncate"><a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div>                        
+                            <div class="col m2 s12 truncate">Bacon maken</div>
+                            <div class="col m2 hide-on-small-only truncate">Jackie Chan</div>
+                            <div class="col m3 hide-on-small-only truncate">Particuliere Beveiliging</div>
+                            <div class="col m2 hide-on-small-only truncate">Klaar!</div>    
+                            <div class="col m1 truncate"><a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div>                        
                         </div>
                     </div>
                     <div class="collapsible-body">
                         <div class="row valign-wrapper">
-                            <div class="col s4 center">
-                                <img class="img-responsive" width="80%"  src="https://baconmockup.com/248/165/">
-                            </div>
-                            <div class="col s8">
-                                <span>
+                            <div class="row">
+                                <div class="col m4 s12 center">
+                                    <img class="img-responsive" width="80%"  src="https://baconmockup.com/248/165/">
+                                </div>
+                                <div class="col s12 hide-on-med-and-up">
+                                    <div class="row">
+                                        <div class="col s12">
+                                             <table>
+                                                <tbody>
+                                                    <!--deze dingen ook in php afgekort moeten worden-->
+                                                    <!--want als je bv de opleiding heel lang maakt is-->
+                                                    <!--de hele layout verpest omdat truncate niet goed werkt-->
+                                                    <tr>
+                                                        <td>Projectstarter:</td>
+                                                        <td class="right-align truncate">Jackie Chan</td>                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Opleiding:</td>
+                                                        <td class="right-align truncate">Particuliere Beveiliging</td>                                           
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Status:</td>
+                                                        <td class="right-align truncate">Klaar!</td>
+                                                    </tr>                                               
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col m8 s12">
+                                    <p>
                                     Spicy jalapeno bacon ipsum dolor amet turkey bresaola swine ham turducken cupim. 
                                     Ribeye kielbasa leberkas, biltong tri-tip rump jowl jerky. Flank sausage cow 
                                     picanha doner, cupim frankfurter kielbasa t-bone. Corned beef frankfurter boudin 
@@ -102,12 +129,13 @@
                                     drumstick. Chicken short ribs cupim, pig tail alcatra meatball pork loin ham t-bone 
                                     doner shankle sausage landjaeger biltong. Short ribs tail beef ribs picanha kielbasa 
                                     pastrami.
-                                </span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col s4 center">
-                            <a class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Bekijk dit project</a>
+                            <div class="col s12 m4 center">
+                                <a class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Bekijk dit project</a>
                             </div>
                         </div>
                     </div>
