@@ -1,12 +1,12 @@
 <?php
 include("inc/functions.php");
-$db = ConnectToDatabase();
-$queryVar = "SELECT `id` , `naam` FROM scholen";
-$sqlResult = mysqli_query($db, $queryVar);
+$connection = ConnectToDatabase();
+$query = "SELECT `id` , `naam` FROM scholen";
+$result = mysqli_query($connection, $query);
 $data = [];
-while($result = mysqli_fetch_assoc($sqlResult))
+while($row = mysqli_fetch_assoc($result))
 {
-    $data[] = $result;
+    $data[] = $row;
 }
 ?>
 <!DOCTYPE html>
@@ -71,7 +71,7 @@ while($result = mysqli_fetch_assoc($sqlResult))
                 </div>
                 <div class="row">
                     <div class="input-field col s12 m8 offset-m2">
-                        <select name="school" onchange="getSelect_Ajax(this.value,'colleges','scholen_id','collegeSelect')">
+                        <select name="school" onchange="getSelect_Ajax(this.value,'colleges','scholen_id','collegeSelect', 'college')">
                             <option value="" disabled selected>Kies je school</option>
                             <?php 
                             for($x=0;$x < count($data); $x++)
@@ -85,7 +85,7 @@ while($result = mysqli_fetch_assoc($sqlResult))
                 </div>
                 <div class="row">
                     <div class="input-field col s12 m8 offset-m2">
-                        <select name="college" id="collegeSelect" onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect')">
+                        <select name="college" id="collegeSelect" onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')">
                             <option value="" disabled selected>Kies je college</option>
                         </select>
                         <label>Kies je college</label>
@@ -147,7 +147,7 @@ while($result = mysqli_fetch_assoc($sqlResult))
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
 <script>
-initializeSelectElements();
+    initializeSelectElements();
 </script>
 </body>
 </html>
