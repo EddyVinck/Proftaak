@@ -16,4 +16,12 @@ NULL ,  '$text',  '$color',  '1'
 );
 ";
 $result = mysqli_query($db,$query);
+
+$getIDQuery ="SELECT id FROM colleges ORDER BY id DESC LIMIT 1";
+$result2 = mysqli_query($db,$getIDQuery);
+
+while($row = mysqli_fetch_assoc($result2)){
+    $id = $row; 	//places everything in the array
+}
+echo $id['id'];
 ?>

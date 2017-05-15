@@ -55,7 +55,7 @@ function loginFade2(key){
     elemArray[key].classList.remove("hide");
 }
 
-function editCollegeAjax(collegeIdNr,originalText){
+function editCollegeAjax(collegeIdNr){
     var elemInp = document.getElementById("input" + collegeIdNr);
     var elemLbl = document.getElementById("lbl" + collegeIdNr);
     var inpVal = elemInp.value;
@@ -97,8 +97,8 @@ function addTableRow(){
     $("#collegeTable > tbody").append(
         '<tr id="newRow">' +
             '<td>'+
-                '<div class="row" id="newButtonDiv">' +
-                '<form method="POST">' +
+                '<div class="row">' +
+                '<form method="POST"  id="newButtonDiv">' +
                 '<div  class="input-field beheer-inputs col s2">' +
                     '<input ' +
                     'id="newInput" ' +
@@ -110,7 +110,7 @@ function addTableRow(){
                 '</div>' +
             '</td><td>'+
                 '<a class=" waves-effect waves-light btn"></a>'+
-            '</td><td>'+
+            '</td><td id="newTd">'+
                 // '<input class="filled-in" type="checkbox" id="select"/>'+
                 // '<label for="select"></label>'+
                 '<a onclick="saveNewRowAjax();"' +
@@ -138,12 +138,22 @@ function saveNewRowAjax(){
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) { //eerlijk gezegt geen idee wat dit doet, maar t werkt
                 //GELUKT
-                $("#newLabel").attr('data-success','Het is veranderd');
-                elemInp.classList.remove("invalid");
-                elemInp.classList.add("valid");
-                
-                //responsetext komt terug vanuit t PHP bestand
-                initializeSelectElements(); //functie die nodig is om de Select's te herladen
+                console.log(this.responseText);
+                $("#newLabel").attr("data-success","Nieuw college toegevoegd"); //zet het "gelukt bericht"
+                document.getElementById("newInput").classList.remove("invalid");//
+                document.getElementById("newInput").classList.add("valid");//
+                $("#newRow").attr("id",this.responseText);//veranderd het Id van verschillende elementen zodat er geen dubbele id's komen
+                $("#newInput").attr("id","input"+ this.responseText);//
+                $("#newLabel").attr("id","lbl"+ this.responseText);//
+                document.getElementById('newButtonDiv').innerHTML += //voegt de edit button toe aan het form
+                '<a onclick="editCollegeAjax('+this.responseText+');"'+//
+                'class="btn-floating btn-medium waves-effect waves-light red">'+//
+                '<i class="material-icons">edit</i></a>'; //
+                $("#newButtonDiv").attr("id","newbutton"+this.responseText);
+                $("#input"+this.responseText).attr("value",newValue);//geeft de value mee aan de inputbox zodat deze niet leeg is
+                $("#newTd").html(
+                '<input class="filled-in" type="checkbox" id="select'+this.responseText+'"/>'+
+                '<label for="select'+this.responseText+'"></label>'); //zorgt ervoor dat de checkbox wordt gemaakt.
             }
         };
         xmlhttp.open("GET","addNewCollege.ajax.php?text=" + newValue + 

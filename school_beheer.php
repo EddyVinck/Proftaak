@@ -122,8 +122,7 @@ while($result2 = mysqli_fetch_assoc($result)){
                                         data-success=""
                                         for="input<?=$colleges[$tableRow]['id']?>"> </label>
                                     </div>
-                                    <a onclick="editCollegeAjax(<?=$colleges[$tableRow]['id']?>,
-                                        '<?=$colleges[$tableRow]['naam']?>');" 
+                                    <a onclick="editCollegeAjax(<?=$colleges[$tableRow]['id']?>);" 
                                         class="btn-floating btn-medium waves-effect waves-light red">
                                         <i class="material-icons">edit</i></a>
                                     </form>
