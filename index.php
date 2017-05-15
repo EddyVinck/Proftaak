@@ -148,7 +148,7 @@ if (isset($_POST['rol'])){
                     </button>
                   </div>
                   <div class="col s12 m6 center-on-small-only">
-                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
+                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
                       <i class="material-icons left">arrow_back</i>
                     </button>
                   </div>                  
@@ -188,7 +188,7 @@ if (isset($_POST['rol'])){
                       </button>
                     </div>
                     <div class="col s12 m6 center-on-small-only">
-                      <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
+                      <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
                         <i class="material-icons left">arrow_back</i>
                       </button>
                     </div>                  
@@ -228,7 +228,7 @@ if (isset($_POST['rol'])){
                     </button>
                   </div>
                   <div class="col s12 m6 center-on-small-only">
-                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade(0);Materialize.fadeInImage('#home',400);">Terug
+                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
                       <i class="material-icons left">arrow_back</i>
                     </button>
                   </div>                  
