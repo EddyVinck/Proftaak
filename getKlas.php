@@ -12,13 +12,13 @@ if (!$connection) {
 // the standard option that should always be inserted
 echo "<option value='' disabled selected>Kies je {$nextSelect}</option>";
 
-$query = "SELECT id, naam FROM $tableName WHERE $idName = $q";
+$query = "SELECT * FROM $tableName WHERE $idName = $q";
 $result = mysqli_query($connection, $query);
 
 // add an option element for every row found in $result
 // if the row's name is something other than docenten
 while($row = mysqli_fetch_array($result)) {
-    if($row['naam'] != 'docenten'){?>
+    if($row['rol'] != 'docenten'){?>
         <option value="<?=$row['id']?>"><?=$row['naam']?></option>
     <?php }
 }
