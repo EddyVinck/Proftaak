@@ -11,4 +11,13 @@ function dump($var, $varname = false, $file = false, $line = false)
 	var_dump($var);
 	echo "</pre>";
 }
+function checkSession(){
+	session_start();
+	if (!isset($_SESSION['loggedIn'])){
+		$_SESSION['loggedIn'] = false;
+		$_SESSION['rol'] = '';
+		$_SESSION['id'] = '';
+		$_SESSION['naam'] = '';
+	}
+}
 ?>

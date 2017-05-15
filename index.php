@@ -1,13 +1,7 @@
 <?php
 include('inc/functions.php');
 $db = ConnectToDatabase();
-session_start();
-if (!isset($_SESSION['loggedIn'])){
-  $_SESSION['loggedIn'] = false;
-  $_SESSION['rol'] = '';
-  $_SESSION['id'] = '';
-  $_SESSION['naam'] = '';
-}
+checkSession();
 //some vars used
 $loginSuccess = false; //checks later if this is false or true (after login attempt)
 $loginAttempt = false;
@@ -18,7 +12,6 @@ $hideCards = ['','hide','hide','hide']; //this array is used in the HTML to hide
   2=DocentLogin
   3=StudentLogin
 */
-
 // naam van user id, user rol, naam. komen in de sessie 
 if (isset($_POST['rol'])){
   $email = $_POST['email'];
@@ -107,7 +100,7 @@ if (isset($_POST['rol'])){
       <div class="row">
         <div class="col s12 m6 offset-m3 l4 offset-l4 center-align">
           <!--login home -->
-          <div class="card" id="home">
+          <div class="card <?=$hideCards[0]?>" id="home">
             <div class="card-content ">
               <span class="card-title">Log in als</span>
               <div class="row">
@@ -131,7 +124,7 @@ if (isset($_POST['rol'])){
           </div>
           <!--end of login home -->
           <!--login as school -->
-          <div class="card hide" id="login_as_school">
+          <div class="card <?=$hideCards[1]?>" id="login_as_school">
             <div class="card-content">
             <span class="card-title center-align">Log in als school</span>
             <div class="divider"></div>
@@ -171,7 +164,7 @@ if (isset($_POST['rol'])){
               </form>
             </div>
           </div><!-- end of #login_as_school -->
-          <div class="card hide" id="login_as_leraar">
+          <div class="card <?=$hideCards[2]?>" id="login_as_leraar">
             <div class="card-content">
               <span class="card-title center-align">Log in als leraar</span>
               <div class="divider"></div>
@@ -211,7 +204,7 @@ if (isset($_POST['rol'])){
                 </form>
             </div>
           </div><!-- end of #login_as_leraar -->
-          <div class="card hide" id="login_as_student">
+          <div class="card <?=$hideCards[3]?>" id="login_as_student">
             <div class="card-content">
               <span class="card-title center-align">Log in als student</span>
               <div class="divider"></div>

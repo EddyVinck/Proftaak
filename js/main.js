@@ -4,12 +4,6 @@ var elemArray =[
     document.getElementById("login_as_leraar"),
     document.getElementById("login_as_student")
 ];
-function loginFade(array_val){
-    for(var x = 0;x < elemArray.length;x++){
-        elemArray[x].className = "card hide";
-    }
-    elemArray[array_val].className = "card";
-}
 function initializeSelectElements(){
     $(document).ready(function() {
         $('select').material_select();
