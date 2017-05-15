@@ -10,6 +10,5 @@ SET naam = '$text'
 WHERE id = $id;
 ";
 $result = mysqli_query($db,$query);
-
 echo "1";
 ?>

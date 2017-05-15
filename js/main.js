@@ -89,3 +89,27 @@ function editCollegeAjax(collegeIdNr,originalText){
         xmlhttp.send();
     }
 }
+function addTableRow(){
+    $("#collegeTable > tbody").append(
+        '<tr>' +
+            '<td>'+
+                '<div class="row">' +
+                '<form method="POST">' +
+                '<div  class="input-field beheer-inputs col s2">' +
+                    '<input value="" ' +
+                    'id="" ' +
+                    'type="text" class="validate">' +
+                '<label id="" class="active" ' +
+                    'data-error="Het is hetzelfde" ' +
+                    'data-success=""' +
+                    'for=""> </label>' +
+                '</div>' +
+            '</td><td>'+
+                '<a class=" waves-effect waves-light btn"></a>'+
+            '</td><td>'+
+            '<input class="filled-in" type="checkbox" id="select"/>'+
+                '<label for="select"></label>'+
+        '</tr>'+
+        '</form>' +
+    '</div>');
+}

@@ -88,7 +88,7 @@ while($result2 = mysqli_fetch_assoc($result)){
                     </div>
                     <div class="card-content grey lighten-4">
                     <div id="colleges">
-                        <table>
+                        <table id="collegeTable">
                         <thead>
                         <tr>
                             <th>Naam</th>
@@ -96,9 +96,18 @@ while($result2 = mysqli_fetch_assoc($result)){
                             <th>Selecteer</th>
                         </tr>
                         </thead>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <a class="btn-floating btn-large waves-effect waves-light red" onclick="addTableRow();">
+                                    <i class="material-icons">add</i></a>
+                                </td>
+                            </tr>
+                        </tfoot>
                         <tbody>
                         <?php
                         for($tableRow=0;$tableRow<count($colleges);$tableRow++){
+                        
                         ?>
                             <tr>
                                 <td>
