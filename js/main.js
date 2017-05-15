@@ -83,33 +83,72 @@ function editCollegeAjax(collegeIdNr,originalText){
                 initializeSelectElements(); //functie die nodig is om de Select's te herladen
             }
         };
-        xmlhttp.open("GET","changeCollegeName.php?text=" + elemInp.value + 
+        xmlhttp.open("GET","changeCollegeName.ajax.php?text=" + elemInp.value + 
         "&id=" + collegeIdNr,true);
         //de 'selectedOption' variabele wordt meegegeven vanuit een HTML onchange-event op het select element.
         xmlhttp.send();
     }
 }
 function addTableRow(){
+    var tbodyElement = document.getElementById("collegeTbody");
+    var lastRow = tbodyElement.rows[ tbodyElement.rows.length - 1 ];
+    var newID = parseInt( lastRow.id) + 1;
+    console.log(newID);
     $("#collegeTable > tbody").append(
-        '<tr>' +
+        '<tr id="newRow">' +
             '<td>'+
-                '<div class="row">' +
+                '<div class="row" id="newButtonDiv">' +
                 '<form method="POST">' +
                 '<div  class="input-field beheer-inputs col s2">' +
-                    '<input value="" ' +
-                    'id="" ' +
+                    '<input ' +
+                    'id="newInput" ' +
                     'type="text" class="validate">' +
-                '<label id="" class="active" ' +
+                '<label id="newLabel" class="active" ' +
                     'data-error="Het is hetzelfde" ' +
                     'data-success=""' +
-                    'for=""> </label>' +
+                    'for="newInput"> </label>' +
                 '</div>' +
             '</td><td>'+
                 '<a class=" waves-effect waves-light btn"></a>'+
             '</td><td>'+
-            '<input class="filled-in" type="checkbox" id="select"/>'+
-                '<label for="select"></label>'+
+                // '<input class="filled-in" type="checkbox" id="select"/>'+
+                // '<label for="select"></label>'+
+                '<a onclick="saveNewRowAjax();"' +
+                'class="btn-floating btn-medium waves-effect waves-light red">'+
+                '<i class="material-icons">save</i></a>'+
         '</tr>'+
         '</form>' +
     '</div>');
+}
+function saveNewRowAjax(){
+    var newValue = document.getElementById("newInput").value;
+    console.log(newValue);
+    if (newValue == ""){
+        $("#newLabel").attr('data-error','De tekst kan niet leeg zijn');
+        document.getElementById("newInput").classList.remove("valid");
+        document.getElementById("newInput").classList.add("invalid");
+    } else { 
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) { //eerlijk gezegt geen idee wat dit doet, maar t werkt
+                //GELUKT
+                $("#newLabel").attr('data-success','Het is veranderd');
+                elemInp.classList.remove("invalid");
+                elemInp.classList.add("valid");
+                
+                //responsetext komt terug vanuit t PHP bestand
+                initializeSelectElements(); //functie die nodig is om de Select's te herladen
+            }
+        };
+        xmlhttp.open("GET","addNewCollege.ajax.php?text=" + newValue + 
+        "&color=" + "blue",true);
+        //de 'selectedOption' variabele wordt meegegeven vanuit een HTML onchange-event op het select element.
+        xmlhttp.send();
+    }
 }
