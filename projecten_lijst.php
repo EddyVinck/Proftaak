@@ -1,6 +1,11 @@
 <?php include("inc/functions.php");?>
-
 <?php
+checkSession();
+if($_SESSION['rol'] == ""){
+    header("location: index.php");
+}
+
+// dump($_SESSION);
 $db = ConnectToDatabase();
 
 $query = 
@@ -16,21 +21,25 @@ $query =
     INNER JOIN colleges 
     ON klassen.colleges_id = colleges.id
     LEFT OUTER JOIN images 
-    ON images.projecten_id = projecten.id
+    ON images.projecten_id = projecten.id";
+    if(isset($_GET['college'])){
+        // check of de ingevulde get variabele wel een nummer is
+        if(is_numeric($_GET['college'])){
+            $college = $_GET['college'];
+            $query .= (" WHERE colleges.id = " . $college);
+        }        
+    }
     
-    GROUP BY projecten.id
-"; // op de lege plek komt de where college = 1 als je die hebt
+    $query .= " GROUP BY projecten.id"; 
+    // op de lege plek komt de where college = 1 als je die hebt
 
 $result = mysqli_query($db,$query);
-
+$data = [];
 while($row = mysqli_fetch_assoc($result)){
     $data[] = $row; 	//places everything in the array
 }
 
-dump($data);
-
-
-
+// dump($data);
 ?>
 <!DOCTYPE html>
 <head>
@@ -57,7 +66,7 @@ dump($data);
                 <li><a href="#" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
                 <li><a href="#" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
                 <li><a href="#" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+                <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i>Log uit</a></li>
             </ul>
             </div>       
             <!--<a href="#" class="brand-logo">Logo</a>-->
@@ -89,14 +98,23 @@ dump($data);
 <main>
   <div class="container">
     <div class="section">
-      <div class="row" style="padding: 0 24px;">            
-            <div class="col s4 offset-s8">
+      <div class="row valign-wrapper" style="padding: 0 24px;">
+            <div class="col s8">
+                <?php /*echo "<h4 class='no-padding'>"."Alle colleges"."</h4>" */?>
+                <?php // check welk college het college uit $_GET is
+
+                ?>
+            </div>            
+            <div class="col s4">
                 <a class="btn waves-effect waves-light purple darken-1 right" name="action" >Nieuw Project
                     <!--<i class="material-icons right">open_in_new</i>-->
                     <i class="material-icons right">library_add</i>                    
                 </a>
             </div>
-      </div>       
+      </div>
+      <?php 
+        if($data != NULL) {
+      ?>       
       <div class="row">
           <div class="col s12">
             <ul class="collapsible popout" data-collapsible="accordion">                
@@ -113,78 +131,87 @@ dump($data);
                 </li>
 
                 <!-- database versie -->
-                <?php
-                for($i = 0; $i < count($data); $i++)
-                {
-                    ?>
-                    <li>
-                    <div class="collapsible-header">
-                        <div class="row valign-wrapper" style="margin-bottom: 0">
-                            <div class="col m2 s12 truncate"><?php echo $data[$i]['project_naam'];?></div>
-                            <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['user_naam'];?></div>
-                            <div class="col m3 hide-on-small-only truncate"><?php echo $data[$i]['college_naam'];?></div>
-                            <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
-                            <div class="col m1 truncate"><a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content"><i class="material-icons">send</i></a></div>                        
+                <?php                
+                    for($i = 0; $i < count($data); $i++)
+                    {
+                        ?>
+                        <li>
+                        <div class="collapsible-header">
+                            <div class="row valign-wrapper" style="margin-bottom: 0">
+                                <div class="col m2 s12 truncate"><?php echo $data[$i]['project_naam'];?></div>
+                                <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['user_naam'];?></div>
+                                <div class="col m3 hide-on-small-only truncate"><?php echo $data[$i]['college_naam'];?></div>
+                                <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
+                                <div class="col m1 truncate"><a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content"><i class="material-icons">send</i></a></div>                        
+                            </div>
                         </div>
-                    </div>
-                    <div class="collapsible-body">
-                        <div class="row valign-wrapper">
-                            <div class="row">
-                                <div class="col m4 s12 center">
-                                    <?php 
-                                    if($data[$i]['img_path'])
-                                    {?>
-                                        <img class="img-responsive" width="80%"  src="<?php echo $data[$i]['img_path']; ?>"><?php
-                                    } ?>                            
-                                </div>
-                                <div class="col s12 hide-on-med-and-up">
-                                    <div class="row">
-                                        <div class="col s12">
-                                             <table>
-                                                <tbody>
-                                                    <!--deze dingen ook in php afgekort moeten worden-->
-                                                    <!--want als je bv de opleiding heel lang maakt is-->
-                                                    <!--de hele layout verpest omdat truncate niet goed werkt-->
-                                                    <tr>
-                                                        <td>Projectstarter:</td>
-                                                        <td class="right-align truncate">Jackie Chan</td>                                                        
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Opleiding:</td>
-                                                        <td class="right-align truncate">Particuliere Beveiliging</td>                                           
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Status:</td>
-                                                        <td class="right-align truncate">Klaar!</td>
-                                                    </tr>                                               
-                                                </tbody>
-                                            </table>
+                        <div class="collapsible-body">
+                            <div class="row valign-wrapper">
+                                <div class="row">
+                                    <div class="col m4 s12 center">
+                                        <?php 
+                                        if($data[$i]['img_path'])
+                                        {?>
+                                            <img class="img-responsive" width="80%"  src="<?php echo $data[$i]['img_path']; ?>"><?php
+                                        } ?>                            
+                                    </div>
+                                    <div class="col s12 hide-on-med-and-up">
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <table>
+                                                    <tbody>
+                                                        <!--deze dingen ook in php afgekort moeten worden-->
+                                                        <!--want als je bv de opleiding heel lang maakt is-->
+                                                        <!--de hele layout verpest omdat truncate niet goed werkt-->
+                                                        <tr>
+                                                            <td>Projectstarter:</td>
+                                                            <td class="right-align truncate">Jackie Chan</td>                                                        
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Opleiding:</td>
+                                                            <td class="right-align truncate">Particuliere Beveiliging</td>                                           
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Status:</td>
+                                                            <td class="right-align truncate">Klaar!</td>
+                                                        </tr>                                               
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col m8 s12">
+                                        <p>
+                                        Spicy jalapeno bacon ipsum dolor amet turkey bresaola swine ham turducken cupim. 
+                                        Ribeye kielbasa leberkas, biltong tri-tip rump jowl jerky. Flank sausage cow 
+                                        picanha doner, cupim frankfurter kielbasa t-bone. Corned beef frankfurter boudin 
+                                        burgdoggen cupim leberkas. Hamburger pig shankle sausage, pancetta salami turkey 
+                                        drumstick. Chicken short ribs cupim, pig tail alcatra meatball pork loin ham t-bone 
+                                        doner shankle sausage landjaeger biltong. Short ribs tail beef ribs picanha kielbasa 
+                                        pastrami.
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="col m8 s12">
-                                    <p>
-                                    Spicy jalapeno bacon ipsum dolor amet turkey bresaola swine ham turducken cupim. 
-                                    Ribeye kielbasa leberkas, biltong tri-tip rump jowl jerky. Flank sausage cow 
-                                    picanha doner, cupim frankfurter kielbasa t-bone. Corned beef frankfurter boudin 
-                                    burgdoggen cupim leberkas. Hamburger pig shankle sausage, pancetta salami turkey 
-                                    drumstick. Chicken short ribs cupim, pig tail alcatra meatball pork loin ham t-bone 
-                                    doner shankle sausage landjaeger biltong. Short ribs tail beef ribs picanha kielbasa 
-                                    pastrami.
-                                    </p>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m4 center">
+                                    <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Bekijk dit project</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col s12 m4 center">
-                                <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Bekijk dit project</a>
-                            </div>
-                        </div>
-                    </div>
-                    <li>
-                    <?php
-                }?>
+                        <li>
+                        <?php
+                    }?>
+                
             </ul>
+            <?php } else { // als er geen projecten zijn voor dit college
+                ?> <div class="row">
+                    <div class="col s12 center">
+                        <h4>Helaas, geen projecten in dit college!</h4>
+                        <h5>Probeer het eens bij een ander college.</h5>
+                    </div>
+                </div> <?php
+            }?>
           </div>
       </div>
     </div>

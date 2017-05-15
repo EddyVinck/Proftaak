@@ -1,7 +1,18 @@
 <?php
 include('inc/functions.php');
-$db = ConnectToDatabase();
 checkSession();
+
+if(isset($_GET['logout'])){
+  if($_GET['logout'] == 'true')
+  {
+    $_SESSION = array();
+    header("location: index.php");
+  }
+}
+// dump($_SESSION);
+
+
+$db = ConnectToDatabase();
 //some vars used
 $loginSuccess = false; //checks later if this is false or true (after login attempt)
 $loginAttempt = false;
@@ -19,8 +30,14 @@ if (isset($_POST['rol'])){
   $pass  = $_POST['password'];
   if($email != '' && $pass != ''){
     $loginSuccess = true;
-    $queryVar = "SELECT `id` , `rol` , `naam` FROM users 
-      WHERE `email` = '$email' AND `wachtwoord` = '$pass'";
+    $queryVar = " SELECT users.id , users.rol , users.naam, colleges.id AS college_id
+                  FROM users
+                  INNER JOIN klassen
+                  ON klassen.id = users.klassen_id
+                  INNER JOIN colleges
+                  ON klassen.colleges_id = colleges.id
+                  WHERE `email` = '$email' 
+                  AND `wachtwoord` = '$pass'";
     $sqlResult = mysqli_query($db, $queryVar);
     $data = [];
     if (mysqli_num_rows($sqlResult)== 1) {
@@ -33,6 +50,9 @@ if (isset($_POST['rol'])){
       $_SESSION['rol'] = $data[0]['rol'];
       $_SESSION['id'] = $data[0]['id'];
       $_SESSION['naam'] = $data[0]['naam'];
+      $college = $data[0]['college_id'];
+      header("Location: projecten_lijst.php?college=" . $college);
+      // dump($data);
     }
     else{
       $loginSuccess = false;
