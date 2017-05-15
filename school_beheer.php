@@ -96,11 +96,18 @@ while($result2 = mysqli_fetch_assoc($result)){
                             <th>Selecteer</th>
                         </tr>
                         </thead>
-                        <tfoot>
+                        <tfoot> 
+                        <!---->
                             <tr>
                                 <td>
-                                    <a class="btn-floating btn-large waves-effect waves-light red" onclick="addTableRow();">
-                                    <i class="material-icons">add</i></a>
+                                    <!--<div id="fixed-fab" class="fixed-action-btn horizontal click-to-toggle">-->
+                                        <a class="btn-floating btn-large red" onclick="addTableRow();">
+                                        <i class="material-icons">add</i>
+                                        </a>
+                                        <!--<ul>
+                                        <li><a class="btn-floating red"><i class="material-icons">clear</i></a></li>
+                                        </ul>-->
+                                    <!--</div>-->
                                 </td>
                             </tr>
                         </tfoot>
