@@ -104,12 +104,12 @@ while($result2 = mysqli_fetch_assoc($result)){
                                 </td>
                             </tr>
                         </tfoot>
-                        <tbody>
+                        <tbody id="collegeTbody">
                         <?php
                         for($tableRow=0;$tableRow<count($colleges);$tableRow++){
                         
                         ?>
-                            <tr>
+                            <tr id="<?=$tableRow?>">
                                 <td>
                                 <div class="row">
                                     <form method="POST">
