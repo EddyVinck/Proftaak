@@ -98,23 +98,34 @@ while($result2 = mysqli_fetch_assoc($result)){
                         </thead>
                         <tbody>
                         <?php
-                        for($tableRow=0;$tableRow<count($colleges);$tableRow++){?>
+                        for($tableRow=0;$tableRow<count($colleges);$tableRow++){
+                        ?>
                             <tr>
                                 <td>
                                 <div class="row">
-                                    <div class="input-field beheer-inputs col s2">
-                                        <input value="<?=$colleges[$tableRow]['naam']?>" id="naam" type="text" class="validate">
+                                    <form method="POST">
+                                    <div  class="input-field beheer-inputs col s2">
+                                        <input value="<?=$colleges[$tableRow]['naam']?>" 
+                                        id="input<?=$colleges[$tableRow]['id']?>" 
+                                        type="text" class="validate">
+                                        <label id="lbl<?=$colleges[$tableRow]['id']?>" class="active" 
+                                        data-error="Het is hetzelfde" 
+                                        data-success=""
+                                        for="input<?=$colleges[$tableRow]['id']?>"> </label>
                                     </div>
-                                    <a class="btn-floating btn-medium waves-effect waves-light red"><i class="material-icons">edit</i></a>
-                                    
+                                    <a onclick="editCollegeAjax(<?=$colleges[$tableRow]['id']?>,
+                                        '<?=$colleges[$tableRow]['naam']?>');" 
+                                        class="btn-floating btn-medium waves-effect waves-light red">
+                                        <i class="material-icons">edit</i></a>
+                                    </form>
                                 </div>
                                 </td>
                                 <td>
                                 <a class="<?=$colleges[$tableRow]['kleur']?> waves-effect waves-light btn"></a>
                                 </td>
                                 <td>
-                                    <input class="filled-in" type="checkbox" id="select<?=$tableRow?>"/>
-                                    <label for="select<?=$tableRow?>"></label>
+                                    <input class="filled-in" type="checkbox" id="select<?=$colleges[$tableRow]['id']?>"/>
+                                    <label for="select<?=$colleges[$tableRow]['id']?>"></label>
                                 </td>
                             </tr>
                         <?php }?>
