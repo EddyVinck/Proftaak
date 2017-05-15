@@ -1,4 +1,36 @@
+<?php include("inc/functions.php");?>
+
 <?php
+$db = ConnectToDatabase();
+
+$query = 
+"   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status,
+    users.naam AS user_naam, 
+    colleges.naam AS college_naam, 
+    images.path AS img_path
+    FROM projecten
+    INNER JOIN users 
+    ON projecten.users_id = users.id
+    INNER JOIN klassen 
+    ON users.klassen_id = klassen.id
+    INNER JOIN colleges 
+    ON klassen.colleges_id = colleges.id
+    LEFT OUTER JOIN images 
+    ON images.projecten_id = projecten.id
+    
+    GROUP BY projecten.id
+"; // op de lege plek komt de where college = 1 als je die hebt
+
+$result = mysqli_query($db,$query);
+
+while($row = mysqli_fetch_assoc($result)){
+    $data[] = $row; 	//places everything in the array
+}
+
+dump($data);
+
+
+
 ?>
 <!DOCTYPE html>
 <head>
@@ -79,21 +111,31 @@
                         </div>
                     </div>
                 </li>
-                <li>
+
+                <!-- database versie -->
+                <?php
+                for($i = 0; $i < count($data); $i++)
+                {
+                    ?>
+                    <li>
                     <div class="collapsible-header">
                         <div class="row valign-wrapper" style="margin-bottom: 0">
-                            <div class="col m2 s12 truncate">Bacon maken</div>
-                            <div class="col m2 hide-on-small-only truncate">Jackie Chan</div>
-                            <div class="col m3 hide-on-small-only truncate">Particuliere Beveiliging</div>
-                            <div class="col m2 hide-on-small-only truncate">Klaar!</div>    
-                            <div class="col m1 truncate"><a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div>                        
+                            <div class="col m2 s12 truncate"><?php echo $data[$i]['project_naam'];?></div>
+                            <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['user_naam'];?></div>
+                            <div class="col m3 hide-on-small-only truncate"><?php echo $data[$i]['college_naam'];?></div>
+                            <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
+                            <div class="col m1 truncate"><a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content"><i class="material-icons">send</i></a></div>                        
                         </div>
                     </div>
                     <div class="collapsible-body">
                         <div class="row valign-wrapper">
                             <div class="row">
                                 <div class="col m4 s12 center">
-                                    <img class="img-responsive" width="80%"  src="https://baconmockup.com/248/165/">
+                                    <?php 
+                                    if($data[$i]['img_path'])
+                                    {?>
+                                        <img class="img-responsive" width="80%"  src="<?php echo $data[$i]['img_path']; ?>"><?php
+                                    } ?>                            
                                 </div>
                                 <div class="col s12 hide-on-med-and-up">
                                     <div class="row">
@@ -135,29 +177,13 @@
                         </div>
                         <div class="row">
                             <div class="col s12 m4 center">
-                                <a class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Bekijk dit project</a>
+                                <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Bekijk dit project</a>
                             </div>
                         </div>
                     </div>
-                </li>
-                <li>
-                    <div class="collapsible-header">
-                        <div class="row valign-wrapper" style="margin-bottom: 0">
-                            <div class="col s2 truncate">Een lange projectnaam</div>
-                            <div class="col s2 truncate">John Doe</div>
-                            <div class="col s3 truncate">Juridisch-administratieve beroepen</div>
-                            <div class="col s2 truncate">Net gestart</div>    
-                            <div class="col s1 truncate"><a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div>                        
-                        </div>
-                    </div>
-                    <div class="collapsible-body">
-                        <span>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Reprehenderit ab exercitationem delectus provident perferendis vero illum ut fugit, ullam
-                            eum rerum libero est quia perspiciatis quam quis nam explicabo cumque.
-                        </span>
-                    </div>
-                </li>
+                    <li>
+                    <?php
+                }?>
             </ul>
           </div>
       </div>
