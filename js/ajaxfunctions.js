@@ -79,3 +79,37 @@ function getSelect_Ajax(selectedOption, table, id, elemName, nextSelect) {
         xmlhttp.send();
     }
 }
+function editCollegeAjax(collegeIdNr){
+    var elemInp = document.getElementById("input" + collegeIdNr);
+    var elemLbl = document.getElementById("lbl" + collegeIdNr);
+    var inpVal = elemInp.value;
+    if (inpVal == ""){
+        $("#lbl" + collegeIdNr).attr('data-error','De tekst kan niet leeg zijn');
+        elemInp.classList.remove("valid");
+        elemInp.classList.add("invalid");
+    }
+    else { 
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) { //eerlijk gezegt geen idee wat dit doet, maar t werkt
+                //GELUKT
+                $("#lbl" + collegeIdNr).attr('data-success','Het is veranderd');
+                elemInp.classList.remove("invalid");
+                elemInp.classList.add("valid");
+                
+                //responsetext komt terug vanuit t PHP bestand
+                initializeSelectElements(); //functie die nodig is om de Select's te herladen
+            }
+        };
+        xmlhttp.open("GET","changeCollegeName.ajax.php?text=" + elemInp.value + 
+        "&id=" + collegeIdNr,true);
+        //de 'selectedOption' variabele wordt meegegeven vanuit een HTML onchange-event op het select element.
+        xmlhttp.send();
+    }
+}
