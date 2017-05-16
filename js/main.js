@@ -46,46 +46,26 @@ function addTableRow(){
         '</form>' +
     '</div>');
 }
-$(document).ready(function(){
 
-  $('.close_button').click(function(event) {
-    $('input').closeChooser();
-  });
-
-  $('.set_color_button').click(function(event) {
-    $('input').setColor('#cc3333');
-  });
-
-  $('.simple_color').simpleColor();
-
-  $('.simple_color_color_code').simpleColor({ displayColorCode: true });
-
-  $('.simple_color_custom_chooser_css').simpleColor({ chooserCSS: { 'background-color': 'black', 'opacity': '0.8' } });
-
-  $('.simple_color_custom_display_css').simpleColor({ displayCSS: { 'border': '1px solid red' } });
-
-  $('.simple_color_custom_cell_size').simpleColor({ cellWidth: 30, cellHeight: 10 });
-
-  $('.simple_color_live_preview').simpleColor({ livePreview: true });
-
-  $('.simple_color_callback').simpleColor({
-    onSelect: function(hex, element) {
-      alert("You selected #" + hex + " for input #" + element.attr('class'));
-    }
-  });
-
-  $('.simple_color_mouse_enter').simpleColor({
-    onCellEnter: function(hex, element) {
-      console.log("You just entered #" + hex + " for input #" + element.attr('class'));
-    }
-  });
-  $('.colorpicker').simpleColor({
-    boxHeight: 40,
-    cellWidth: 20,
-    cellHeight: 20,
-    displayColorCode: true,
-    onSelect: function(hex, element) {
-    }
-  });
-
-});
+function getColorNameOrKey(mode,str){
+    var colorArray = {
+        'name' :{
+            'red':"f44336",'pink':"e91e63",'purple':"9c27b0",
+            'deep-purple':"673ab7",'indigo':"3f51b5",'blue':"2196f3",
+            'light-blue':"03a9f4",'cyan':"00bcd4",'teal':"009688",
+            'green':"4caf50",'light-green':"8bc34a",'lime':"cddc39",
+            'yellow':"ffeb3b",'amber':"ffc107",'orange':"ff9800",
+            'deep-orange':"ff5722",'brown':"795548",'grey':"9e9e9e",
+            'blue-grey':"607d8b"
+        }, 'hash' :{
+            "f44336":"red","e91e63":"pink","9c27b0":"purple",
+            "673ab7":"deep-purple","3f51b5":"indigo","2196f3":"blue",
+            "03a9f4":"light-blue","00bcd4":"cyan","009688":"teal",
+            "4caf50":"green","8bc34a":"light-green","cddc39":"lime",
+            "ffeb3b":"yellow","ffc107":"amber","ff9800":"orange",
+            "ff5722":"deep-orange","795548":"brown","9e9e9e":"grey",
+            "607d8b":"blue-grey"
+        }
+    };
+    return colorArray[mode][str];
+}
