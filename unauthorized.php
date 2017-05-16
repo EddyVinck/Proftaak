@@ -28,10 +28,10 @@ if($_SESSION['rol'] == ""){
             <div class="col s12" style="padding: 0 .75rem;">                
                 <a href="index.php" class="brand-logo">Logo</a>        
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+                <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
+                <li><a href="#colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                <li><a href="#inbox.php" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
+                <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             </ul>
             </div>       
             <!--<a href="#" class="brand-logo">Logo</a>-->
@@ -50,10 +50,10 @@ if($_SESSION['rol'] == ""){
                 <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
             </div>
         </li>
-        <li><a href="#"><i class="small material-icons left">home</i>Mijn College</a></li>
-        <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
-        <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>
-        <li><a href="#"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+        <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>"><i class="small material-icons left">home</i>Mijn College</a></li>
+        <li><a href="#colleges.php"><i class="small material-icons left">view_module</i>Colleges</a></li>
+        <li><a href="#inbox.php"><i class="small material-icons left">message</i>Priveberichten</a></li>
+        <li><a href="index.php?logout=true"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
         <li><a href="#!">Second Link</a></li>
         <li><div class="divider"></div></li>
         <li><a class="subheader">Subheader</a></li>

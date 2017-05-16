@@ -4,7 +4,7 @@ checkSession();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
-dump($_SESSION);
+// dump($_SESSION);
 $connection = ConnectToDatabase();
 $projectId = $_GET['id'];
 $query = 

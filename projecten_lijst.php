@@ -8,12 +8,12 @@ if($_SESSION['rol'] == ""){
 
 # check if college in $_SESSION belongs to the same school as
 # the school that corresponds to the college from $_GET variable
-if(isset($_GET['college']))
+if(isset($_GET['college']) && is_numeric($_GET['college']) )
 {
     checkSchool();
 }
 
-dump($_SESSION);
+// dump($_SESSION);
 
 
 $query = 
@@ -28,6 +28,8 @@ $query =
     ON users.klassen_id = klassen.id
     INNER JOIN colleges 
     ON klassen.colleges_id = colleges.id
+    INNER JOIN scholen
+    ON colleges.scholen_id = scholen.id
     LEFT OUTER JOIN images 
     ON images.projecten_id = projecten.id";
     if(isset($_GET['college'])){
