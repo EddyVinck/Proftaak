@@ -87,7 +87,7 @@ if($_SESSION['loggedIn'] == true)
   $college = $data[0]['college_id'];
   header("Location: projecten_lijst.php?college=" . $college);
 }
-dump($_SESSION);
+// dump($_SESSION);
 
 //hieronder de query voor projecten lijst
 //
