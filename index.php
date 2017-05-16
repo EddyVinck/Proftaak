@@ -10,8 +10,6 @@ if(isset($_GET['logout'])){
   }
 }
 
-
-
 $db = ConnectToDatabase();
 //some vars used
 $loginSuccess = false; //checks later if this is false or true (after login attempt)

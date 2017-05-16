@@ -7,6 +7,7 @@ if($_SESSION['rol'] == ""){
 dump($_SESSION);
 ?>
 <!DOCTYPE html>
+
 <head>
 	<head>
       <!--Import Google Icon Font-->
@@ -28,10 +29,10 @@ dump($_SESSION);
             <div class="col s12" style="padding: 0 .75rem;">                
                 <a href="index.php" class="brand-logo">Logo</a>        
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+                <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
+                <li><a href="#colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                <li><a href="#inbox.php" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
+                <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             </ul>
             </div>       
             <!--<a href="#" class="brand-logo">Logo</a>-->
@@ -50,10 +51,10 @@ dump($_SESSION);
                 <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
             </div>
         </li>
-        <li><a href="#"><i class="small material-icons left">home</i>Mijn College</a></li>
-        <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
-        <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>
-        <li><a href="#"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+        <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>"><i class="small material-icons left">home</i>Mijn College</a></li>
+        <li><a href="#colleges.php"><i class="small material-icons left">view_module</i>Colleges</a></li>
+        <li><a href="#inbox.php"><i class="small material-icons left">message</i>Priveberichten</a></li>
+        <li><a href="index.php?logout=true"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
         <li><a href="#!">Second Link</a></li>
         <li><div class="divider"></div></li>
         <li><a class="subheader">Subheader</a></li>
@@ -80,7 +81,7 @@ dump($_SESSION);
         </div>
       </div>
       <div class="row">
-          <div class="col s12">
+          <div class="col offset-s1 s10 m12">
             <div class="slider">
                 <ul class="slides">
                     <li>
@@ -117,70 +118,82 @@ dump($_SESSION);
       </div>
       <!--end of slider-->
       <div class="section">
-        <div class="row">
-            <div class="col s12 center">
-                <h5>Beschrijving</h5>
-            </div>
-        </div>      
-        <div class="row">
-            <div class="col s12">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                    Tempore natus, similique illo nisi voluptatum unde cum. 
-                    Assumenda laudantium alias, ex, nostrum quibusdam consectetur 
-                    amet nemo mollitia consequatur, id unde illum.
-                </p>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 center">
+                    <h5>Beschrijving</h5>
+                </div>
+            </div>      
+            <div class="row">
+                <div class="col s12">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+                        Tempore natus, similique illo nisi voluptatum unde cum. 
+                        Assumenda laudantium alias, ex, nostrum quibusdam consectetur 
+                        amet nemo mollitia consequatur, id unde illum.
+                    </p>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col s12">
-                <table>
-                    <tbody>
-                        <!--deze dingen ook in php afgekort moeten worden-->
-                        <!--want als je bv de opleiding heel lang maakt is-->
-                        <!--de hele layout verpest omdat truncate niet goed werkt-->
-                        <tr>
-                            <td>Projectlid 1:</td>
-                            <td class="right-align truncate">Jackie Chan</td>                                                        
-                        </tr>
-                        <tr>
-                            <td>Projectlid 2:</td>
-                            <td class="right-align truncate">Bruce Lee</td>                                                        
-                        </tr>
-                        <tr>
-                            <td>Projectlid 3:</td>
-                            <td class="right-align truncate">Foe Yong Hai</td>                                                        
-                        </tr>
-                        <tr>
-                            <td>Opleiding:</td>
-                            <td class="right-align truncate">Particuliere Beveiliging</td>                                           
-                        </tr>                                                                      
-                    </tbody>
-                </table>
+            <div class="container">
+                <div class="col s12 m6 offset-m3">
+                    <table>
+                        <div class="row center-align">
+                            <h5>Alegemene informatie</h5>
+                        </div>
+                        <div class="divider"></div>
+                        <tbody>
+                            <!--deze dingen ook in php afgekort moeten worden-->
+                            <!--want als je bv de opleiding heel lang maakt is-->
+                            <!--de hele layout verpest omdat truncate niet goed werkt-->
+                            
+                            <tr>
+                                <td>Projectlid 1:</td>
+                                <td class="right-align truncate">Jackie Chan</td>                                                        
+                            </tr>
+                            <tr>
+                                <td>Projectlid 2:</td>
+                                <td class="right-align truncate">Bruce Lee</td>                                                        
+                            </tr>
+                            <tr>
+                                <td>Projectlid 3:</td>
+                                <td class="right-align truncate">Foe Yong Hai</td>                                                        
+                            </tr>
+                            <tr>
+                                <td>Opleiding:</td>
+                                <td class="right-align truncate">Particuliere Beveiliging</td>                                           
+                            </tr>                                                                      
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
       </div>
-      <div class="section">
-        <div class="row">
-            <div class="col s12 center">
-                <h5>Wat hebben we nodig?</h5>
-            </div>
-        </div>      
-        <div class="row">
-            <div class="col s12">
-                <p>
-                    Wij hebben een website nodig en nog een hoop andere dingen. 
-                    Vandaar dat wij ICT'ers nodig hebben.
-                </p>
+      <div class="section center">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 center">
+                    <h5>Wat en wie hebben we nodig?</h5>
+                </div>
+            </div>      
+            <div class="row">
+                <div class="col s12">
+                    <p>
+                        Wij hebben een website nodig en nog een hoop andere dingen. 
+                        Vandaar dat wij ICT'ers nodig hebben.
+                    </p>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col s12">
-                <table>
-                    <thead>
-                        <th>Opleiding(en) nodig:</th>
-                    </thead>
-                    <tbody>
+            <div class="col offset-s1 s10 offset-m4 m4">
+                <table class="centered">
+                    <div class="row center-align">
+                        <h5>Opleidingen nodig</h5>
+                    </div>
+                    <div class="divider"></div>
+                    <tbody >
                         <!--deze dingen ook in php afgekort moeten worden-->
                         <!--want als je bv de opleiding heel lang maakt is-->
                         <!--de hele layout verpest omdat truncate niet goed werkt-->
@@ -198,7 +211,7 @@ dump($_SESSION);
             </div>
         </div>
       </div>      
-  </div>
+  </iv>
 </main>
 <footer class="page-footer teal">
     <div class="container">
