@@ -10,8 +10,6 @@ if(isset($_GET['logout'])){
   }
 }
 
-
-
 $db = ConnectToDatabase();
 //some vars used
 $loginSuccess = false; //checks later if this is false or true (after login attempt)
@@ -83,6 +81,11 @@ if (isset($_POST['rol'])){
   else{
     $loginSuccess = false;
   }
+}
+if($_SESSION['loggedIn'] == true)
+{
+  $college = $data[0]['college_id'];
+  header("Location: projecten_lijst.php?college=" . $college);
 }
 dump($_SESSION);
 

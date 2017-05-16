@@ -5,7 +5,37 @@ if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
 // dump($_SESSION);
-?><!DOCTYPE html>
+$connection = ConnectToDatabase();
+$schoolId = $_SESSION['school_id'];
+$query = 
+"   SELECT colleges.naam AS college_naam, colleges.id AS college_id
+    FROM colleges
+    INNER JOIN scholen
+    ON colleges.scholen_id = scholen.id
+    WHERE scholen.id = $schoolId
+";
+$result = mysqli_query($connection, $query);
+while($row = mysqli_fetch_assoc($result)){
+    $colleges[] = $row;
+}
+$query = 
+"   SELECT scholen.naam AS school_naam
+    FROM scholen
+    WHERE scholen.id = $schoolId
+";
+$result = mysqli_query($connection, $query);
+while($row = mysqli_fetch_assoc($result)){
+    $schoolInfo = $row;
+}
+// dump($colleges);
+// dump($schoolInfo);
+
+
+
+
+
+?>
+<!DOCTYPE html>
 
 <head>
 	<head>
@@ -29,7 +59,7 @@ if($_SESSION['rol'] == ""){
                 <a href="index.php" class="brand-logo">Logo</a>        
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
-                <li><a href="colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                <li><a href="#colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
                 <li><a href="#inbox.php" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
                 <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             </ul>
@@ -51,7 +81,7 @@ if($_SESSION['rol'] == ""){
             </div>
         </li>
         <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>"><i class="small material-icons left">home</i>Mijn College</a></li>
-        <li><a href="colleges.php"><i class="small material-icons left">view_module</i>Colleges</a></li>
+        <li><a href="#colleges.php"><i class="small material-icons left">view_module</i>Colleges</a></li>
         <li><a href="#inbox.php"><i class="small material-icons left">message</i>Priveberichten</a></li>
         <li><a href="index.php?logout=true"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
         <li><a href="#!">Second Link</a></li>
@@ -60,22 +90,44 @@ if($_SESSION['rol'] == ""){
         <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
   </ul>
 </sidenav>
-<main class="valign-wrapper">
-            <!--Work in progress
-    deze pagina is mobile-first ontworpen 
-    en nog niet geschikt voor desktop gebruik-->
-    <div class="container">
-        <div class="section">
-            <div class="row valign-wrapper">
-                <div class="col s8 center">
-                    <h3>Je hebt geen toegang tot deze pagina.</h3>
-                    <h5>Probeer op pagina's te blijven binnen jouw school.</h5>                    
-                </div>
-                <div class="col s4">
-                    <i class="material-icons large">lock</i>
-                </div>
+<main>
+  <div class="container">
+    <div class="section">
+        <div class="row">
+            <div class="col s12 center">
+            <h1 class="hide-on-small-only">Alle colleges</h1>
+            <h2 class="hide-on-med-and-up">Alle colleges</h2>
+            <h5>Van <?php echo $schoolInfo['school_naam']?></h5>
             </div>
+        </div>
     </div>
+    <div class="section">
+      <div class="row">
+      <?php if(count($colleges) > 1) { ?>
+        <div class="col s12 m4">
+              <div class="card-panel teal">
+                <span >
+                    <a href="projecten_lijst.php" class="white-text">
+                        Alle colleges
+                    </a>
+                </span>
+              </div>
+          </div>
+        <?php } ?>
+        <?php for ($i=0; $i < count($colleges); $i++) {?>
+          <div class="col s12 m4">
+              <div class="card-panel teal">
+                <span >
+                    <a href="projecten_lijst.php?college=<?php echo $colleges[$i]['college_id']?>" class="white-text">
+                        <?php echo $colleges[$i]['college_naam']?>
+                    </a>
+                </span>
+              </div>
+          </div>
+        <?php } ?>
+      </div>
+    </div>
+  </div>
 </main>
 <footer class="page-footer teal">
     <div class="container">
