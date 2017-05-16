@@ -71,10 +71,10 @@ while($row = mysqli_fetch_assoc($result)){
             <div class="col s12" style="padding: 0 .75rem;">                
                 <a href="index.php" class="brand-logo">Logo</a>        
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
-                <li><a href="#" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
-                <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i>Log uit</a></li>
+                <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
+                <li><a href="#colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                <li><a href="#inbox.php" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
+                <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             </ul>
             </div>       
             <!--<a href="#" class="brand-logo">Logo</a>-->
@@ -93,10 +93,10 @@ while($row = mysqli_fetch_assoc($result)){
                 <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
             </div>
         </li>
-        <li><a href="#"><i class="small material-icons left">home</i>Mijn College</a></li>
-        <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
-        <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>
-        <li><a href="#"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+        <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>"><i class="small material-icons left">home</i>Mijn College</a></li>
+        <li><a href="#colleges.php"><i class="small material-icons left">view_module</i>Colleges</a></li>
+        <li><a href="#inbox.php"><i class="small material-icons left">message</i>Priveberichten</a></li>
+        <li><a href="index.php?logout=true"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
         <li><a href="#!">Second Link</a></li>
         <li><div class="divider"></div></li>
         <li><a class="subheader">Subheader</a></li>
@@ -123,8 +123,8 @@ while($row = mysqli_fetch_assoc($result)){
       <?php 
         if($data != NULL) {
       ?>       
-      <div class="row">
-          <div class="col s12">
+      <iv class="row">
+          <iv class="col s12">
             <ul class="collapsible popout" data-collapsible="accordion">                
                 <li>
                     <div class="card-panel teal lighten-2 black-text">
@@ -155,7 +155,7 @@ while($row = mysqli_fetch_assoc($result)){
                         </div>
                         <div class="collapsible-body">
                             <div class="row valign-wrapper">
-                                <div class="row">
+                                <div class="col s12">
                                     <div class="col m4 s12 center">
                                         <?php 
                                         if($data[$i]['img_path'])
@@ -163,31 +163,27 @@ while($row = mysqli_fetch_assoc($result)){
                                             <img class="img-responsive" width="80%"  src="<?php echo $data[$i]['img_path']; ?>"><?php
                                         } ?>                            
                                     </div>
-                                    <div class="col s12 hide-on-med-and-up">
+                                    <!--<div class="col s12 hide-on-med-and-up">
                                         <div class="row">
-                                            <div class="col s12">
-                                                <table>
-                                                    <tbody>
-                                                        <!--deze dingen ook in php afgekort moeten worden-->
-                                                        <!--want als je bv de opleiding heel lang maakt is-->
-                                                        <!--de hele layout verpest omdat truncate niet goed werkt-->
-                                                        <tr>
-                                                            <td>Projectstarter:</td>
-                                                            <td class="right-align truncate">Jackie Chan</td>                                                        
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Opleiding:</td>
-                                                            <td class="right-align truncate">Particuliere Beveiliging</td>                                           
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Status:</td>
-                                                            <td class="right-align truncate">Klaar!</td>
-                                                        </tr>                                               
-                                                    </tbody>
-                                                </table>
+                                            <div class="section">
+                                                <div class="col s12">
+                                                    
+                                                    <div class="row center">
+                                                        <div class="col s10 offset-s1"><label>Projectstarter:</label></div>                                                
+                                                        <div class="col s10 offset-s1"><label>Jackie Chan</label></div>
+                                                    </div>
+                                                    <div class="row center">
+                                                        <div class="col s10 offset-s1"><label>Opleiding:</label></div>                                                
+                                                        <div class="col s10 offset-s1"><label>Particuliere Beveiliging</label></div>
+                                                    </div>
+                                                    <div class="row center" style="margin-bottom: 0">
+                                                        <div class="col s10 offset-s1"><label>Status:</label></div>                                                
+                                                        <div class="col s10 offset-s1"><label>Klaar</label></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="col m8 s12">
                                         <p>
                                         Spicy jalapeno bacon ipsum dolor amet turkey bresaola swine ham turducken cupim. 
@@ -220,7 +216,7 @@ while($row = mysqli_fetch_assoc($result)){
                     </div>
                 </div> <?php
             }?>
-          </div>
+          </iv>
       </div>
     </div>
   </div>

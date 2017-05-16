@@ -5,6 +5,59 @@ if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
 dump($_SESSION);
+$connection = ConnectToDatabase();
+$projectId = $_GET['id'];
+$query = 
+"   SELECT projecten.id AS project_id, projecten.omschrijving, projecten.omschrijving_nodig,
+    users.naam AS projectstarter,
+    klassen.id AS klas_id,
+    colleges.naam AS college_naam
+    FROM projecten
+    INNER JOIN users
+    ON projecten.users_id = users.id
+    INNER JOIN klassen
+    ON users.klassen_id = klassen.id
+    INNER JOIN colleges
+    ON klassen.colleges_id = colleges.id
+    WHERE projecten.id = $projectId;
+";
+$result = mysqli_query($connection, $query);
+while($row = mysqli_fetch_assoc($result)){
+    $projectData[] = $row;
+}
+$query = 
+"   SELECT naam
+    FROM colleges
+    WHERE id
+    IN (
+    SELECT colleges_id
+    FROM projecten
+    INNER JOIN hulpcolleges
+    ON projecten.id = hulpcolleges.projecten_id
+    WHERE projecten.id = $projectId
+    );
+";
+$result = mysqli_query($connection, $query);
+while($row = mysqli_fetch_assoc($result)){
+    $hulpColleges[] = $row;
+}
+$query = 
+"   SELECT path
+    FROM images
+    WHERE projecten_id = $projectId;
+";
+$result = mysqli_query($connection, $query);
+while($row = mysqli_fetch_assoc($result)){
+    $images[] = $row;
+}
+
+// dump($projectData);
+// dump($hulpColleges);
+// dump($images);
+
+
+
+
 ?>
 <!DOCTYPE html>
 
@@ -84,34 +137,13 @@ dump($_SESSION);
           <div class="col offset-s1 s10 m12">
             <div class="slider">
                 <ul class="slides">
+                    <?php for($i = 0; $i < count($images); $i++){?>                  
                     <li>
-                        <img src="http://lorempixel.com/580/250/nature/1"> <!-- random image -->
-                        <div class="caption center-align">
-                        <h3>This is our big Tagline!</h3>
-                        <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="https://baconmockup.com/999/749/"> <!-- random image -->
+                        <img src="<?php echo $images[$i]['path']?>"> <!-- random image -->
                         <div class="caption left-align">
-                        <h3>Left Aligned Caption</h3>
-                        <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
                     </li>
-                    <li>
-                        <img src="http://lorempixel.com/580/250/nature/3"> <!-- random image -->
-                        <div class="caption right-align">
-                        <h3>Right Aligned Caption</h3>
-                        <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="http://lorempixel.com/580/250/nature/4"> <!-- random image -->
-                        <div class="caption center-align">
-                        <h3>This is our big Tagline!</h3>
-                        <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
+                    <?php } ?>
+                    
                 </ul>
             </div>
         </div>
@@ -125,12 +157,9 @@ dump($_SESSION);
                 </div>
             </div>      
             <div class="row">
-                <div class="col s12">
+                <div class="col s12 center">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                        Tempore natus, similique illo nisi voluptatum unde cum. 
-                        Assumenda laudantium alias, ex, nostrum quibusdam consectetur 
-                        amet nemo mollitia consequatur, id unde illum.
+                        <?php echo $projectData[0]['omschrijving']; ?>
                     </p>
                 </div>
             </div>
@@ -149,20 +178,20 @@ dump($_SESSION);
                             <!--de hele layout verpest omdat truncate niet goed werkt-->
                             
                             <tr>
-                                <td>Projectlid 1:</td>
-                                <td class="right-align truncate">Jackie Chan</td>                                                        
+                                <td><div class="row">Projectstarter:</div></td>
+                                <td class="right-align truncate"><?php echo $projectData[0]['projectstarter']; ?></td>                                                        
                             </tr>
-                            <tr>
-                                <td>Projectlid 2:</td>
+                            <!--<tr>
+                                <td><div class="row">Projectlid 2:</div></td>
                                 <td class="right-align truncate">Bruce Lee</td>                                                        
                             </tr>
                             <tr>
-                                <td>Projectlid 3:</td>
+                                <td><div class="row">Projectlid 3:</div></td>
                                 <td class="right-align truncate">Foe Yong Hai</td>                                                        
-                            </tr>
+                            </tr>-->
                             <tr>
-                                <td>Opleiding:</td>
-                                <td class="right-align truncate">Particuliere Beveiliging</td>                                           
+                                <td><div class="row">Opleiding:</div></td>
+                                <td class="right-align truncate"><?php echo $projectData[0]['college_naam']; ?></td>                                           
                             </tr>                                                                      
                         </tbody>
                     </table>
@@ -180,8 +209,7 @@ dump($_SESSION);
             <div class="row">
                 <div class="col s12">
                     <p>
-                        Wij hebben een website nodig en nog een hoop andere dingen. 
-                        Vandaar dat wij ICT'ers nodig hebben.
+                        <?php echo $projectData[0]['omschrijving_nodig'];?>
                     </p>
                 </div>
             </div>
@@ -197,15 +225,11 @@ dump($_SESSION);
                         <!--deze dingen ook in php afgekort moeten worden-->
                         <!--want als je bv de opleiding heel lang maakt is-->
                         <!--de hele layout verpest omdat truncate niet goed werkt-->
+                        <?php for($i = 0; $i < count($hulpColleges); $i++){ ?>
                         <tr>
-                            <td>Opleiding nodig 1</td>                                                     
+                            <td><?php echo $hulpColleges[$i]['naam'];?></td>                                                     
                         </tr>
-                        <tr>
-                            <td>Opleiding nodig 2</td>                                                     
-                        </tr>
-                        <tr>
-                            <td>Opleiding nodig 3</td>                                                     
-                        </tr>                                                                                             
+                        <?php } ?>                                                                                             
                     </tbody>
                 </table>
             </div>
