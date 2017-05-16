@@ -1,10 +1,16 @@
 var colorCount = 0;
+var newRowCount = 0;
+var colorpickerCount = 0;
 var elemArray =[
     document.getElementById("home"),
     document.getElementById("login_as_school"),
     document.getElementById("login_as_leraar"),
     document.getElementById("login_as_student")
 ];
+function resetCounts(){
+    colorCount = 0;
+    newRowCount = 0;
+}
 function initializeSelectElements(){
     $(document).ready(function() {
         $('select').material_select();
@@ -20,35 +26,36 @@ function addTableRow(){
     var tbodyElement = document.getElementById("collegeTbody");
     var lastRow = tbodyElement.rows[ tbodyElement.rows.length - 1 ];
     var newID = parseInt( lastRow.id) + 1;
-    console.log(newID);
     $("#collegeTable > tbody").append(
-        '<tr id="newRow">' +
+        '<tr id="newRow'+newRowCount+'">' +
             '<td>'+
                 '<div class="row">' +
-                '<form method="POST"  id="newButtonDiv">' +
+                '<form method="POST"  id="newButtonDiv'+newRowCount+'">' +
                 '<div  class="input-field beheer-inputs col s2">' +
                     '<input ' +
-                    'id="newInput" ' +
+                    'id="newInput'+newRowCount+'" ' +
                     'type="text" class="validate">' +
-                '<label id="newLabel" class="active" ' +
+                '<label id="newLabel'+newRowCount+'" class="active" ' +
                     'data-error="Het is hetzelfde" ' +
                     'data-success=""' +
-                    'for="newInput"> </label>' +
+                    'for="newInput'+newRowCount+'"> </label>' +
                 '</div>' +
             '</td><td>'+
-                '<input class="newColorPicker'+colorCount+'" value="#2196f3"/>'+
-            '</td><td id="newTd">'+
+                '<input class="newColorPicker'+colorpickerCount+'" value="#2196f3"/>'+
+            '</td><td id="newTd'+newRowCount+'">'+
                 // '<input class="filled-in" type="checkbox" id="select"/>'+
                 // '<label for="select"></label>'+
-                '<a onclick="saveNewRowAjax('+"'"+'newColorPicker'+colorCount+"'"+');"' +
+                '<a onclick="saveNewRowAjax('+"'"+colorCount+"','"+newRowCount+"'"+');"' +
                 'class="btn-floating btn-medium waves-effect waves-light red">'+
                 '<i class="material-icons">save</i></a>'+
         '</tr>'+
         '</form>' +
     '</div>');
+    newRowCount++;
     
-    initSpecificColorPicker(colorCount);
+    initSpecificColorPicker(colorpickerCount);
     colorCount++;
+    colorpickerCount++;
 }
 
 function getColorNameOrKey(mode,str){
@@ -75,7 +82,6 @@ function getColorNameOrKey(mode,str){
 }
 function getValue(elem,colorName)
 {
-    console.log(elem);
     var hash = getColorNameOrKey("name",colorName);
 }
 $(document).ready(function() {
@@ -83,7 +89,6 @@ $(document).ready(function() {
         var elems = document.getElementsByClassName('colorpicker');
         for(var x = 0;x<elems.length;x++){
             elems[x].value = "#" + getColorNameOrKey("name",elems[x].value);
-            console.log(elems[x].value );
         }
         if (elems.length > 0){
             $('.colorpicker').simpleColor({
@@ -93,7 +98,6 @@ $(document).ready(function() {
                 displayColorCode: true,
                 onSelect: function(hex, element) {
                     var name = getColorNameOrKey("hash",hex);
-                    console.log(name);
                 }
             });
         }
@@ -107,7 +111,6 @@ function initSpecificColorPicker(count){
         displayColorCode: true,
         onSelect: function(hex, element) {
             var name = getColorNameOrKey("hash",hex);
-            console.log(name);
         }
     });
 }

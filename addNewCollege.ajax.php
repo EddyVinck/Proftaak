@@ -1,27 +1,29 @@
 <?php
 include("inc/functions.php");
-$db =  ConnectToDatabase();
-$text = $_GET['text'];
-$color = $_GET['color'];
-
-$query="
-INSERT INTO  `mydb`.`colleges` (
-`id` ,
+$db = ConnectToDatabase();
+header('Content-type: application/json');
+$names = $_POST["naam"];
+$colors = $_POST["colors"];
+$numb = count($colors);
+$query = "INSERT INTO  `mydb`.`colleges` (`id` ,
 `naam` ,
 `kleur` ,
 `scholen_id`
 )
-VALUES (
-NULL ,  '$text',  '$color',  '1'
-);
-";
-$result = mysqli_query($db,$query);
-
-$getIDQuery ="SELECT id FROM colleges ORDER BY id DESC LIMIT 1";
-$result2 = mysqli_query($db,$getIDQuery);
-
-while($row = mysqli_fetch_assoc($result2)){
-    $id = $row; 	//places everything in the array
+VALUES ";
+for ($x=0; $x < $numb; $x++){
+    if ($x == 0){
+        $query .= "(NULL , '" . $names[$x] . "','" . $colors[$x] . "','1')";
+    }
+    else{
+        $query .= ",(NULL , '" . $names[$x] . "','" . $colors[$x] . "','1')";
+    }
 }
-echo $id['id'];
-?>
+$query .= ";";
+mysqli_query($db,$query);
+$query = "SELECT `id` FROM `colleges` ORDER BY `id` DESC LIMIT $numb";
+$result = mysqli_query($db,$query);
+while($row = mysqli_fetch_assoc($result)){
+    $ids[] = $row; 	//places everything in the array
+}
+echo json_encode($ids);

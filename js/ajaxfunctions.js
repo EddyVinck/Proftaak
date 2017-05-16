@@ -1,46 +1,70 @@
-function saveNewRowAjax(colorelem){
-    var newValue = document.getElementById("newInput").value;
-    var newcolorpickerElement = document.getElementsByClassName(colorelem);
-    var newcolorVal = newcolorpickerElement[0].value;
-    newcolorVal = getColorNameOrKey("hash",newcolorVal.replace("#",""));
-    
-    if (newValue == ""){
-        $("#newLabel").attr('data-error','De tekst kan niet leeg zijn');
-        document.getElementById("newInput").classList.remove("valid");
-        document.getElementById("newInput").classList.add("invalid");
-    } else { 
-        if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+var counter = 0;
+function saveNewRowAjax(colorCount,rowCount){
+    var newValue = [];
+    var newColors = [];
+    var errorCount = 0;
+    var tempColVal;
+    for(var colorRow=0;colorRow <= rowCount;colorRow++){
+        tempColVal = document.getElementsByClassName("newColorPicker"+colorRow)[0].value;
+        newColors[colorRow] = getColorNameOrKey("hash",tempColVal.replace("#",""))
+    }
+    for(var row = 0; row <= rowCount;row++){
+        newValue[row] = document.getElementById("newInput" + row).value
+        if (newValue[row] == ""){
+            $("#newLabel" + row).attr('data-error','De tekst kan niet leeg zijn');
+            document.getElementById("newInput" + row).classList.remove("valid");
+            document.getElementById("newInput" + row).classList.add("invalid");
+            errorCount++;
+        } 
+    }
+    if (errorCount > 0){
+        for(var row =0; row <= rowCount;row++){
+            $("#newLabel" + row).attr('data-error','Alle teksten moeten gevuld zijn');
+            document.getElementById("newInput" + row).classList.remove("valid");
+            document.getElementById("newInput" + row).classList.add("invalid");
+            errorCount++;
         }
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) { //eerlijk gezegt geen idee wat dit doet, maar t werkt
-                //GELUKT
-                $("#newLabel").attr("data-success","Nieuw college toegevoegd"); //zet het "gelukt bericht"
-                document.getElementById("newInput").classList.remove("invalid");//
-                document.getElementById("newInput").classList.add("valid");//
-                $("#newRow").attr("id",this.responseText);//veranderd het Id van verschillende elementen zodat er geen dubbele id's komen
-                $("#newInput").attr("id","input"+ this.responseText);//
-                $("#newLabel").attr("id","lbl"+ this.responseText);//
-                document.getElementById('newButtonDiv').innerHTML += //voegt de edit button toe aan het form
-                '<a onclick="editCollegeAjax('+this.responseText+');"'+//
+    }
+    else {
+        var send = $.ajax({
+            url: "addNewCollege.ajax.php",
+            type: "POST",
+            dataType: "json",
+            data: {"naam":newValue,"colors":newColors},
+            error: function(xhr, text, error) {
+                console.warn(xhr.responseText);
+                    console.log(text);
+                    console.log(error);
+            }          //I do change this `main_array` when using the above stringify!
+        });
+        send.done(function(msg) {
+            counter = 0;
+            for(var row= msg.length - 1;row > -1;row--){
+                
+                $("#newLabel"+ counter).attr("data-success","Nieuw college toegevoegd"); //zet het "gelukt bericht"
+                document.getElementById("newInput"+ counter).classList.remove("invalid");//
+                document.getElementById("newInput"+ counter).classList.add("valid");//
+                $("#newRow"+ counter).attr("id",msg[row]['id']);//veranderd het Id van verschillende elementen zodat er geen dubbele id's komen
+                $("#newInput"+ counter).attr("id","input"+ msg[row]['id']);//
+                $("#newLabel"+ counter).attr("id","lbl"+ msg[row]['id']);//
+
+                document.getElementById('newButtonDiv'+ counter).innerHTML += //voegt de edit button toe aan het form
+                '<a onclick="editCollegeAjax('+msg[row]['id']+');"'+//
                 'class="btn-floating btn-medium waves-effect waves-light red">'+//
                 '<i class="material-icons">edit</i></a>'; //
-                $("#newButtonDiv").attr("id","newbutton"+this.responseText);
-                $("#input"+this.responseText).attr("value",newValue);//geeft de value mee aan de inputbox zodat deze niet leeg is
-                $("#newTd").html(
-                '<input class="filled-in" type="checkbox" id="select'+this.responseText+'"/>'+
-                '<label for="select'+this.responseText+'"></label>'); //zorgt ervoor dat de checkbox wordt gemaakt.
+                $("#newButtonDiv"+ counter).attr("id","newbutton"+msg[row]['id']);
                 
+                $("#input"+msg[row]['id']).attr("value",newValue[counter]);//geeft de value mee aan de inputbox zodat deze niet leeg is
+                
+                document.getElementById('newTd'+ counter).innerHTML =
+                '<input class="filled-in" type="checkbox" id="select'+msg[row]['id']+'"/>'+
+                '<label for="select'+msg[row]['id']+'"></label>'; //zorgt ervoor dat de checkbox wordt gemaakt.
+                $("#newTd"+counter).attr("id","td"+msg[row]['id']);
+                
+                counter++;
             }
-        };
-        xmlhttp.open("GET","addNewCollege.ajax.php?text=" + newValue + 
-        "&color=" + newcolorVal,true);
-        //de 'selectedOption' variabele wordt meegegeven vanuit een HTML onchange-event op het select element.
-        xmlhttp.send();
+        })
+        resetCounts();
     }
 }
 function getSelect_Ajax(selectedOption, table, id, elemName, nextSelect) {
@@ -116,3 +140,5 @@ function editCollegeAjax(collegeIdNr){
         xmlhttp.send();
     }
 }
+
+// //GELUKT
