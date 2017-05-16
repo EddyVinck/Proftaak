@@ -1,6 +1,9 @@
-function saveNewRowAjax(){
+function saveNewRowAjax(colorelem){
     var newValue = document.getElementById("newInput").value;
-    console.log(newValue);
+    var newcolorpickerElement = document.getElementsByClassName(colorelem);
+    var newcolorVal = newcolorpickerElement[0].value;
+    newcolorVal = getColorNameOrKey("hash",newcolorVal.replace("#",""));
+    
     if (newValue == ""){
         $("#newLabel").attr('data-error','De tekst kan niet leeg zijn');
         document.getElementById("newInput").classList.remove("valid");
@@ -16,7 +19,6 @@ function saveNewRowAjax(){
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) { //eerlijk gezegt geen idee wat dit doet, maar t werkt
                 //GELUKT
-                console.log(this.responseText);
                 $("#newLabel").attr("data-success","Nieuw college toegevoegd"); //zet het "gelukt bericht"
                 document.getElementById("newInput").classList.remove("invalid");//
                 document.getElementById("newInput").classList.add("valid");//
@@ -32,10 +34,11 @@ function saveNewRowAjax(){
                 $("#newTd").html(
                 '<input class="filled-in" type="checkbox" id="select'+this.responseText+'"/>'+
                 '<label for="select'+this.responseText+'"></label>'); //zorgt ervoor dat de checkbox wordt gemaakt.
+                
             }
         };
         xmlhttp.open("GET","addNewCollege.ajax.php?text=" + newValue + 
-        "&color=" + "blue",true);
+        "&color=" + newcolorVal,true);
         //de 'selectedOption' variabele wordt meegegeven vanuit een HTML onchange-event op het select element.
         xmlhttp.send();
     }

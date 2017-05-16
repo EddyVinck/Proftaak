@@ -1,3 +1,4 @@
+var colorCount = 0;
 var elemArray =[
     document.getElementById("home"),
     document.getElementById("login_as_school"),
@@ -35,16 +36,19 @@ function addTableRow(){
                     'for="newInput"> </label>' +
                 '</div>' +
             '</td><td>'+
-                '<a class=" waves-effect waves-light btn"></a>'+
+                '<input class="newColorPicker'+colorCount+'" value="#2196f3"/>'+
             '</td><td id="newTd">'+
                 // '<input class="filled-in" type="checkbox" id="select"/>'+
                 // '<label for="select"></label>'+
-                '<a onclick="saveNewRowAjax();"' +
+                '<a onclick="saveNewRowAjax('+"'"+'newColorPicker'+colorCount+"'"+');"' +
                 'class="btn-floating btn-medium waves-effect waves-light red">'+
                 '<i class="material-icons">save</i></a>'+
         '</tr>'+
         '</form>' +
     '</div>');
+    
+    initSpecificColorPicker(colorCount);
+    colorCount++;
 }
 
 function getColorNameOrKey(mode,str){
@@ -68,4 +72,42 @@ function getColorNameOrKey(mode,str){
         }
     };
     return colorArray[mode][str];
+}
+function getValue(elem,colorName)
+{
+    console.log(elem);
+    var hash = getColorNameOrKey("name",colorName);
+}
+$(document).ready(function() {
+    $(window).load(function() {
+        var elems = document.getElementsByClassName('colorpicker');
+        for(var x = 0;x<elems.length;x++){
+            elems[x].value = "#" + getColorNameOrKey("name",elems[x].value);
+            console.log(elems[x].value );
+        }
+        if (elems.length > 0){
+            $('.colorpicker').simpleColor({
+                boxHeight: 40,
+                cellWidth: 20,
+                cellHeight: 20,
+                displayColorCode: true,
+                onSelect: function(hex, element) {
+                    var name = getColorNameOrKey("hash",hex);
+                    console.log(name);
+                }
+            });
+        }
+    });
+});
+function initSpecificColorPicker(count){
+    $('.newColorPicker' + count).simpleColor({
+        boxHeight: 40,
+        cellWidth: 20,
+        cellHeight: 20,
+        displayColorCode: true,
+        onSelect: function(hex, element) {
+            var name = getColorNameOrKey("hash",hex);
+            console.log(name);
+        }
+    });
 }
