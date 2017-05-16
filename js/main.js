@@ -111,3 +111,13 @@ function initSpecificColorPicker(count){
         }
     });
 }
+
+function extendableCollapsableOnSmallScreen() {
+    screenWidth = $(window).width();
+    if(screenWidth <= 600) {
+        $("#collapsable").attr("data-collapsible","extendable");
+    }
+    else {
+        $("#collapsable").attr("data-collapsible","accordion");
+    }
+}

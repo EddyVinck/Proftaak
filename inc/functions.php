@@ -51,4 +51,15 @@ function checkSchool($debug = false) {
 		dump($scholenId, __FILE__, __LINE__);
 	}    
 }
-?>
+function truncate($text, $maxLength) 
+{
+	if(strlen($text) > $maxLength)
+	{
+		$truncatedString = substr($text, 0, $maxLength);
+		$truncatedString .= "...";
+		return $truncatedString;
+	}
+	else {
+		return $text;
+	}
+}

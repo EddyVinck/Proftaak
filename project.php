@@ -50,14 +50,9 @@ $result = mysqli_query($connection, $query);
 while($row = mysqli_fetch_assoc($result)){
     $images[] = $row;
 }
-
 // dump($projectData);
 // dump($hulpColleges);
 // dump($images);
-
-
-
-
 ?>
 <!DOCTYPE html>
 
@@ -235,7 +230,7 @@ while($row = mysqli_fetch_assoc($result)){
             </div>
         </div>
       </div>      
-  </iv>
+  </div>
 </main>
 <footer class="page-footer teal">
     <div class="container">
