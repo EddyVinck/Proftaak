@@ -26,7 +26,8 @@ while($result2 = mysqli_fetch_assoc($result)){
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="css/materializeAddons.css"  media="screen,projection"/>
-    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.simple-color.js"></script>
     <link type="text/css" rel="stylesheet" href = "css/school_beheer.css"/>
     <link type="text/css" rel="stylesheet" href = "css/footer.css"/>
     <!--Let browser know website is optimized for mobile-->
@@ -100,21 +101,15 @@ while($result2 = mysqli_fetch_assoc($result)){
                         <!---->
                             <tr>
                                 <td>
-                                    <!--<div id="fixed-fab" class="fixed-action-btn horizontal click-to-toggle">-->
-                                        <a class="btn-floating btn-large red" onclick="addTableRow();">
-                                        <i class="material-icons">add</i>
-                                        </a>
-                                        <!--<ul>
-                                        <li><a class="btn-floating red"><i class="material-icons">clear</i></a></li>
-                                        </ul>-->
-                                    <!--</div>-->
+                                    <a class="btn-floating btn-large red" onclick="addTableRow();">
+                                    <i class="material-icons">add</i>
+                                    </a>
                                 </td>
                             </tr>
-                        </tfoot>
+                        </tfoot>    
                         <tbody id="collegeTbody">
                         <?php
                         for($tableRow=0;$tableRow<count($colleges);$tableRow++){
-                        
                         ?>
                             <tr id="<?=$tableRow?>">
                                 <td>
@@ -136,12 +131,13 @@ while($result2 = mysqli_fetch_assoc($result)){
                                 </div>
                                 </td>
                                 <td>
-                                <a class="<?=$colleges[$tableRow]['kleur']?> waves-effect waves-light btn"></a>
+                                    <input class='colorpicker' value='#2196f3'/>
                                 </td>
                                 <td>
                                     <input class="filled-in" type="checkbox" id="select<?=$colleges[$tableRow]['id']?>"/>
                                     <label for="select<?=$colleges[$tableRow]['id']?>"></label>
                                 </td>
+
                             </tr>
                         <?php }?>
                         </tbody>
@@ -152,6 +148,7 @@ while($result2 = mysqli_fetch_assoc($result)){
             </div>
         </div>
     </div>
+    
 </main>
 <footer class="page-footer teal">
     <div class="container">
@@ -178,11 +175,13 @@ while($result2 = mysqli_fetch_assoc($result)){
         </div>
     </div>
 </footer>
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
 <!--https://code.jquery.com/jquery-3.2.1.js ???-->
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
+
+
 <script>
     initializeSelectElements();
 </script>

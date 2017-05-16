@@ -46,3 +46,46 @@ function addTableRow(){
         '</form>' +
     '</div>');
 }
+$(document).ready(function(){
+
+  $('.close_button').click(function(event) {
+    $('input').closeChooser();
+  });
+
+  $('.set_color_button').click(function(event) {
+    $('input').setColor('#cc3333');
+  });
+
+  $('.simple_color').simpleColor();
+
+  $('.simple_color_color_code').simpleColor({ displayColorCode: true });
+
+  $('.simple_color_custom_chooser_css').simpleColor({ chooserCSS: { 'background-color': 'black', 'opacity': '0.8' } });
+
+  $('.simple_color_custom_display_css').simpleColor({ displayCSS: { 'border': '1px solid red' } });
+
+  $('.simple_color_custom_cell_size').simpleColor({ cellWidth: 30, cellHeight: 10 });
+
+  $('.simple_color_live_preview').simpleColor({ livePreview: true });
+
+  $('.simple_color_callback').simpleColor({
+    onSelect: function(hex, element) {
+      alert("You selected #" + hex + " for input #" + element.attr('class'));
+    }
+  });
+
+  $('.simple_color_mouse_enter').simpleColor({
+    onCellEnter: function(hex, element) {
+      console.log("You just entered #" + hex + " for input #" + element.attr('class'));
+    }
+  });
+  $('.colorpicker').simpleColor({
+    boxHeight: 40,
+    cellWidth: 20,
+    cellHeight: 20,
+    displayColorCode: true,
+    onSelect: function(hex, element) {
+    }
+  });
+
+});
