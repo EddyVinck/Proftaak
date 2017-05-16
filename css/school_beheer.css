@@ -9,3 +9,6 @@
     display: inline-block; 
     right: 24px;
 }
+.simpleColorChooser{
+    z-index: 2;
+}
