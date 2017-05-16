@@ -9,7 +9,7 @@ if(isset($_GET['logout'])){
     header("location: index.php");
   }
 }
-// dump($_SESSION);
+
 
 
 $db = ConnectToDatabase();
@@ -23,19 +23,27 @@ $hideCards = ['','hide','hide','hide']; //this array is used in the HTML to hide
   2=DocentLogin
   3=StudentLogin
 */
-// naam van user id, user rol, naam. komen in de sessie 
+// naam van user id, user rol, naam. komen in de sessie
+
+# inloggen
+# checken of de combinatie van een email en wachtwoord in de database bestaat
 if (isset($_POST['rol'])){
   $email = $_POST['email'];
   $formRol = $_POST['rol'];
   $pass  = $_POST['password'];
   if($email != '' && $pass != ''){
     $loginSuccess = true;
-    $queryVar = " SELECT users.id , users.rol , users.naam, colleges.id AS college_id
+    $queryVar = " SELECT users.id , users.rol , users.naam, 
+                  klassen.id AS klas_id,
+                  colleges.id AS college_id,
+                  scholen.id AS school_id                  
                   FROM users
                   INNER JOIN klassen
                   ON klassen.id = users.klassen_id
                   INNER JOIN colleges
                   ON klassen.colleges_id = colleges.id
+                  INNER JOIN scholen
+                  ON colleges.id = scholen.id
                   WHERE `email` = '$email' 
                   AND `wachtwoord` = '$pass'";
     $sqlResult = mysqli_query($db, $queryVar);
@@ -50,6 +58,12 @@ if (isset($_POST['rol'])){
       $_SESSION['rol'] = $data[0]['rol'];
       $_SESSION['id'] = $data[0]['id'];
       $_SESSION['naam'] = $data[0]['naam'];
+      $college = $data[0]['college_id'];
+      $_SESSION['klas_id'] = $data[0]['klas_id'];      
+      $_SESSION['college_id'] = $data[0]['college_id'];
+      $_SESSION['school_id'] = $data[0]['school_id'];
+      
+      
       $college = $data[0]['college_id'];
       header("Location: projecten_lijst.php?college=" . $college);
       // dump($data);
@@ -70,6 +84,7 @@ if (isset($_POST['rol'])){
     $loginSuccess = false;
   }
 }
+dump($_SESSION);
 
 //hieronder de query voor projecten lijst
 //

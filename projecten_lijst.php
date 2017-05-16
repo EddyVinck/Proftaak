@@ -1,12 +1,20 @@
 <?php include("inc/functions.php");?>
 <?php
+$db = ConnectToDatabase();
 checkSession();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
 
-// dump($_SESSION);
-$db = ConnectToDatabase();
+# check if college in $_SESSION belongs to the same school as
+# the school that corresponds to the college from $_GET variable
+if(isset($_GET['college']))
+{
+    checkSchool();
+}
+
+dump($_SESSION);
+
 
 $query = 
 "   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status,

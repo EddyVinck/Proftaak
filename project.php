@@ -1,4 +1,10 @@
+<?php include("inc/functions.php");?>
 <?php
+checkSession();
+if($_SESSION['rol'] == ""){
+    header("location: index.php");
+}
+dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <head>
