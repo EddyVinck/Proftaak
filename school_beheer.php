@@ -131,7 +131,7 @@ while($result2 = mysqli_fetch_assoc($result)){
                                 </div>
                                 </td>
                                 <td>
-                                    <input class='colorpicker' onload="getValue(this,<?=$colleges[$tableRow]['kleur']?>);" value=''/>
+                                    <input class='colorpicker' value='<?=$colleges[$tableRow]['kleur']?>'/>
                                 </td>
                                 <td>
                                     <input class="filled-in" type="checkbox" id="select<?=$colleges[$tableRow]['id']?>"/>
@@ -180,7 +180,7 @@ while($result2 = mysqli_fetch_assoc($result)){
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
-<script type="text/javascript" src="js/simple-color-options.js"></script>
+<script type="text/javascript" src="js/simpel-color-options.js"></script>
 
 
 <script>
