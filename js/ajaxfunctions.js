@@ -140,5 +140,3 @@ function editCollegeAjax(collegeIdNr){
         xmlhttp.send();
     }
 }
-
-// //GELUKT
