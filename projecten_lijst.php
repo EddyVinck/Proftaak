@@ -13,7 +13,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college']) )
     checkSchool();
 }
 
-// dump($_SESSION);
+dump($_SESSION);
 
 
 $query = 
@@ -22,24 +22,26 @@ $query =
     colleges.naam AS college_naam, 
     images.path AS img_path
     FROM projecten
-    INNER JOIN users 
-    ON projecten.users_id = users.id
-    INNER JOIN klassen 
-    ON users.klassen_id = klassen.id
-    INNER JOIN colleges 
-    ON klassen.colleges_id = colleges.id
-    INNER JOIN scholen
-    ON colleges.scholen_id = scholen.id
-    LEFT OUTER JOIN images 
-    ON images.projecten_id = projecten.id";
+	RIGHT OUTER JOIN hulpcolleges
+	ON projecten.id = hulpcolleges.projecten_id
+	INNER JOIN users
+	ON projecten.users_id = users.id
+	INNER JOIN klassen
+	ON users.klassen_id = klassen.id
+	INNER JOIN colleges
+	ON klassen.colleges_id = colleges.id
+	INNER JOIN scholen
+	ON colleges.scholen_id = scholen.id
+	LEFT OUTER JOIN images
+	ON projecten.id = images.projecten_id";
     if(isset($_GET['college'])){
         // check of de ingevulde get variabele wel een nummer is
         if(is_numeric($_GET['college'])){
             $college = $_GET['college'];
-            $query .= (" WHERE colleges.id = " . $college);
+            $query .= ("    WHERE hulpcolleges.colleges_id = " . $college
+                    ."      OR colleges.id = ".$college);
         }        
-    }
-    
+    }    
     $query .= " GROUP BY projecten.id"; 
     // op de lege plek komt de where college = 1 als je die hebt
 

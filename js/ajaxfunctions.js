@@ -68,6 +68,7 @@ function saveNewRowAjax(colorCount, rowCount) {
         resetCounts();
     }
 }
+// id = query id
 function getSelect_Ajax(selectedOption, table, id, elemName, nextSelect) {
     if (selectedOption == "") {
         // als er geen optie is geselecteerd en het select element 
