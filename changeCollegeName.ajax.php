@@ -1,14 +1,14 @@
 <?php
 include("inc/functions.php");
 $db =  ConnectToDatabase();
-$text = $_GET['text'];
-$id = $_GET['id'];
-
+$id = $_POST['collegeId'];
+$color = $_POST["color"];
+$text = $_POST["text"];
 $query="
-UPDATE colleges
-SET naam = '$text'
-WHERE id = $id;
-";
+    UPDATE colleges
+    SET naam = '$text',
+    kleur = '$color'
+    WHERE id = $id;
+    ";
 $result = mysqli_query($db,$query);
-echo "1";
 ?>

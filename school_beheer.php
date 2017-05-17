@@ -57,9 +57,9 @@ while($result2 = mysqli_fetch_assoc($result)){
     <ul id="slide-out" class="side-nav">
         <li><div class="userView">
             <div class="background">
-                <img src="images/office.jpg">
+                <img src="">
             </div>
-                <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+                <a href="#!user"><img class="circle" src=""></a>
                 <a href="#!name"><span class="white-text name">John Doe</span></a>
                 <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
             </div>
@@ -131,7 +131,7 @@ while($result2 = mysqli_fetch_assoc($result)){
                                 </div>
                                 </td>
                                 <td>
-                                    <input class='colorpicker' value='<?=$colleges[$tableRow]['kleur']?>'/>
+                                    <input id="col<?=$colleges[$tableRow]['id']?>" class='colorpicker' value='<?=$colleges[$tableRow]['kleur']?>'/>
                                 </td>
                                 <td>
                                     <input class="filled-in" type="checkbox" id="select<?=$colleges[$tableRow]['id']?>"/>
@@ -180,7 +180,6 @@ while($result2 = mysqli_fetch_assoc($result)){
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
-<script type="text/javascript" src="js/simpel-color-options.js"></script>
 
 
 <script>

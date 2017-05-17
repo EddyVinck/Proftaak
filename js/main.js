@@ -96,9 +96,10 @@ $(document).ready(function() {
                 cellWidth: 20,
                 cellHeight: 20,
                 displayColorCode: true,
-                onSelect: function(hex, element) {
+                onSelect: function(hex, element, id) {
                     var name = getColorNameOrKey("hash",hex);
-                }
+                    //editCollegeAjax(collegeIdNr, mode = 0, color = "#000");
+                },
             });
         }
     });
