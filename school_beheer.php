@@ -3,7 +3,7 @@ include("inc/functions.php");
 $db =  ConnectToDatabase();
 checkSession();
 
-if($_SESSION['rol']!="sch"){
+if($_SESSION['rol']!="sch" && $_SESSION['rol']!="doc" && $_SESSION['rol']!="adm"){
     header("location: index.php");
 }
 $id = $_SESSION['id'];
@@ -18,6 +18,23 @@ $result = mysqli_query($db,$query);
 while($result2 = mysqli_fetch_assoc($result)){
     $colleges[] = $result2; 	//places everything in the array
 }
+$usersQuery = " SELECT users.id , users.rol , users.naam,
+            colleges.id AS college_id,
+            scholen.id AS school_id                  
+            FROM users
+            INNER JOIN klassen
+            ON klassen.id = users.klassen_id
+            INNER JOIN colleges
+            ON klassen.colleges_id = colleges.id
+            INNER JOIN scholen
+            ON colleges.id = scholen.id
+            WHERE users.rol = 'odo'";
+$sqlResult = mysqli_query($db, $usersQuery);
+$users = [];
+while($row = mysqli_fetch_assoc($sqlResult)){
+    $users[] = $row; 	//places everything in the array
+}
+dump($users);
 ?>
 <!DOCTYPE html>
 <head>
@@ -83,12 +100,13 @@ while($result2 = mysqli_fetch_assoc($result)){
                 </div>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
-                        <li class="tab"><a class="active" href="#colleges">Colleges</a></li>
-                        <li class="tab"><a href="#leraren">leraren</a></li>
+                        <li class="tab"><a class="" href="#colleges">Colleges</a></li>
+                        <li class="tab"><a class="active" href="#leraren">leraren</a></li>
                     </ul>
                     </div>
                     <div class="card-content grey lighten-4">
-                    <div id="colleges">
+                    <!--begin Tabje colleges-->
+                    <div id="colleges"> 
                         <table id="collegeTable">
                         <thead>
                         <tr>
@@ -104,6 +122,25 @@ while($result2 = mysqli_fetch_assoc($result)){
                                     <a class="btn-floating btn-large red" onclick="addTableRow();">
                                     <i class="material-icons">add</i>
                                     </a>
+                                    <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om alle nieuwe rijen op te slaan"
+                                    onclick="">
+                                        <i class="material-icons">save</i>
+                                    </a>
+                                    <td></td><td>
+                                    <a id="deleteSelectedRows" class="btn-floating btn-large red tooltipped" 
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om alle nieuwe rijen op te slaan"
+                                    onclick="">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                    </td>
+                                </td>
+                                <td>
+                                    
                                 </td>
                             </tr>
                         </tfoot>    
@@ -143,7 +180,56 @@ while($result2 = mysqli_fetch_assoc($result)){
                         </tbody>
                     </table>
                     </div>
-                    <div id="leraren">Test 2</div>
+                    <!--begin tabje leraren-->
+                    <div id="leraren">
+                        <div class="row">
+                            <div class="col s12 m4 l4">
+                                <a class="waves-effect waves-light btn">ongeverifieerd</a>
+                            </div>
+                            <div class="col s12 m4 l4">
+                                <a class="waves-effect waves-light btn">geverifieerd</a>
+                            </div>
+                        </div>
+                        <table class="centered" id="lerarenTabel">
+                        <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>College</th>
+                            <th>Geverifieerd</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                
+                            </tr>
+                        </tfoot>    
+                        <tbody id="lerarenTbody">
+                            <?php 
+                            for($x=0;$x<count($users);$x++){
+                            ?>
+                            <tr>
+                                <td>
+                                    <?=$users[$x]['naam']?>
+                                </td>
+                                <td>
+                                    <select name="colleges" class="collegeSelect">
+                                        <?php
+                                        for($y=0;$y<count($colleges);$y++){
+                                            if ($users[$x]['college_id'] == $colleges[$y]['id']){
+                                            ?>
+                                                <option selected value="<?=$colleges[$y]['id']?>"><?=$colleges[$y]['naam']?></option>
+                                        <?php } else{?>
+                                                <option  value="<?=$colleges[$y]['id']?>"><?=$colleges[$y]['naam']?></option>
+                                        <?php }}?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

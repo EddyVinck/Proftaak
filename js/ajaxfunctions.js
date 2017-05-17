@@ -134,6 +134,9 @@ function editCollegeAjax(collegeIdNr) {
         });
         send.done(function (msg) {
             console.log(msg);
+            $("#lbl" + collegeIdNr).attr('data-success', 'De naam en kleur is aangepast');
+            elemInp.classList.remove("invalid");
+            elemInp.classList.add("valid");
         })
     }
 }
