@@ -10,7 +10,7 @@ var elemArray =[
 function resetCounts(){
     colorCount = 0;
     newRowCount = 0;
-}
+} 
 function initializeSelectElements(){
     $(document).ready(function() {
         $('select').material_select();
@@ -43,16 +43,12 @@ function addTableRow(){
             '</td><td>'+
                 '<input class="newColorPicker'+colorpickerCount+'" value="#2196f3"/>'+
             '</td><td id="newTd'+newRowCount+'">'+
-                // '<input class="filled-in" type="checkbox" id="select"/>'+
-                // '<label for="select"></label>'+
-                '<a onclick="saveNewRowAjax('+"'"+colorCount+"','"+newRowCount+"'"+');"' +
-                'class="btn-floating btn-medium waves-effect waves-light red">'+
-                '<i class="material-icons">save</i></a>'+
+            '</td>'+
         '</tr>'+
         '</form>' +
     '</div>');
+    $("#saveAllRows").attr("onclick",'saveNewRowAjax('+"'"+colorCount+"','"+newRowCount+"'"+');');
     newRowCount++;
-    
     initSpecificColorPicker(colorpickerCount);
     colorCount++;
     colorpickerCount++;

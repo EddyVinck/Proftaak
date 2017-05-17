@@ -104,6 +104,25 @@ while($result2 = mysqli_fetch_assoc($result)){
                                     <a class="btn-floating btn-large red" onclick="addTableRow();">
                                     <i class="material-icons">add</i>
                                     </a>
+                                    <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om alle nieuwe rijen op te slaan"
+                                    onclick="">
+                                        <i class="material-icons">save</i>
+                                    </a>
+                                    <td></td><td>
+                                    <a id="deleteSelectedRows" class="btn-floating btn-large red tooltipped" 
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om alle nieuwe rijen op te slaan"
+                                    onclick="">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                    </td>
+                                </td>
+                                <td>
+                                    
                                 </td>
                             </tr>
                         </tfoot>    
@@ -143,7 +162,9 @@ while($result2 = mysqli_fetch_assoc($result)){
                         </tbody>
                     </table>
                     </div>
-                    <div id="leraren">Test 2</div>
+                    <div id="leraren">
+                        
+                    </div>
                 </div>
             </div>
         </div>
