@@ -9,6 +9,7 @@
  *
  * Version: <%= pkg.version %> (<%= meta.date %>)
  */
+
  (function($) {
 /**
  * simpleColor() provides a mechanism for displaying simple color-choosers.
@@ -83,7 +84,7 @@
  *                      Default value: see options.displayCSS in the source
  */
   $.fn.simpleColor = function(options) {
-
+    var elementForID;
     var element = this;
 
     var defaultColors = [
@@ -168,7 +169,7 @@
 
       // Create the color display box
       var defaultColor = (this.value && this.value != '') ? this.value : options.defaultColor;
-
+      elementForID = this.id;
       var displayBox = $("<div class='simpleColorDisplay' />");
       displayBox.css($.extend(options.displayCSS, { 'background-color': defaultColor }));
       displayBox.data('color', defaultColor);
@@ -266,7 +267,7 @@
 
               // If an onSelect callback function is defined then excecute it.
               if (options.onSelect) {
-                options.onSelect(this.id, element);
+                options.onSelect(this.id, element,elementForID);
               }
             });
           }
