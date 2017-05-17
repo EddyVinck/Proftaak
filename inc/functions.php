@@ -48,7 +48,7 @@ function checkSchool($debug = false) {
 		echo "SESSION school: ". $sessionSchool ." & SESSION college: ". $sessionCollege;
 		echo "\nGET college: ".$getCollege;
 		echo "</pre>";
-		dump($scholenId, __FILE__, __LINE__);
+		// dump($scholenId, __FILE__, __LINE__);
 	}    
 }
 function truncate($text, $maxLength) 

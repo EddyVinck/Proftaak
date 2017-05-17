@@ -1,42 +1,51 @@
 <?php include("inc/functions.php");?>
 <?php
+$db = ConnectToDatabase();
 checkSession();
-if($_SESSION['rol'] == ""){
+if($_SESSION['rol'] != "sch" && $_SESSION['rol'] != "doc"){
     header("location: index.php");
 }
+
 // dump($_SESSION);
-$connection = ConnectToDatabase();
-$schoolId = $_SESSION['school_id'];
+
+
 $query = 
-"   SELECT colleges.naam AS college_naam, colleges.id AS college_id
-    FROM colleges
-    INNER JOIN scholen
-    ON colleges.scholen_id = scholen.id
-    WHERE scholen.id = $schoolId
-";
-$result = mysqli_query($connection, $query);
+"   SELECT users.id, users.naam, users.email, users.klassen_id, users.rol,
+    klassen.naam AS klas_naam,
+    colleges.naam AS college_naam
+    FROM `users`
+    INNER JOIN klassen
+	ON users.klassen_id = klassen.id
+    INNER JOIN colleges
+	ON klassen.colleges_id = colleges.id
+    WHERE users.rol = 'ost'"; 
+    // op de lege plek komt de where college = 1 als je die hebt
+
+$result = mysqli_query($db,$query);
 while($row = mysqli_fetch_assoc($result)){
+    $unverifiedStudents[] = $row; 	//places everything in the array
+}
+$schoolId = $_SESSION['school_id'];
+$query = "  SELECT colleges.id, colleges.naam 
+            FROM colleges
+            INNER JOIN scholen
+            ON colleges.scholen_id = scholen.id            
+            WHERE scholen.id = $schoolId";
+$result = mysqli_query($db, $query);
+while($row = mysqli_fetch_assoc($result))
+{
     $colleges[] = $row;
 }
-$query = 
-"   SELECT scholen.naam AS school_naam
-    FROM scholen
-    WHERE scholen.id = $schoolId
-";
-$result = mysqli_query($connection, $query);
-while($row = mysqli_fetch_assoc($result)){
-    $schoolInfo = $row;
-}
-// dump($colleges);
-// dump($schoolInfo);
+
+dump($unverifiedStudents);
+dump($colleges);
+dump($_SESSION);
 
 
 
-
-
+// dump($_SESSION);
 ?>
 <!DOCTYPE html>
-
 <head>
 	<head>
       <!--Import Google Icon Font-->
@@ -49,7 +58,7 @@ while($row = mysqli_fetch_assoc($result)){
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
 </head>
-<body >
+<body>
 <header>    
     <nav class="top-nav teal">
         <div class="nav-wrapper">
@@ -59,7 +68,7 @@ while($row = mysqli_fetch_assoc($result)){
                 <a href="index.php" class="brand-logo">Logo</a>        
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
-                <li><a href="#colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                <li><a href="colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
                 <li><a href="#inbox.php" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
                 <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             </ul>
@@ -81,7 +90,7 @@ while($row = mysqli_fetch_assoc($result)){
             </div>
         </li>
         <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>"><i class="small material-icons left">home</i>Mijn College</a></li>
-        <li><a href="#colleges.php"><i class="small material-icons left">view_module</i>Colleges</a></li>
+        <li><a href="colleges.php"><i class="small material-icons left">view_module</i>Colleges</a></li>
         <li><a href="#inbox.php"><i class="small material-icons left">message</i>Priveberichten</a></li>
         <li><a href="index.php?logout=true"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
         <li><a href="#!">Second Link</a></li>
@@ -91,43 +100,53 @@ while($row = mysqli_fetch_assoc($result)){
   </ul>
 </sidenav>
 <main>
-  <div class="container">
-    <div class="section">
-        <div class="row">
-            <div class="col s12 center">
-            <h1 class="hide-on-small-only">Alle colleges</h1>
-            <h2 class="hide-on-med-and-up">Alle colleges</h2>
-            <h5>Van <?php echo $schoolInfo['school_naam']?></h5>
+    <div class="container">
+        <div class="section">
+            <div class="row">
+                <div class="col s12">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>College</th>                            
+                            <th>Klas</th>
+                            <th>rol</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <?php $idCounter = 0;
+                            for ($i=0; $i < count($unverifiedStudents); $i++) { 
+                            ?>
+                                <tr>
+                                    <td><?php echo $unverifiedStudents[$i]['naam'];?></td>
+                                    <td>
+                                    <!--getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')-->
+                                        <select onclick="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')">
+                                            <option value="" disabled selected>Selecteer college</option>
+                                            <?php 
+                                            for($i=0;$i < count($colleges); $i++)
+                                            {?>
+                                                <option value="<?= $colleges[$i]['id']?>"><?= $colleges[$i]['naam']?></option>
+                                            <?php }
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <td id="<?php echo $idCounter; $idCounter++;?>">
+                                        <select id="klasSelect">
+                                            <option value="" disabled selected>Selecteer klas</option>
+                                        </select>
+                                    </td>                                    
+                                    <td><a class="btn waves-effect"><?php echo $unverifiedStudents[$i]['rol'];?></a> </td>                                    
+                                </tr>
+                            <?php
+                        }?>                       
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <div class="section">
-      <div class="row">
-      <?php if(count($colleges) > 1) { ?>
-        <div class="col s12 m4">
-              <div class="card-panel teal">
-                <span >
-                    <a href="projecten_lijst.php" class="white-text">
-                        Alle colleges
-                    </a>
-                </span>
-              </div>
-          </div>
-        <?php } ?>
-        <?php for ($i=0; $i < count($colleges); $i++) {?>
-          <div class="col s12 m4">
-              <div class="card-panel teal">
-                <span >
-                    <a href="projecten_lijst.php?college=<?php echo $colleges[$i]['college_id']?>" class="white-text">
-                        <?php echo $colleges[$i]['college_naam']?>
-                    </a>
-                </span>                
-              </div>
-          </div>
-        <?php } ?>
-      </div>
-    </div>
-  </div>
 </main>
 <footer class="page-footer teal">
     <div class="container">
@@ -154,24 +173,12 @@ while($row = mysqli_fetch_assoc($result)){
         </div>
     </div>
 </footer>
-  <script type="text/javascript" src="js/main.js"></script>
-  <script type="text/javascript" src="js/ajaxfunctions.js"></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="js/materialize.min.js"></script>
-</body>
+
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/ajaxfunctions.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
 <script>
-  $('.button-collapse').sideNav({
-      menuWidth: 300, // Default is 300
-      edge: 'left', // Choose the horizontal origin
-      closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-      draggable: true // Choose whether you can drag to open on touch screens
-    }
-  );
-  $(document).ready(function(){
-    $('.collapsible').collapsible();
-  });
-  $(document).ready(function(){
-      $('.slider').slider();
-    }); 
+    initializeSelectElements();
 </script>
-</html>
+</body>

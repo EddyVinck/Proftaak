@@ -8,6 +8,8 @@ while($row = mysqli_fetch_assoc($result))
 {
     $data[] = $row;
 }
+
+
 ?>
 <!DOCTYPE html>
 <head>
