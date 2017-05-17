@@ -122,8 +122,8 @@ dump($_SESSION);
                                     <td><?php echo $unverifiedStudents[$i]['naam'];?></td>
                                     <td>
                                     <!--getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')-->
-                                        <select onclick="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')">
-                                            <option value="" disabled selected>Selecteer college</option>
+                                        <select onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect<?php echo $idCounter;?>', 'klas')">
+                                            <option value="" disabled selected>Kies college</option>
                                             <?php 
                                             for($i=0;$i < count($colleges); $i++)
                                             {?>
@@ -132,8 +132,8 @@ dump($_SESSION);
                                             ?>
                                         </select>
                                     </td>
-                                    <td id="<?php echo $idCounter; $idCounter++;?>">
-                                        <select id="klasSelect">
+                                    <td id="">
+                                        <select id="klasSelect<?php echo $idCounter; $idCounter++;?>">
                                             <option value="" disabled selected>Selecteer klas</option>
                                         </select>
                                     </td>                                    
