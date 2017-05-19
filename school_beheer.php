@@ -2,17 +2,12 @@
 include("inc/functions.php");
 $db =  ConnectToDatabase();
 checkSession();
-
+dump($_SESSION);
 if($_SESSION['rol']!="sch" && $_SESSION['rol']!="doc" && $_SESSION['rol']!="adm"){
     header("location: index.php");
 }
 $id = $_SESSION['id'];
-$queryGetShoolID = "SELECT scholen_id FROM users WHERE id = $id";
-$result = mysqli_query($db, $queryGetShoolID);
-while($row = mysqli_fetch_assoc($result)){
-    $data = $row; 	//places everything in the array
-}
-$school_id = $data['scholen_id'];
+$school_id = $_SESSION['school_id'];
 $query = "SELECT * FROM colleges WHERE scholen_id = $school_id";
 $result = mysqli_query($db,$query);
 while($result2 = mysqli_fetch_assoc($result)){
