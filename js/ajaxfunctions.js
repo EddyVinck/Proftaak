@@ -140,3 +140,19 @@ function editCollegeAjax(collegeIdNr) {
         })
     }
 }
+function changeLeraarCollege(collegeID,userID){
+    var send = $.ajax({
+        url: "changeLeraarCollege.ajax.php",
+        type: "POST",
+        dataType: "json",
+        data: { "collegeID":collegeID,"userID":userID},
+        error: function (xhr, text, error) {
+            console.warn(xhr.responseText);
+            console.log(text);
+            console.log(error);
+        }
+    });
+    send.done(function (msg) {
+        console.log(msg);
+    })
+}
