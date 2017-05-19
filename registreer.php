@@ -80,7 +80,7 @@ while($row = mysqli_fetch_assoc($result))
                             {?>
                                 <option value="<?= $data[$x]['id']?>"><?= $data[$x]['naam']?></option>
                             <?php }
-                            ?>a
+                            ?>
                         </select>
                         <label>Kies je school</label>
                     </div>

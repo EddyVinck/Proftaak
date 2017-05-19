@@ -3,12 +3,10 @@
 $db = ConnectToDatabase();
 checkSession();
 if($_SESSION['rol'] != "sch" && $_SESSION['rol'] != "doc"){
-    header("location: index.php");
+    header("location: unauthorized.php");
 }
 
-// dump($_SESSION);
-
-
+// query for unverified students
 $query = 
 "   SELECT users.id, users.naam, users.email, users.klassen_id, users.rol,
     klassen.naam AS klas_naam,
@@ -19,13 +17,13 @@ $query =
     INNER JOIN colleges
 	ON klassen.colleges_id = colleges.id
     WHERE users.rol = 'ost'"; 
-    // op de lege plek komt de where college = 1 als je die hebt
 
 $result = mysqli_query($db,$query);
 while($row = mysqli_fetch_assoc($result)){
     $unverifiedStudents[] = $row; 	//places everything in the array
 }
 $schoolId = $_SESSION['school_id'];
+// query for all colleges from the teachers school_id
 $query = "  SELECT colleges.id, colleges.naam 
             FROM colleges
             INNER JOIN scholen
@@ -38,12 +36,9 @@ while($row = mysqli_fetch_assoc($result))
 }
 
 dump($unverifiedStudents);
-dump($colleges);
-dump($_SESSION);
-
-
-
+// dump($colleges);
 // dump($_SESSION);
+
 ?>
 <!DOCTYPE html>
 <head>
@@ -118,16 +113,16 @@ dump($_SESSION);
                         <?php $idCounter = 0;
                             for ($i=0; $i < count($unverifiedStudents); $i++) { 
                             ?>
-                                <tr>
+                                <tr class="">
                                     <td><?php echo $unverifiedStudents[$i]['naam'];?></td>
                                     <td>
                                     <!--getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')-->
                                         <select onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect<?php echo $idCounter;?>', 'klas')">
                                             <option value="" disabled selected>Kies college</option>
                                             <?php 
-                                            for($i=0;$i < count($colleges); $i++)
+                                            for($j=0;$j < count($colleges); $j++)
                                             {?>
-                                                <option value="<?= $colleges[$i]['id']?>"><?= $colleges[$i]['naam']?></option>
+                                                <option value="<?= $colleges[$j]['id']?>"><?= $colleges[$j]['naam']?></option>
                                             <?php }
                                             ?>
                                         </select>

@@ -61,7 +61,6 @@ function saveNewRowAjax(colorCount, rowCount) {
                     '<input class="filled-in" type="checkbox" id="select' + msg[row]['id'] + '"/>' +
                     '<label for="select' + msg[row]['id'] + '"></label>'; //zorgt ervoor dat de checkbox wordt gemaakt.
                 $("#newTd" + counter).attr("id", "td" + msg[row]['id']);
-
                 counter++;
             }
         })
