@@ -39,6 +39,7 @@ function saveNewRowAjax(colorCount, rowCount) {
             }          //I do change this `main_array` when using the above stringify!
         });
         send.done(function (msg) {
+            console.log(msg);
             counter = 0;
             for (var row = msg.length - 1; row > -1; row--) {
 
