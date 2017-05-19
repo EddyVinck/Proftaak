@@ -33,7 +33,7 @@ function saveNewRowAjax(colorCount, rowCount) {
             dataType: "json",
             data: { "naam": newValue, "colors": newColors },
             error: function (xhr, text, error) {
-                console.warn(xhr.responseText);
+                console.log(xhr.responseText);
                 console.log(text);
                 console.log(error);
             }          //I do change this `main_array` when using the above stringify!

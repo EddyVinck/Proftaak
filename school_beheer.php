@@ -95,8 +95,8 @@ dump($users);
                 </div>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
-                        <li class="tab"><a class="active" href="#colleges">Colleges</a></li>
-                        <li class="tab"><a class="" href="#leraren">leraren</a></li>
+                        <li class="tab"><a class="" href="#colleges">Colleges</a></li>
+                        <li class="tab"><a class="active" href="#leraren">leraren</a></li>
                     </ul>
                     </div>
                     <div class="card-content grey lighten-4">
