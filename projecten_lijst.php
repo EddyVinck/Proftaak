@@ -67,46 +67,7 @@ while($row = mysqli_fetch_assoc($result)){
     </head>
 </head>
 <body >
-<header>    
-    <nav class="top-nav teal">
-        <div class="nav-wrapper">
-            <div class="container">
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-            <div class="col s12" style="padding: 0 .75rem;">                
-                <a href="index.php" class="brand-logo">Logo</a>        
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
-                <li><a href="colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
-                <li><a href="#inbox.php" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
-                <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
-            </ul>
-            </div>       
-            <!--<a href="#" class="brand-logo">Logo</a>-->
-            </div>        
-        </div>        
-    </nav>    
-</header>
-<sidenav>
-    <ul id="slide-out" class="side-nav">
-        <li><div class="userView">
-            <div class="background">
-                <img src="images/office.jpg">
-            </div>
-                <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
-                <a href="#!name"><span class="white-text name">John Doe</span></a>
-                <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-            </div>
-        </li>
-        <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>"><i class="small material-icons left">home</i>Mijn College</a></li>
-        <li><a href="colleges.php"><i class="small material-icons left">view_module</i>Colleges</a></li>
-        <li><a href="#inbox.php"><i class="small material-icons left">message</i>Priveberichten</a></li>
-        <li><a href="index.php?logout=true"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
-        <li><a href="#!">Second Link</a></li>
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Subheader</a></li>
-        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-  </ul>
-</sidenav>
+<?php createHeader();?>
 <main>
   <div class="container">
     <div class="section">
