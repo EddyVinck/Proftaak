@@ -2,6 +2,18 @@
 include("inc/functions.php");
 $db =  ConnectToDatabase();
 checkSession();
+$activeTab = [
+    'colleges' => "",
+    'leraren' =>  "",
+    'studenten' => ""
+
+];
+if (isset($_GET['active'])){
+    $activeTab[$_GET['active']] = "active";
+}
+else{
+    $activeTab['leraren'] = "active";
+}
 if($_SESSION['rol']!="sch" && $_SESSION['rol']!="doc" && $_SESSION['rol']!="adm"){
     header("location: index.php");
 }
@@ -13,6 +25,12 @@ $result = mysqli_query($db,$query);
 while($result2 = mysqli_fetch_assoc($result)){
     $colleges[] = $result2; 	//places everything in the array
 }
+if(isset($_GET['doc'])){
+    $docentenVerificatie = $_GET['doc'];
+}
+else{
+    $docentenVerificatie = "odo";
+}
 $usersQuery = "SELECT users.id , users.rol , users.naam,
             colleges.id AS college_id,
             scholen.id AS school_id                  
@@ -23,8 +41,7 @@ $usersQuery = "SELECT users.id , users.rol , users.naam,
             ON klassen.colleges_id = colleges.id
             INNER JOIN scholen
             ON colleges.scholen_id = scholen.id
-            WHERE users.rol = 'odo'  ORDER BY users.id";
-$usersTestQuery = "SELECT * FROM users WHERE rol = 'odo'";
+            WHERE users.rol = '$docentenVerificatie'  ORDER BY users.id";
 $sqlResult = mysqli_query($db, $usersQuery);
 $users = [];
 while($row = mysqli_fetch_assoc($sqlResult)){
@@ -95,8 +112,8 @@ while($row = mysqli_fetch_assoc($sqlResult)){
                 </div>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
-                        <li class="tab"><a class="" href="#colleges">Colleges</a></li>
-                        <li class="tab"><a class="active" href="#leraren">leraren</a></li>
+                        <li class="tab"><a class="<?=$activeTab['colleges']?>" href="#colleges">Colleges</a></li>
+                        <li class="tab"><a class="<?=$activeTab['leraren']?>" href="#leraren">leraren</a></li>
                     </ul>
                     </div>
                     <div class="card-content grey lighten-4">
@@ -177,12 +194,15 @@ while($row = mysqli_fetch_assoc($sqlResult)){
                     <!--begin tabje leraren-->
                     <div id="leraren">
                         <div class="row">
-                            <div class="col s12 m4 l4">
-                                <a class="waves-effect waves-light btn">ongeverifieerd</a>
+                        <?php if ($docentenVerificatie == "doc"){?>
+                            <div class="col s12 m3 l3">
+                                <a href="?doc=odo&active=leraren" class="waves-effect waves-light btn">ongeverifieerd</a>
                             </div>
-                            <div class="col s12 m4 l4">
-                                <a class="waves-effect waves-light btn">geverifieerd</a>
+                        <?php }else if ($docentenVerificatie == "odo"){ ?>
+                            <div class="col s12 m3 l3">
+                                <a href="?doc=doc&active=leraren" class="waves-effect waves-light btn">geverifieerd</a>
                             </div>
+                        <?php } ?>
                         </div>
                         <table class="centered" id="lerarenTabel">
                         <thead>
@@ -211,9 +231,19 @@ while($row = mysqli_fetch_assoc($sqlResult)){
                                         <?php }}?>
                                     </select>
                                 </td>
-                                <td>
-                                    
-                                </td>
+                               <td class="valign-wrapper">
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <a id="verifiedButton<?=$x; ?>" class="btn waves-effect <?= properButtonColorForRole($users[$x]['rol']); ?>"
+                                            onclick="updateVerifiedStatusAjax(
+                                                <?= $users[$x]['id'];?>,
+                                                '<?=$x; ?>'                                            
+                                            )">
+                                                <?= properRole($users[$x]['rol']);?>
+                                            </a> 
+                                        </div>
+                                    </div>
+                                </td>       
                             </tr>
                             <?php
                             }
