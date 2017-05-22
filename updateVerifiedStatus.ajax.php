@@ -2,7 +2,17 @@
 include("inc/functions.php");
 $connection = ConnectToDatabase();
 $userId = $_POST["userId"];
-$userRole = $_POST["userRole"];
+
+$query2 = " SELECT rol
+            FROM users
+            WHERE id = $userId";
+$result2 = mysqli_query($connection, $query2);
+while ($row = mysqli_fetch_assoc($result2))
+{
+    $userInfo = $row;
+}
+
+$userRole = $userInfo['rol'];
 
 switch ($userRole) {
     case 'ost':
@@ -22,13 +32,15 @@ switch ($userRole) {
         break;
 };
 
-$query = 
+$query2 = 
 "   UPDATE users
     SET rol = '$newRole'
     WHERE id = $userId;
 ";
 
-$result = mysqli_query($connection, $query);
-echo mysqli_error($result);
+$result2 = mysqli_query($connection, $query2);
+if(!$result2) {
+    echo mysqli_error($result2);    
+}
 
 ?>

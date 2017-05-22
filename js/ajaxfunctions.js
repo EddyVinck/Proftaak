@@ -141,15 +141,14 @@ function editCollegeAjax(collegeIdNr) {
     }
 }
 
-function updateVerifiedStatusAjax(userId, userRole, rowCounter){
+function updateVerifiedStatusAjax(userId, rowCounter){
     console.log(userId);
-    console.log(userRole);
 
         $.ajax({
             url: "updateVerifiedStatus.ajax.php",
             type: "POST",
             dataType: "json",
-            data: { "userId":userId, "userRole": userRole },
+            data: { "userId":userId },
             error: function (error) {                
                 console.log(error);
             },
