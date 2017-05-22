@@ -15,7 +15,7 @@ $result = mysqli_query($db,$query);
 while($result2 = mysqli_fetch_assoc($result)){
     $colleges[] = $result2; 	//places everything in the array
 }
-$usersQuery = " SELECT users.id , users.rol , users.naam,
+$usersQuery = "SELECT users.id , users.rol , users.naam,
             colleges.id AS college_id,
             scholen.id AS school_id                  
             FROM users
@@ -24,13 +24,15 @@ $usersQuery = " SELECT users.id , users.rol , users.naam,
             INNER JOIN colleges
             ON klassen.colleges_id = colleges.id
             INNER JOIN scholen
-            ON colleges.id = scholen.id
-            WHERE users.rol = 'odo'";
+            ON colleges.scholen_id = scholen.id
+            WHERE users.rol = 'odo'  ORDER BY users.id";
+$usersTestQuery = "SELECT * FROM users WHERE rol = 'odo'";
 $sqlResult = mysqli_query($db, $usersQuery);
 $users = [];
 while($row = mysqli_fetch_assoc($sqlResult)){
     $users[] = $row; 	//places everything in the array
 }
+dump($colleges);
 dump($users);
 ?>
 <!DOCTYPE html>
@@ -97,8 +99,8 @@ dump($users);
                 </div>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
-                        <li class="tab"><a class="active" href="#colleges">Colleges</a></li>
-                        <li class="tab"><a class="" href="#leraren">leraren</a></li>
+                        <li class="tab"><a class="" href="#colleges">Colleges</a></li>
+                        <li class="tab"><a class="active" href="#leraren">leraren</a></li>
                     </ul>
                     </div>
                     <div class="card-content grey lighten-4">
@@ -208,11 +210,10 @@ dump($users);
                                     <?=$users[$x]['naam']?>
                                 </td>
                                 <td>
-                                    <select name="colleges" class="collegeSelect">
+                                    <select name="colleges" class="collegeSelect" onchange="changeLeraarCollege(this.value,<?=$users[$x]['id']?>);">
                                         <?php
                                         for($y=0;$y<count($colleges);$y++){
-                                            if ($users[$x]['college_id'] == $colleges[$y]['id']){
-                                            ?>
+                                            if ($users[$x]['college_id'] == $colleges[$y]['id']){?>
                                                 <option selected value="<?=$colleges[$y]['id']?>"><?=$colleges[$y]['naam']?></option>
                                         <?php } else{?>
                                                 <option  value="<?=$colleges[$y]['id']?>"><?=$colleges[$y]['naam']?></option>

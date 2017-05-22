@@ -33,7 +33,7 @@ function saveNewRowAjax(colorCount, rowCount) {
             dataType: "json",
             data: { "naam": newValue, "colors": newColors },
             error: function (xhr, text, error) {
-                console.warn(xhr.responseText);
+                console.log(xhr.responseText);
                 console.log(text);
                 console.log(error);
             }          //I do change this `main_array` when using the above stringify!
@@ -140,6 +140,7 @@ function editCollegeAjax(collegeIdNr) {
         })
     }
 }
+
 function updateVerifiedStatusAjax(userId, userRole, rowCounter){
     console.log(userId);
     console.log(userRole);
@@ -172,3 +173,21 @@ function updateVerifiedStatusAjax(userId, userRole, rowCounter){
         // refresh the content or disable the button
         // because clicking twice doesn't work right now
     }
+
+function changeLeraarCollege(collegeID,userID){
+    var send = $.ajax({
+        url: "changeLeraarCollege.ajax.php",
+        type: "POST",
+        dataType: "json",
+        data: { "collegeID":collegeID,"userID":userID},
+        error: function (xhr, text, error) {
+            console.warn(xhr.responseText);
+            console.log(text);
+            console.log(error);
+        }
+    });
+    send.done(function (msg) {
+        console.log(msg);
+    })
+}
+

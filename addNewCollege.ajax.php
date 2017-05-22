@@ -27,5 +27,23 @@ while($row = mysqli_fetch_assoc($result)){
     $ids[] = $row; 	//places everything in the array
 }
 
-$lerarenKlassenQuery = "INSERT INTO `mydb`.`klassen`";
+$lerarenKlassenQuery = "INSERT INTO  `mydb`.`klassen` (
+`id` ,
+`naam` ,
+`colleges_id` ,
+`rol`
+)
+VALUES ";
+
+for ($y=0; $y < $numb; $y++){
+    if ($y == 0){
+        $lerarenKlassenQuery .= "(NULL ,  'docenten', '". $ids[$y]['id'] ."','docenten')";
+    }
+    else{
+       $lerarenKlassenQuery .= ",(NULL ,  'docenten', '". $ids[$y]['id'] ."','docenten')";
+    }
+}
+
+$lerarenKlassenQuery .= ";";
+mysqli_query($db,$lerarenKlassenQuery);
 echo json_encode($ids);
