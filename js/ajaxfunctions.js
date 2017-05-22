@@ -140,3 +140,35 @@ function editCollegeAjax(collegeIdNr) {
         })
     }
 }
+function updateVerifiedStatusAjax(userId, userRole, rowCounter){
+    console.log(userId);
+    console.log(userRole);
+
+        $.ajax({
+            url: "updateVerifiedStatus.ajax.php",
+            type: "POST",
+            dataType: "json",
+            data: { "userId":userId, "userRole": userRole },
+            error: function (error) {                
+                console.log(error);
+            },
+            success: function () {
+                alert();
+            }
+        })
+        var correspondingButton = $("#verifiedButton" + rowCounter);
+        console.log(correspondingButton);
+            if( $(correspondingButton).hasClass('red') )
+            {
+                $(correspondingButton).removeClass('red');
+                $(correspondingButton).addClass('green');
+                $(correspondingButton).html('geverifi&eumlerd');             
+                                
+            } else {
+                $(correspondingButton).removeClass('green');
+                $(correspondingButton).addClass('red');
+                $(correspondingButton).html('ongeverifi&euml;erd');
+            }
+        // refresh the content or disable the button
+        // because clicking twice doesn't work right now
+    }

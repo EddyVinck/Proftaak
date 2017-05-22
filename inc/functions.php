@@ -63,3 +63,37 @@ function truncate($text, $maxLength)
 		return $text;
 	}
 }
+
+// return a proper string based on user role
+function properRole($rol){
+    switch ($rol) {
+		// unverified						
+        case 'ost':
+            return "Ongeverifi&euml;erd";
+            break;
+		// verified						
+        case 'stu':
+            return "Geverifi&euml;erd";
+            break;
+        default:
+            return "butt";
+            break;
+    }
+}
+
+// return a color based on user role
+function properButtonColorForRole($rol){
+    switch ($rol) {
+		// unverified
+        case 'ost':
+            return "red";
+            break;
+		// verified			
+        case 'stu':
+            return "green";
+            break;
+        default:
+            return "butt";
+            break;
+    }
+}

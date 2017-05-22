@@ -16,7 +16,7 @@ $query =
 	ON users.klassen_id = klassen.id
     INNER JOIN colleges
 	ON klassen.colleges_id = colleges.id
-    WHERE users.rol = 'ost'"; 
+    WHERE users.rol = 'stu'"; 
 
 $result = mysqli_query($db,$query);
 while($row = mysqli_fetch_assoc($result)){
@@ -38,6 +38,7 @@ while($row = mysqli_fetch_assoc($result))
 dump($unverifiedStudents);
 // dump($colleges);
 // dump($_SESSION);
+
 
 ?>
 <!DOCTYPE html>
@@ -114,7 +115,7 @@ dump($unverifiedStudents);
                             for ($i=0; $i < count($unverifiedStudents); $i++) { 
                             ?>
                                 <tr class="">
-                                    <td><?php echo $unverifiedStudents[$i]['naam'];?></td>
+                                    <td class="valign-wrapper"><?php echo $unverifiedStudents[$i]['naam'];?></td>
                                     <td>
                                     <!--getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')-->
                                         <select onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect<?php echo $idCounter;?>', 'klas')">
@@ -127,12 +128,26 @@ dump($unverifiedStudents);
                                             ?>
                                         </select>
                                     </td>
-                                    <td id="">
-                                        <select id="klasSelect<?php echo $idCounter; $idCounter++;?>">
+                                    <td>
+                                        <select id="klasSelect<?php echo $idCounter;?>">
                                             <option value="" disabled selected>Selecteer klas</option>
                                         </select>
                                     </td>                                    
-                                    <td><a class="btn waves-effect"><?php echo $unverifiedStudents[$i]['rol'];?></a> </td>                                    
+                                    <td class="valign-wrapper">
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <a id="verifiedButton<?php echo $idCounter; ?>" class="btn waves-effect <?php echo properButtonColorForRole($unverifiedStudents[$i]['rol']); ?>"
+                                                onclick="updateVerifiedStatusAjax(
+                                                    <?php echo $unverifiedStudents[$i]['id'];?>, 
+                                                    '<?php echo $unverifiedStudents[$i]['rol'];?>',
+                                                    '<?php echo $idCounter; $idCounter++;?>'                                            
+                                                )">
+                                                    <?php echo properRole($unverifiedStudents[$i]['rol']);?>
+                                                </a> 
+                                            </div>
+                                        </div>
+                                        
+                                    </td>                                    
                                 </tr>
                             <?php
                         }?>                       
@@ -169,9 +184,10 @@ dump($unverifiedStudents);
     </div>
 </footer>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script>
     initializeSelectElements();
