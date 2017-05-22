@@ -237,8 +237,7 @@ while($row = mysqli_fetch_assoc($sqlResult)){
                                             <a id="verifiedButton<?=$x; ?>" class="btn waves-effect <?= properButtonColorForRole($users[$x]['rol']); ?>"
                                             onclick="updateVerifiedStatusAjax(
                                                 <?= $users[$x]['id'];?>,
-                                                '<?=$x; ?>'                                            
-                                            )">
+                                                '<?=$x; ?>')">
                                                 <?= properRole($users[$x]['rol']);?>
                                             </a> 
                                         </div>
