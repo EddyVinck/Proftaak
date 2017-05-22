@@ -75,6 +75,14 @@ function properRole($rol){
         case 'stu':
             return "Geverifi&euml;erd";
             break;
+		// unverified						
+        case 'odo':
+            return "Ongeverifi&euml;erd";
+            break;
+		// verified						
+        case 'doc':
+            return "Geverifi&euml;erd";
+            break;
         default:
             return "butt";
             break;
@@ -90,6 +98,14 @@ function properButtonColorForRole($rol){
             break;
 		// verified			
         case 'stu':
+            return "green";
+            break;
+		// unverified
+        case 'odo':
+            return "red";
+            break;
+		// verified			
+        case 'doc':
             return "green";
             break;
         default:

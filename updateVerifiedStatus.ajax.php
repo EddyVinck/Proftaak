@@ -11,6 +11,12 @@ switch ($userRole) {
     case 'stu':
         $newRole = 'ost';
         break;
+    case 'odo':
+        $newRole = 'doc';
+        break;
+    case 'doc':
+        $newRole = 'odo';
+        break;
     default:
         $newRole = 'ost';
         break;

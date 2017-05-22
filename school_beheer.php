@@ -2,8 +2,6 @@
 include("inc/functions.php");
 $db =  ConnectToDatabase();
 checkSession();
-
-dump($_SESSION);
 if($_SESSION['rol']!="sch" && $_SESSION['rol']!="doc" && $_SESSION['rol']!="adm"){
     header("location: index.php");
 }
@@ -32,8 +30,6 @@ $users = [];
 while($row = mysqli_fetch_assoc($sqlResult)){
     $users[] = $row; 	//places everything in the array
 }
-dump($colleges);
-dump($users);
 ?>
 <!DOCTYPE html>
 <head>
@@ -196,11 +192,6 @@ dump($users);
                             <th>Geverifieerd</th>
                         </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                
-                            </tr>
-                        </tfoot>    
                         <tbody id="lerarenTbody">
                             <?php 
                             for($x=0;$x<count($users);$x++){
@@ -219,6 +210,9 @@ dump($users);
                                                 <option  value="<?=$colleges[$y]['id']?>"><?=$colleges[$y]['naam']?></option>
                                         <?php }}?>
                                     </select>
+                                </td>
+                                <td>
+                                    
                                 </td>
                             </tr>
                             <?php
