@@ -41,7 +41,7 @@ if (isset($_POST['rol'])){
                   INNER JOIN colleges
                   ON klassen.colleges_id = colleges.id
                   INNER JOIN scholen
-                  ON colleges.id = scholen.id
+                  ON colleges.scholen_id = scholen.id
                   WHERE `email` = '$email' 
                   AND `wachtwoord` = '$pass'";
     $sqlResult = mysqli_query($db, $queryVar);
