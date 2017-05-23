@@ -11,7 +11,7 @@ $query =
 "   SELECT projecten.id AS project_id, projecten.omschrijving, projecten.omschrijving_nodig,
     users.naam AS projectstarter,
     klassen.id AS klas_id,
-    colleges.naam AS college_naam
+    colleges.naam AS college_naam, colleges.id AS college_id
     FROM projecten
     INNER JOIN users
     ON projecten.users_id = users.id
@@ -52,7 +52,9 @@ while($row = mysqli_fetch_assoc($result)){
 }
 // dump($projectData);
 // dump($hulpColleges);
-// dump($images);
+// dump($images);   
+$pageColor = changePageColors($connection, $projectData[0]['college_id']);
+
 ?>
 <!DOCTYPE html>
 
@@ -69,7 +71,7 @@ while($row = mysqli_fetch_assoc($result)){
     </head>
 </head>
 <body >
-<?php createHeader();?>
+<?php createHeader($pageColor);?>
 <main>
             <!--Work in progress
     deze pagina is mobile-first ontworpen 
@@ -193,7 +195,7 @@ while($row = mysqli_fetch_assoc($result)){
       </div>      
   </div>
 </main>
-<?php createFooter();?>
+<?php createFooter($pageColor);?>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/ajaxfunctions.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

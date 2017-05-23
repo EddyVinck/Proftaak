@@ -15,7 +15,6 @@ if(isset($_GET['college']) && is_numeric($_GET['college']) )
 
 // dump($_SESSION);
 
-
 $query = 
 "   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status, projecten.omschrijving,
     users.naam AS user_naam, 
@@ -84,9 +83,7 @@ if(isset($_GET['college'])){
       <div class="row valign-wrapper" style="padding: 0 24px;">
             <div class="col s8">
                 <?php /*echo "<h4 class='no-padding'>"."Alle colleges"."</h4>" */?>
-                <?php // check welk college het college uit $_GET is
-
-                ?>
+                <?php // check welk college het college uit $_GET is ?>
             </div>            
             <div class="col s4">
                 <a class="btn waves-effect waves-light purple darken-1 right" name="action" >Nieuw Project
@@ -102,7 +99,7 @@ if(isset($_GET['college'])){
           <div class="col s12">
             <ul id="collapsable" class="collapsible popout" data-collapsible="accordion">                   
                 <li>
-                    <div class="card-panel <?php echo $pageColor; ?> lighten-2 black-text">
+                    <div class="card-panel <?php echo $pageColor; ?> lighten-2 <?php echo changeFontColorBasedOn('lighten')?>">
                         <div class="row valign-wrapper " style="margin-bottom: 0">
                             <div class="col m2 s12 truncate no-padding">Projectnaam</div>
                             <div class="col m2 hide-on-small-only">Projectstarter</div>
@@ -125,7 +122,11 @@ if(isset($_GET['college'])){
                                 <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['user_naam'];?></div>
                                 <div class="col m3 hide-on-small-only truncate"><?php echo $data[$i]['college_naam'];?></div>
                                 <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
-                                <div class="col m1 truncate"><a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content"><i class="material-icons">send</i></a></div>                        
+                                <div class="col m1 truncate">
+                                    <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content">
+                                        <i class="material-icons <?php echo $pageColor."-text text-darken-3"?>">send</i>
+                                    </a>
+                                </div>                        
                             </div>
                         </div>
                         <div class="collapsible-body">
@@ -138,27 +139,6 @@ if(isset($_GET['college'])){
                                             <img class="img-responsive" width="80%"  src="<?php echo $data[$i]['img_path']; ?>"><?php
                                         } ?>                            
                                     </div>
-                                    <!--<div class="col s12 hide-on-med-and-up">
-                                        <div class="row">
-                                            <div class="section">
-                                                <div class="col s12">
-                                                    
-                                                    <div class="row center">
-                                                        <div class="col s10 offset-s1"><label>Projectstarter:</label></div>                                                
-                                                        <div class="col s10 offset-s1"><label>Jackie Chan</label></div>
-                                                    </div>
-                                                    <div class="row center">
-                                                        <div class="col s10 offset-s1"><label>Opleiding:</label></div>                                                
-                                                        <div class="col s10 offset-s1"><label>Particuliere Beveiliging</label></div>
-                                                    </div>
-                                                    <div class="row center" style="margin-bottom: 0">
-                                                        <div class="col s10 offset-s1"><label>Status:</label></div>                                                
-                                                        <div class="col s10 offset-s1"><label>Klaar</label></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>-->
                                     <div class="col m8 s12">
                                         <p>
                                         <?php echo truncate($data[$i]['omschrijving'], 300); ?>
@@ -168,7 +148,9 @@ if(isset($_GET['college'])){
                             </div>
                             <div class="row">
                                 <div class="col s12 m4 center">
-                                    <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="waves-effect waves-light btn-flat"><i class="material-icons right">send</i>Bekijk project</a>
+                                    <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="waves-effect waves-light btn-flat">
+                                        <i class="material-icons right ">send</i>Bekijk project
+                                    </a>
                                 </div>
                             </div>
                         </div>
