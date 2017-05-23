@@ -14,7 +14,7 @@ if (isset($_GET['active'])){
 else{
     $activeTab['colleges'] = "active";
 }
-if($_SESSION['rol'] != "sch" && $_SESSION['rol'] != "doc"){
+if($_SESSION['rol'] != "sch" && $_SESSION['rol'] != "doc" && $_SESSION['rol'] != "adm"){
     header("location: unauthorized.php");
 }
 //getting vars from the session
