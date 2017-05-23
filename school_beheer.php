@@ -2,6 +2,7 @@
 include("inc/functions.php");
 $db =  ConnectToDatabase();
 checkSession();
+dump($_SESSION);
 $activeTab = [
     'colleges' => "",
     'leraren' =>  "",
@@ -12,15 +13,25 @@ if (isset($_GET['active'])){
     $activeTab[$_GET['active']] = "active";
 }
 else{
-    $activeTab['leraren'] = "active";
+    $activeTab['colleges'] = "active";
 }
-if($_SESSION['rol']!="sch" && $_SESSION['rol']!="doc" && $_SESSION['rol']!="adm"){
-    header("location: index.php");
+if($_SESSION['rol'] != "sch" && $_SESSION['rol'] != "doc"){
+    header("location: unauthorized.php");
 }
-$id = $_SESSION['id'];
+//getting vars from the session
+$rol = $_SESSION['rol'];
+$schoolId = $_SESSION['school_id'];
 
-$school_id = $_SESSION['school_id'];
-$query = "SELECT * FROM colleges WHERE scholen_id = $school_id";
+//getting the schoolnaam from database using the school_id in the session
+$schoolNaamQuery = "SELECT naam FROM scholen WHERE id = $schoolId LIMIT 1";
+$result = mysqli_query($db, $schoolNaamQuery);
+$schoolNaam = "";
+if($row = mysqli_fetch_assoc($result)){
+    $schoolNaam = $row['naam'];
+}
+
+
+$query = "SELECT * FROM colleges WHERE scholen_id = $schoolId";
 $result = mysqli_query($db,$query);
 while($result2 = mysqli_fetch_assoc($result)){
     $colleges[] = $result2; 	//places everything in the array
@@ -33,7 +44,7 @@ else{
 }
 $usersQuery = "SELECT users.id , users.rol , users.naam,
             colleges.id AS college_id,
-            scholen.id AS school_id                  
+            scholen.id AS school_id
             FROM users
             INNER JOIN klassen
             ON klassen.id = users.klassen_id
@@ -46,6 +57,25 @@ $sqlResult = mysqli_query($db, $usersQuery);
 $users = [];
 while($row = mysqli_fetch_assoc($sqlResult)){
     $users[] = $row; 	//places everything in the array
+}
+
+
+// query for unverified students
+$query = 
+"   SELECT users.id, users.naam, users.email, users.klassen_id, users.rol,
+    klassen.naam AS klas_naam,
+    colleges.naam AS college_naam
+    FROM `users`
+    INNER JOIN klassen
+	ON users.klassen_id = klassen.id
+    INNER JOIN colleges
+	ON klassen.colleges_id = colleges.id
+    WHERE users.rol = 'ost'"; 
+
+$result = mysqli_query($db,$query);
+$unverifiedStudents = [];
+while($row = mysqli_fetch_assoc($result)){
+    $unverifiedStudents[] = $row; 	//places everything in the array
 }
 ?>
 <!DOCTYPE html>
@@ -69,16 +99,23 @@ while($row = mysqli_fetch_assoc($sqlResult)){
         <div class="section">
             <div class="card">
                 <div class="card-content">
-                <h3>placeholder text placeholder text placeholder text</h3>
+                <h3><?=$schoolNaam?></h3>
                 </div>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
+                        <?php if($rol == "sch" || $rol == 'adm'){?>
                         <li class="tab"><a class="<?=$activeTab['colleges']?>" href="#colleges">Colleges</a></li>
                         <li class="tab"><a class="<?=$activeTab['leraren']?>" href="#leraren">leraren</a></li>
+                        <?php }
+                        if ($rol == "doc" || $rol == 'adm'){
+                        ?>
+                        <li class="tab"><a class="<?=$activeTab['studenten']?>" href="#studenten">studenten</a></li>
+                        <?php } ?>
                     </ul>
                     </div>
                     <div class="card-content grey lighten-4">
                     <!--begin Tabje colleges-->
+                    <?php if($rol == "sch" || $rol == 'adm'){?>
                     <div id="colleges"> 
                         <table id="collegeTable">
                         <thead>
@@ -195,10 +232,10 @@ while($row = mysqli_fetch_assoc($sqlResult)){
                                <td class="valign-wrapper">
                                     <div class="row">
                                         <div class="col s12">
-                                            <a id="verifiedButton<?=$x; ?>" class="btn waves-effect <?= properButtonColorForRole($users[$x]['rol']); ?>"
+                                            <a id="verifyLeraren<?=$x; ?>" class="btn waves-effect <?= properButtonColorForRole($users[$x]['rol']); ?>"
                                             onclick="updateVerifiedStatusAjax(
                                                 <?= $users[$x]['id'];?>,
-                                                '<?=$x; ?>')">
+                                                '<?=$x; ?>','verifyLeraren')">
                                                 <?= properRole($users[$x]['rol']);?>
                                             </a> 
                                         </div>
@@ -211,6 +248,59 @@ while($row = mysqli_fetch_assoc($sqlResult)){
                         </tbody>
                         </table>
                     </div>
+                    <?php } if ($rol == "doc" || $rol == 'adm'){
+                        ?>
+                    <!--begin tabje studenten-->
+                    <div id="studenten">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Naam</th>
+                                <th>College</th>                            
+                                <th>Klas</th>
+                                <th>rol</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <?php $idCounter = 0;
+                                for ($i=0; $i < count($unverifiedStudents); $i++) { 
+                                ?>
+                                    <tr class="">
+                                        <td class="valign-wrapper"><?php echo $unverifiedStudents[$i]['naam'];?></td>
+                                        <td>
+                                        <!--getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')-->
+                                            <select onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect<?php echo $idCounter;?>', 'klas')">
+                                                <option value="" disabled selected>Kies college</option>
+                                                <?php 
+                                                for($j=0;$j < count($colleges); $j++)
+                                                {?>
+                                                    <option value="<?= $colleges[$j]['id']?>"><?= $colleges[$j]['naam']?></option>
+                                                <?php }
+                                                ?>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select id="klasSelect<?php echo $idCounter;?>">
+                                                <option value="" disabled selected>Selecteer klas</option>
+                                            </select>
+                                        </td>                                    
+                                        <td class="valign-wrapper">
+                                            <a style="width: 200px;" id="verifiedButton<?php echo $idCounter; ?>" class="btn waves-effect <?php echo properButtonColorForRole($unverifiedStudents[$i]['rol']); ?>"
+                                            onclick="updateVerifiedStatusAjax(
+                                                <?php echo $unverifiedStudents[$i]['id'];?>, 
+                                                '<?php echo $idCounter; $idCounter++;?>','verifiedButton'                                            
+                                            )">
+                                                <?php echo properRole($unverifiedStudents[$i]['rol']);?>
+                                            </a>                                        
+                                        </td>                                    
+                                    </tr>
+                                <?php
+                            }?>                       
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>

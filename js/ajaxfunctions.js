@@ -141,7 +141,7 @@ function editCollegeAjax(collegeIdNr) {
     }
 }
 
-function updateVerifiedStatusAjax(userId, rowCounter){
+function updateVerifiedStatusAjax(userId, rowCounter,idName){
     console.log(userId);
 
         $.ajax({
@@ -156,7 +156,7 @@ function updateVerifiedStatusAjax(userId, rowCounter){
                 alert();
             }
         })
-        var correspondingButton = $("#verifiedButton" + rowCounter);
+        var correspondingButton = $("#"+ idName + rowCounter);
         console.log(correspondingButton);
             if( $(correspondingButton).hasClass('red') )
             {
