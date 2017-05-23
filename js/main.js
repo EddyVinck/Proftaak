@@ -135,3 +135,8 @@ function initSideNav(){
   });
   extendableCollapsableOnSmallScreen();
 }
+function initImageSlider() {
+    $(document).ready(function(){
+      $('.slider').slider();
+    });
+}

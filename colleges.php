@@ -30,10 +30,6 @@ while($row = mysqli_fetch_assoc($result)){
 // dump($colleges);
 // dump($schoolInfo);
 
-
-
-
-
 ?>
 <!DOCTYPE html>
 
@@ -79,10 +75,8 @@ while($row = mysqli_fetch_assoc($result)){
           <div class="col s12 m4">
           <a href="projecten_lijst.php?college=<?php echo $colleges[$i]['college_id']?>" class="white-text">
               <div class="card-panel teal">
-                <span >
-                    
-                        <?php echo $colleges[$i]['college_naam']?>
-                   
+                <span>                   
+                    <?php echo $colleges[$i]['college_naam']?>
                 </span>                
               </div>
              </a>

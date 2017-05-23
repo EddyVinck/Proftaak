@@ -203,5 +203,6 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 </body>
 <script>
   initSideNav();
+  initImageSlider();
 </script>
 </html>

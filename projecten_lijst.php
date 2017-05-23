@@ -50,11 +50,8 @@ while($row = mysqli_fetch_assoc($result)){
     $data[] = $row; 	//places everything in the array
 }
 
-if(isset($_GET['college'])){
-    if(is_numeric($_GET['college']))
-    {
+if(isset($_GET['college']) && is_numeric($_GET['college'])){
         $pageColor = changePageColors($db, $_GET['college']);
-    }
 } else {
     $pageColor = changePageColors($db);
 }
