@@ -88,9 +88,9 @@ function properRole($rol){
             break;
     }
 }
-function createHeader(){?>
+function createHeader($color = 'teal') { ?>
     <header>    
-        <nav class="top-nav teal">
+        <nav class="top-nav <?php echo $color; ?>">
             <div class="nav-wrapper">
                 <div class="container">
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -132,8 +132,8 @@ function createHeader(){?>
     </ul>
     </sidenav>
 <?php }
-function createFooter(){?>
-    <footer class="page-footer teal">
+function createFooter($color = 'teal'){?>
+    <footer class="page-footer <?php echo $color; ?>">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
@@ -182,4 +182,29 @@ function properButtonColorForRole($rol){
             return "butt";
             break;
     }
+}
+/*
+geef de database connectie mee
+geef daarna het correcte collegeId mee waarop de kleuren moeten
+gebaseerd mits dit van toepassing is
+*/
+function changePageColors($connection, $collegeId = false)
+{
+    if($collegeId != false){
+        if(is_numeric($collegeId)) 
+        {
+            $query = 
+            "   SELECT kleur
+                FROM colleges
+                WHERE id = $collegeId";
+            $result = mysqli_query($connection, $query);
+            while($row = mysqli_fetch_assoc($result))
+            {
+                $myColor = $row;
+            }
+        }
+    } else {
+        return $myColor = 'teal';
+    }
+    return $myColor['kleur'];
 }
