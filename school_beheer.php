@@ -227,6 +227,7 @@ while($row = mysqli_fetch_assoc($sqlResult)){
 
 <script>
     initializeSelectElements();
+    initSideNav();
 </script>
 </body>
 </html>
