@@ -13,13 +13,13 @@ if(isset($_GET['college']) && is_numeric($_GET['college']) )
     checkSchool();
 }
 
-dump($_SESSION);
+// dump($_SESSION);
 
 
 $query = 
 "   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status, projecten.omschrijving,
     users.naam AS user_naam, 
-    colleges.naam AS college_naam, 
+    colleges.naam AS college_naam,
     images.path AS img_path
     FROM projecten
 	RIGHT OUTER JOIN hulpcolleges
@@ -51,6 +51,21 @@ while($row = mysqli_fetch_assoc($result)){
     $data[] = $row; 	//places everything in the array
 }
 
+
+
+if(isset($_GET['college'])){
+    if(is_numeric($_GET['college']))
+    {
+        $pageColor = changePageColors($db, $_GET['college']);
+    }
+} else {
+    $pageColor = changePageColors($db);
+}
+
+
+
+// dump($pageColor, __FILE__, __LINE__);
+
 // dump($data);
 ?>
 <!DOCTYPE html>
@@ -67,7 +82,7 @@ while($row = mysqli_fetch_assoc($result)){
     </head>
 </head>
 <body >
-<?php createHeader();?>
+<?php createHeader($pageColor);?>
 <main>
   <div class="container">
     <div class="section">
@@ -92,7 +107,7 @@ while($row = mysqli_fetch_assoc($result)){
           <div class="col s12">
             <ul id="collapsable" class="collapsible popout" data-collapsible="accordion">                   
                 <li>
-                    <div class="card-panel teal lighten-2 black-text">
+                    <div class="card-panel <?php echo $pageColor; ?> lighten-2 black-text">
                         <div class="row valign-wrapper " style="margin-bottom: 0">
                             <div class="col m2 s12 truncate no-padding">Projectnaam</div>
                             <div class="col m2 hide-on-small-only">Projectstarter</div>
@@ -183,7 +198,7 @@ while($row = mysqli_fetch_assoc($result)){
     </div>
   </div>
 </main>
-<?php createFooter();?>
+<?php createFooter($pageColor);?>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/ajaxfunctions.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
