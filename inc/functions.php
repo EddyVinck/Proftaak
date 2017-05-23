@@ -208,3 +208,38 @@ function changePageColors($connection, $collegeId = false)
     }
     return $myColor['kleur'];
 }
+function changeFontColorBasedOn($pageColor) {
+    switch ($pageColor) {
+        case 'red':
+            return 'black';
+            break;
+        case 'red':
+            return 'black';
+            break;
+        case 'red':
+            return 'black';
+            break;
+        case 'red':
+            return 'black';
+            break;
+        case 'red':
+            return 'black';
+            break;
+        case 'red':
+            return 'black';
+            break;
+        case 'red':
+            return 'black';
+            break;
+        case 'red':
+            return 'black';
+            break;
+        case 'red':
+            return 'black';
+            break;
+        default:
+            return 'black';            
+            break;
+    }
+}
+
