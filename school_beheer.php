@@ -2,7 +2,6 @@
 include("inc/functions.php");
 $db =  ConnectToDatabase();
 checkSession();
-dump($_SESSION);
 $activeTab = [
     'colleges' => "",
     'leraren' =>  "",
@@ -15,7 +14,7 @@ if (isset($_GET['active'])){
 else{
     $activeTab['colleges'] = "active";
 }
-if($_SESSION['rol'] != "sch" && $_SESSION['rol'] != "doc"){
+if($_SESSION['rol'] != "sch" && $_SESSION['rol'] != "doc" && $_SESSION['rol'] != "adm"){
     header("location: unauthorized.php");
 }
 //getting vars from the session
@@ -30,7 +29,6 @@ if($row = mysqli_fetch_assoc($result)){
     $schoolNaam = $row['naam'];
 }
 
-
 $query = "SELECT * FROM colleges WHERE scholen_id = $schoolId";
 $result = mysqli_query($db,$query);
 while($result2 = mysqli_fetch_assoc($result)){
@@ -42,6 +40,12 @@ if(isset($_GET['doc'])){
 else{
     $docentenVerificatie = "odo";
 }
+if(isset($_GET['stu'])){
+    $studentenVerificatie = $_GET['stu'];
+}
+else{
+    $studentenVerificatie = "ost";
+}
 $usersQuery = "SELECT users.id , users.rol , users.naam,
             colleges.id AS college_id,
             scholen.id AS school_id
@@ -52,31 +56,34 @@ $usersQuery = "SELECT users.id , users.rol , users.naam,
             ON klassen.colleges_id = colleges.id
             INNER JOIN scholen
             ON colleges.scholen_id = scholen.id
-            WHERE users.rol = '$docentenVerificatie'  ORDER BY users.id";
+            WHERE users.rol = '$docentenVerificatie' AND scholen.id = $schoolId  ORDER BY users.id";
 $sqlResult = mysqli_query($db, $usersQuery);
 $users = [];
 while($row = mysqli_fetch_assoc($sqlResult)){
     $users[] = $row; 	//places everything in the array
 }
 
-
 // query for unverified students
 $query = 
-"   SELECT users.id, users.naam, users.email, users.klassen_id, users.rol,
+"SELECT users.id, users.naam, users.email, users.klassen_id, users.rol,
     klassen.naam AS klas_naam,
-    colleges.naam AS college_naam
+    colleges.naam AS college_naam,
+    scholen.id AS school_id
     FROM `users`
     INNER JOIN klassen
 	ON users.klassen_id = klassen.id
     INNER JOIN colleges
 	ON klassen.colleges_id = colleges.id
-    WHERE users.rol = 'ost'"; 
+    INNER JOIN scholen
+    ON colleges.scholen_id = scholen.id
+    WHERE users.rol = '$studentenVerificatie' AND scholen.id = $schoolId"; 
 
 $result = mysqli_query($db,$query);
 $unverifiedStudents = [];
 while($row = mysqli_fetch_assoc($result)){
     $unverifiedStudents[] = $row; 	//places everything in the array
 }
+
 ?>
 <!DOCTYPE html>
 <head>
@@ -249,9 +256,20 @@ while($row = mysqli_fetch_assoc($result)){
                         </table>
                     </div>
                     <?php } if ($rol == "doc" || $rol == 'adm'){
-                        ?>
+                    ?>
                     <!--begin tabje studenten-->
                     <div id="studenten">
+                        <div class="row">
+                            <?php if ($studentenVerificatie == "stu"){?>
+                                <div class="col s12 m3 l3">
+                                    <a href="?stu=ost&active=studenten" class="waves-effect waves-light btn">ongeverifieerd</a>
+                                </div>
+                            <?php }else if ($studentenVerificatie == "ost"){ ?>
+                                <div class="col s12 m3 l3">
+                                    <a href="?stu=stu&active=studenten" class="waves-effect waves-light btn">geverifieerd</a>
+                                </div>
+                            <?php } ?>
+                        </div>
                         <table>
                             <thead>
                             <tr>
