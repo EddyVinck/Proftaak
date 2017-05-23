@@ -159,5 +159,6 @@ dump($unverifiedStudents);
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script>
     initializeSelectElements();
+    initSideNav();
 </script>
 </body>
