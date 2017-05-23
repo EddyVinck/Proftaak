@@ -77,13 +77,15 @@ while($row = mysqli_fetch_assoc($result)){
         <?php } ?>
         <?php for ($i=0; $i < count($colleges); $i++) {?>
           <div class="col s12 m4">
+          <a href="projecten_lijst.php?college=<?php echo $colleges[$i]['college_id']?>" class="white-text">
               <div class="card-panel teal">
                 <span >
-                    <a href="projecten_lijst.php?college=<?php echo $colleges[$i]['college_id']?>" class="white-text">
+                    
                         <?php echo $colleges[$i]['college_naam']?>
-                    </a>
+                   
                 </span>                
               </div>
+             </a>
           </div>
         <?php } ?>
       </div>
