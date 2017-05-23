@@ -28,9 +28,10 @@ function addTableRow(){
     var newID = parseInt( lastRow.id) + 1;
     $("#collegeTable > tbody").append(
         '<tr id="newRow'+newRowCount+'">' +
-            '<td>'+
+            '<td class="center" id="newButtonDiv'+newRowCount+'"></td>'+
+            '<td class="center">'+
                 '<div class="row">' +
-                '<form method="POST"  id="newButtonDiv'+newRowCount+'">' +
+                '<form method="POST">' +
                 '<div  class="input-field beheer-inputs col s2">' +
                     '<input ' +
                     'id="newInput'+newRowCount+'" ' +
@@ -40,9 +41,9 @@ function addTableRow(){
                     'data-success=""' +
                     'for="newInput'+newRowCount+'"> </label>' +
                 '</div>' +
-            '</td><td>'+
+            '</td><td class="center">'+
                 '<input class="newColorPicker'+colorpickerCount+'" value="#2196f3"/>'+
-            '</td><td id="newTd'+newRowCount+'">'+
+            '</td><td class="center" id="newTd'+newRowCount+'">'+
             '</td>'+
         '</tr>'+
         '</form>' +

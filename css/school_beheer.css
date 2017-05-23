@@ -15,3 +15,9 @@
 #saveAllRows{
     margin-left: 20px;
 }
+.inputs{
+    position:relative !important;
+}
+#saveAllRows{
+    margin: 0px !important
+}

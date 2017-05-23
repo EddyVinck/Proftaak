@@ -124,20 +124,23 @@ while($row = mysqli_fetch_assoc($result)){
                     <!--begin Tabje colleges-->
                     <?php if($rol == "sch" || $rol == 'adm'){?>
                     <div id="colleges"> 
-                        <table id="collegeTable">
+                        <table id="collegeTable" class="responsive-table">
                         <thead>
                         <tr>
-                            <th>Naam</th>
-                            <th>Kleur</th>
-                            <th>Selecteer</th>
+                            <th class="center" style="width: 15%">Bewerk</th>
+                            <th style="width: 45%">Naam</th>
+                            <th style="width: 25%">Kleur</th>
+                            <th class="center" style="width: 15%">Selecteer</th>
                         </tr>
                         </thead>
                         <tfoot> 
                             <tr>
-                                <td>
+                                <td class="center">
                                     <a class="btn-floating btn-large red" onclick="addTableRow();">
                                     <i class="material-icons">add</i>
                                     </a>
+                                </td>
+                                <td>
                                     <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
                                     data-position="bottom"
                                     data-delay="10"
@@ -145,7 +148,8 @@ while($row = mysqli_fetch_assoc($result)){
                                     onclick="">
                                         <i class="material-icons">save</i>
                                     </a>
-                                    <td></td><td>
+                                <td></td>
+                                <td class="center">
                                     <a id="deleteSelectedRows" class="btn-floating btn-large red tooltipped" 
                                     data-position="bottom"
                                     data-delay="10"
@@ -153,10 +157,6 @@ while($row = mysqli_fetch_assoc($result)){
                                     onclick="">
                                         <i class="material-icons">delete</i>
                                     </a>
-                                    </td>
-                                </td>
-                                <td>
-                                    
                                 </td>
                             </tr>
                         </tfoot>    
@@ -165,10 +165,18 @@ while($row = mysqli_fetch_assoc($result)){
                         for($tableRow=0;$tableRow<count($colleges);$tableRow++){
                         ?>
                             <tr id="<?=$tableRow?>">
-                                <td>
-                                <div class="row">
+                                <td class="center">
+                                <a onclick="editCollegeAjax(<?=$colleges[$tableRow]['id']?>);" 
+                                        class="btn-floating btn-medium waves-effect waves-light red tooltipped"
+                                        data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om deze rij te bewerken">
+                                        <i class="material-icons">edit</i></a>
+                                </td>
+                                <td class="center">
+                                <div class="row center ">
                                     <form method="POST">
-                                    <div  class="input-field beheer-inputs col s2">
+                                    <div  class="input-field beheer-inputs col s2 center">
                                         <input value="<?=$colleges[$tableRow]['naam']?>" 
                                         id="input<?=$colleges[$tableRow]['id']?>" 
                                         type="text" class="validate">
@@ -177,20 +185,17 @@ while($row = mysqli_fetch_assoc($result)){
                                         data-success=""
                                         for="input<?=$colleges[$tableRow]['id']?>"> </label>
                                     </div>
-                                    <a onclick="editCollegeAjax(<?=$colleges[$tableRow]['id']?>);" 
-                                        class="btn-floating btn-medium waves-effect waves-light red">
-                                        <i class="material-icons">edit</i></a>
+                                    
                                     </form>
                                 </div>
                                 </td>
-                                <td>
+                                <td class="center">
                                     <input id="col<?=$colleges[$tableRow]['id']?>" class='colorpicker' value='<?=$colleges[$tableRow]['kleur']?>'/>
                                 </td>
-                                <td>
+                                <td class="center">
                                     <input class="filled-in" type="checkbox" id="select<?=$colleges[$tableRow]['id']?>"/>
                                     <label for="select<?=$colleges[$tableRow]['id']?>"></label>
                                 </td>
-
                             </tr>
                         <?php }?>
                         </tbody>
@@ -209,7 +214,7 @@ while($row = mysqli_fetch_assoc($result)){
                             </div>
                         <?php } ?>
                         </div>
-                        <table class="centered" id="lerarenTabel">
+                        <table  class="centered responsive-table" id="lerarenTabel">
                         <thead>
                         <tr>
                             <th>Naam</th>
@@ -270,7 +275,7 @@ while($row = mysqli_fetch_assoc($result)){
                                 </div>
                             <?php } ?>
                         </div>
-                        <table>
+                        <table  class="responsive-table">
                             <thead>
                             <tr>
                                 <th>Naam</th>
