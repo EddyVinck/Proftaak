@@ -322,15 +322,13 @@ if(isset($_SESSION['college_id']))
                                                 $options = [];
                                                 while ($row = mysqli_fetch_assoc($result)){
                                                     $options[] = $row;
-                                                }
-                                                                                                                                                                                                                             
+                                                }                                                                                                                                                                                                                             
                                                 for($k = 0; $k < count($options); $k++){?>
                                                     <option value=""><?= $options[$k]['naam']?></option><?php
                                                 }
                                                 dump($options);
                                             ?>                                    
-                                            </select>
-                                            
+                                            </select>                                            
                                         </td>                                    
                                         <td class="valign-wrapper">
                                             <a style="width: 200px;" id="verifiedButton<?php echo $i; ?>" class="btn waves-effect <?php echo properButtonColorForRole($unverifiedStudents[$i]['rol']); ?>"

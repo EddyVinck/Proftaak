@@ -119,7 +119,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
             </div>      
             <div class="row">
                 <div class="col s12 center">
-                    <p>
+                    <p id="omschrijving">
                         <?php echo $projectData[0]['omschrijving']; ?>
                     </p>
                 </div>
@@ -206,20 +206,27 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                         <?php echo $projectData[0]['status'];?>
                     </p>
                 </div>
+                <div class="col s12">
+                    <a onclick="renderPDF()" class="btn waves-effect green">Maak PDF</a>
+                </div>
             </div>
         </div>
       </div>      
   </div>
 </main>
 <?php createFooter($pageColor);?>
-  <script type="text/javascript" src="js/main.js"></script>
-  <script type="text/javascript" src="js/ajaxfunctions.js"></script>
-  <script type="text/javascript" src="js/upload.js"></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/ajaxfunctions.js"></script>
+<script type="text/javascript" src="js/upload.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
 </body>
 <script>
   initSideNav();
   initImageSlider();
 </script>
+<!--jsPDF stuff-->
+<script type="text/javascript" src="js/jsPDF-1.3.2/dist/jspdf.min.js"></script>
+<script type="text/javascript" src="js/jsPDF-1.3.2/plugins/split_text_to_size.js"></script>
+<script type="text/javascript" src="js/jsPdfTest.js"></script>
 </html>
