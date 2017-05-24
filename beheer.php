@@ -46,7 +46,7 @@ if(isset($_GET['stu'])){
 else{
     $studentenVerificatie = "ost";
 }
-$usersQuery = "SELECT users.id , users.rol , users.naam,
+$docentenQuery = "SELECT users.id , users.rol , users.naam,
             colleges.id AS college_id,
             scholen.id AS school_id
             FROM users
@@ -57,17 +57,17 @@ $usersQuery = "SELECT users.id , users.rol , users.naam,
             INNER JOIN scholen
             ON colleges.scholen_id = scholen.id
             WHERE users.rol = '$docentenVerificatie' AND scholen.id = $schoolId  ORDER BY users.id";
-$sqlResult = mysqli_query($db, $usersQuery);
-$users = [];
+$sqlResult = mysqli_query($db, $docentenQuery);
+$docenten = [];
 while($row = mysqli_fetch_assoc($sqlResult)){
-    $users[] = $row; 	//places everything in the array
+    $docenten[] = $row; 	//places everything in the array
 }
 
 // query for unverified students
 $query = 
 "SELECT users.id, users.naam, users.email, users.klassen_id, users.rol,
     klassen.naam AS klas_naam,
-    colleges.naam AS college_naam,
+    colleges.naam AS college_naam, colleges.id AS college_id,
     scholen.id AS school_id
     FROM `users`
     INNER JOIN klassen
@@ -84,7 +84,7 @@ while($row = mysqli_fetch_assoc($result)){
     $unverifiedStudents[] = $row; 	//places everything in the array
 }
 
-dump($_SESSION);
+// dump($_SESSION);
 
 if(isset($_SESSION['college_id']))
 {
@@ -232,17 +232,17 @@ if(isset($_SESSION['college_id']))
                         </thead>
                         <tbody id="lerarenTbody">
                             <?php 
-                            for($x=0;$x<count($users);$x++){
+                            for($x=0;$x<count($docenten);$x++){
                             ?>
                             <tr>
                                 <td>
-                                    <?=$users[$x]['naam']?>
+                                    <?=$docenten[$x]['naam']?>
                                 </td>
                                 <td>
-                                    <select name="colleges" class="collegeSelect" onchange="changeLeraarCollege(this.value,<?=$users[$x]['id']?>);">
+                                    <select name="colleges" class="collegeSelect" onchange="changeLeraarCollege(this.value,<?=$docenten[$x]['id']?>);">
                                         <?php
                                         for($y=0;$y<count($colleges);$y++){
-                                            if ($users[$x]['college_id'] == $colleges[$y]['id']){?>
+                                            if ($docenten[$x]['college_id'] == $colleges[$y]['id']){?>
                                                 <option selected value="<?=$colleges[$y]['id']?>"><?=$colleges[$y]['naam']?></option>
                                         <?php } else{?>
                                                 <option  value="<?=$colleges[$y]['id']?>"><?=$colleges[$y]['naam']?></option>
@@ -252,11 +252,11 @@ if(isset($_SESSION['college_id']))
                                <td class="valign-wrapper">
                                     <div class="row">
                                         <div class="col s12">
-                                            <a id="verifyLeraren<?=$x; ?>" class="btn waves-effect <?= properButtonColorForRole($users[$x]['rol']); ?>"
+                                            <a id="verifyLeraren<?=$x; ?>" class="btn waves-effect <?= properButtonColorForRole($docenten[$x]['rol']); ?>"
                                             onclick="updateVerifiedStatusAjax(
-                                                <?= $users[$x]['id'];?>,
+                                                <?= $docenten[$x]['id'];?>,
                                                 '<?=$x; ?>','verifyLeraren')">
-                                                <?= properRole($users[$x]['rol']);?>
+                                                <?= properRole($docenten[$x]['rol']);?>
                                             </a> 
                                         </div>
                                     </div>
@@ -292,17 +292,17 @@ if(isset($_SESSION['college_id']))
                                 <th>rol</th>
                             </tr>
                             </thead>
-
                             <tbody>
-                            <?php $idCounter = 0;
+                            <?php
+                            // dump($unverifiedStudents);
                                 for ($i=0; $i < count($unverifiedStudents); $i++) { 
                                 ?>
                                     <tr class="">
                                         <td class="valign-wrapper"><?php echo $unverifiedStudents[$i]['naam'];?></td>
                                         <td>
                                         <!--getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')-->
-                                            <select onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect<?php echo $idCounter;?>', 'klas')">
-                                                <option value="" disabled selected>Kies college</option>
+                                            <select id="collegeSelect<?=$i?>" onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect<?php echo $i;?>', 'klas')">
+                                                <option value="" selected><?= $unverifiedStudents[$i]['college_naam']?></option>
                                                 <?php 
                                                 for($j=0;$j < count($colleges); $j++)
                                                 {?>
@@ -312,15 +312,31 @@ if(isset($_SESSION['college_id']))
                                             </select>
                                         </td>
                                         <td>
-                                            <select id="klasSelect<?php echo $idCounter;?>">
-                                                <option value="" disabled selected>Selecteer klas</option>
+                                            <select id="klasSelect<?php echo $i;?>" 
+                                            onchange="changeStudentKlas(this.value,<?= $unverifiedStudents[$i]['id']?>);">
+                                                <option value="" disabled selected><?= $unverifiedStudents[$i]['klas_naam']?></option>
+                                                <?php
+                                                $collegeVanKlas = $unverifiedStudents[$i]['college_id'];
+                                                $query = "SELECT naam FROM klassen WHERE colleges_id = $collegeVanKlas AND rol = 'studenten'";
+                                                $result = mysqli_query($db, $query);
+                                                $options = [];
+                                                while ($row = mysqli_fetch_assoc($result)){
+                                                    $options[] = $row;
+                                                }
+                                                                                                                                                                                                                             
+                                                for($k = 0; $k < count($options); $k++){?>
+                                                    <option value=""><?= $options[$k]['naam']?></option><?php
+                                                }
+                                                dump($options);
+                                            ?>                                    
                                             </select>
+                                            
                                         </td>                                    
                                         <td class="valign-wrapper">
-                                            <a style="width: 200px;" id="verifiedButton<?php echo $idCounter; ?>" class="btn waves-effect <?php echo properButtonColorForRole($unverifiedStudents[$i]['rol']); ?>"
+                                            <a style="width: 200px;" id="verifiedButton<?php echo $i; ?>" class="btn waves-effect <?php echo properButtonColorForRole($unverifiedStudents[$i]['rol']); ?>"
                                             onclick="updateVerifiedStatusAjax(
                                                 <?php echo $unverifiedStudents[$i]['id'];?>, 
-                                                '<?php echo $idCounter; $idCounter++;?>','verifiedButton'                                            
+                                                '<?php echo $i;?>','verifiedButton'                                            
                                             )">
                                                 <?php echo properRole($unverifiedStudents[$i]['rol']);?>
                                             </a>                                        
@@ -339,13 +355,10 @@ if(isset($_SESSION['college_id']))
     
 </main>
 <?php createFooter($pageColor);?>
-
 <!--https://code.jquery.com/jquery-3.2.1.js ???-->
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
-
-
 <script>
     initializeSelectElements();
     initSideNav();

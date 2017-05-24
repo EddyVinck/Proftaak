@@ -189,4 +189,19 @@ function changeLeraarCollege(collegeID,userID){
         console.log(msg);
     })
 }
-
+function changeStudentKlas(klasId, userId){
+    var send = $.ajax({
+        url: "changeStudentKlas.ajax.php",
+        type: "post",
+        dataType: "json",
+        data: {"klasId":klasId, "userId":userId},
+        error: function(xhr, text, error) {
+            console.warn(xhr.responseText);
+            console.log(text);
+            console.log(error);
+        }
+    });        
+        send.done(function(msg) {
+            console.log(msg);
+    })
+}
