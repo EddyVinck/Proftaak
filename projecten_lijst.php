@@ -2,10 +2,18 @@
 <?php
 $db = ConnectToDatabase();
 checkSession();
-if($_SESSION['rol'] == ""){
+$rol = $_SESSION['rol'];
+if($rol == ""){
     header("location: index.php");
 }
-
+//sets status that is used in the query, if the user is a student, unverified is automatically changed to "bezig"
+$status = "bezig";
+if(isset($_GET['status'])){
+    $status = $_GET['status'];
+    if($status == "ongeverifieerd" && $rol == "stu"){
+        $status = "bezig";
+    }
+}
 # check if college in $_SESSION belongs to the same school as
 # the school that corresponds to the college from $_GET variable
 if(isset($_GET['college']) && is_numeric($_GET['college']) )
@@ -14,6 +22,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college']) )
 }
 
 // dump($_SESSION);
+
 
 $query = 
 "   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status, projecten.omschrijving,
@@ -37,11 +46,15 @@ $query =
         // check of de ingevulde get variabele wel een nummer is
         if(is_numeric($_GET['college'])){
             $college = $_GET['college'];
-            $query .= ("    WHERE hulpcolleges.colleges_id = " . $college
-                    ."      OR colleges.id = ".$college);
-        }        
-    }    
-    $query .= " GROUP BY projecten.id"; 
+            $query .= (" WHERE (hulpcolleges.colleges_id = " . $college
+                    ." OR colleges.id = ".$college . ") AND projecten.status = '$status'");
+        }
+    }
+    else{
+        $query .= " WHERE projecten.status = '$status'";
+        
+    }  
+    $query .= " GROUP BY projecten.id";
     // op de lege plek komt de where college = 1 als je die hebt
 
 $result = mysqli_query($db,$query);
@@ -78,13 +91,44 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
   <div class="container">
     <div class="section">
       <div class="row valign-wrapper" style="padding: 0 24px;">
-            <div class="col s8">
-                <?php /*echo "<h4 class='no-padding'>"."Alle colleges"."</h4>" */?>
-                <?php // check welk college het college uit $_GET is ?>
-            </div>            
+            <?php if ($status == "bezig" || $status == "ongeverifieerd"){?>
+                <div class="col s3" style="margin: 0px;">
+                    <a href="javascript:setParam('status', 'gearchiveerd');" 
+                    class="btn waves-effect waves-light purple darken-1 left" 
+                    name="action" >Gearchiveerd
+                        <i class="material-icons right">archive</i>                    
+                    </a>
+                </div>
+            <?php }else if ($status == "gearchiveerd"){?>
+                <div class="col s3" style="margin: 0px;">
+                    <a href="javascript:setParam('status', 'bezig');" 
+                    class="btn waves-effect waves-light purple darken-1 left" 
+                    name="action" >bezig
+                        <i class="material-icons right">archive</i>                    
+                    </a>
+                </div>
+            <?php }
+            if ($rol == "adm" || $rol == "sch" || $rol == "doc"){
+                if ($status == "bezig" || $status == "gearchiveerd"){?>
+                    <div class="col s3" style="margin: 0px;">
+                        <a href="javascript:setParam('status', 'ongeverifieerd');" 
+                        class="btn waves-effect waves-light purple darken-1 left" 
+                        name="action" >Ongeverifieerd
+                            <i class="material-icons right">close</i>                    
+                        </a>
+                    </div>
+                <?php }else if ($status == "ongeverifieerd"){?>
+                    <div class="col s3" style="margin: 0px;">
+                        <a href="javascript:setParam('status', 'bezig');" 
+                        class="btn waves-effect waves-light purple darken-1 left" 
+                        name="action" >Geverifieerd
+                            <i class="material-icons right">check</i>                    
+                        </a>
+                    </div>
+        <?php   }
+            }?>
             <div class="col s4">
-                <a class="btn waves-effect waves-light purple darken-1 right" name="action" >Nieuw Project
-                    <!--<i class="material-icons right">open_in_new</i>-->
+                <a  class="btn waves-effect waves-light purple darken-1 right" name="action" >Nieuw Project
                     <i class="material-icons right">library_add</i>                    
                 </a>
             </div>
@@ -173,9 +217,10 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
   </div>
 </main>
 <?php createFooter($pageColor);?>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/ajaxfunctions.js"></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 </body>
 <script>

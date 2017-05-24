@@ -8,10 +8,13 @@ if($_SESSION['rol'] == ""){
 $connection = ConnectToDatabase();
 $projectId = $_GET['id'];
 $query = 
-"   SELECT projecten.id AS project_id, projecten.omschrijving, projecten.omschrijving_nodig,
+"   SELECT projecten.id AS project_id, 
+    projecten.omschrijving, projecten.omschrijving_nodig,
+    projecten.status,
     users.naam AS projectstarter,
     klassen.id AS klas_id,
-    colleges.naam AS college_naam, colleges.id AS college_id
+    colleges.naam AS college_naam,
+     colleges.id AS college_id
     FROM projecten
     INNER JOIN users
     ON projecten.users_id = users.id
@@ -178,7 +181,6 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                     <div class="row center-align">
                         <h5>Opleidingen nodig</h5>
                     </div>
-                    <div class="divider"></div>
                     <tbody >
                         <!--deze dingen ook in php afgekort moeten worden-->
                         <!--want als je bv de opleiding heel lang maakt is-->
@@ -192,12 +194,27 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                 </table>
             </div>
         </div>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 center">
+                    <h5>Status</h5>
+                </div>
+            </div>      
+            <div class="row">
+                <div class="col s12">
+                    <p>
+                        <?php echo $projectData[0]['status'];?>
+                    </p>
+                </div>
+            </div>
+        </div>
       </div>      
   </div>
 </main>
 <?php createFooter($pageColor);?>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/ajaxfunctions.js"></script>
+  <script type="text/javascript" src="js/upload.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 </body>
