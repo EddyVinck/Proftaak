@@ -95,7 +95,7 @@ function createHeader($color = 'teal') { ?>
                     <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
                     <li><a href="colleges.php" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
                     <li><a href="#inbox.php" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
-                    <li><a href="school_beheer.php" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">settings</i> Beheer </a></li>
+                    <li><a href="beheer.php" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">settings</i> Beheer </a></li>
                     <li><a href="index.php?logout=true" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
                 </ul>
                 </div>       
@@ -118,7 +118,7 @@ function createHeader($color = 'teal') { ?>
             <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
             <li><a href="colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
             <li><a href="#inbox.php" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
-            <li><a href="school_beheer.php"><i class="small material-icons left">settings</i> Beheer </a></li>
+            <li><a href="beheer.php"><i class="small material-icons left">settings</i> Beheer </a></li>
             <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             <li><a href="#!">Second Link</a></li>
             <li><div class="divider"></div></li>

@@ -84,6 +84,14 @@ while($row = mysqli_fetch_assoc($result)){
     $unverifiedStudents[] = $row; 	//places everything in the array
 }
 
+dump($_SESSION);
+
+if(isset($_SESSION['college_id']))
+{
+    $collegeId = $_SESSION['college_id'];
+    $pageColor = changePageColors($db, $collegeId);
+}
+
 ?>
 <!DOCTYPE html>
 <head>
@@ -100,7 +108,7 @@ while($row = mysqli_fetch_assoc($result)){
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-<?php createHeader();?>
+<?php createHeader($pageColor);?>
 <main>
     <div class="container">
         <div class="section">
@@ -330,7 +338,7 @@ while($row = mysqli_fetch_assoc($result)){
     </div>
     
 </main>
-<?php createFooter();?>
+<?php createFooter($pageColor);?>
 
 <!--https://code.jquery.com/jquery-3.2.1.js ???-->
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>
