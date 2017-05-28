@@ -228,5 +228,5 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <!--jsPDF stuff-->
 <script type="text/javascript" src="js/jsPDF-1.3.2/dist/jspdf.min.js"></script>
 <script type="text/javascript" src="js/jsPDF-1.3.2/plugins/split_text_to_size.js"></script>
-<script type="text/javascript" src="js/jsPdfTest.js"></script>
+<script type="text/javascript" src="js/projectPDF.js"></script>
 </html>
