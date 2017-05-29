@@ -85,18 +85,18 @@ function properRole($rol){
 }
 function createHeader($color = 'teal') { ?>
     <header>    
-        <nav class="top-nav <?php echo $color;?>">
+        <nav class="top-nav <?=$color;?>">
             <div class="nav-wrapper">
                 <div class="container">
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
                 <div class="col s12" style="padding: 0 .75rem;">                
-                    <a href="index.php" class="brand-logo <?php echo changeFontColorBasedOn();?>">Logo</a>        
+                    <a href="index.php" class="brand-logo <?php echo changeFontColorByColor($color);?>">Logo</a>        
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
-                    <li><a href="colleges.php" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
-                    <li><a href="#inbox.php" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
-                    <li><a href="beheer.php" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">settings</i> Beheer </a></li>
-                    <li><a href="index.php?logout=true" class="<?php echo changeFontColorBasedOn();?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
+                    <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
+                    <li><a href="colleges.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                    <li><a href="#inbox.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
+                    <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">settings</i> Beheer </a></li>
+                    <li><a href="index.php?logout=true" class="<?=changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
                 </ul>
                 </div>       
                 <!--<a href="#" class="brand-logo">Logo</a>-->
@@ -132,24 +132,24 @@ function createFooter($color = 'teal'){?>
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
-                <h5 class="<?php echo changeFontColorBasedOn();?>">Footer Content</h5>
-                <p class="<?php echo changeFontColorBasedOn();?> text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                <h5 class="<?php echo changeFontColorByColor($color);?>">Footer Content</h5>
+                <p class="<?php echo changeFontColorByColor($color);?> text-lighten-4">You can use rows and columns here to organize your footer content.</p>
                 </div>
                 <div class="col l4 offset-l2 s12">
-                <h5 class="<?php echo changeFontColorBasedOn();?>">Links</h5>
+                <h5 class="<?php echo changeFontColorByColor($color);?>">Links</h5>
                 <ul>
-                    <li><a class="<?php echo changeFontColorBasedOn();?> text-lighten-3" href="#!">Link 1</a></li>
-                    <li><a class="<?php echo changeFontColorBasedOn();?> text-lighten-3" href="#!">Link 2</a></li>
-                    <li><a class="<?php echo changeFontColorBasedOn();?> text-lighten-3" href="#!">Link 3</a></li>
-                    <li><a class="<?php echo changeFontColorBasedOn();?> text-lighten-3" href="#!">Link 4</a></li>
+                    <li><a class="<?= changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 1</a></li>
+                    <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 2</a></li>
+                    <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 3</a></li>
+                    <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 4</a></li>
                 </ul>
                 </div>
             </div>
             </div>
             <div class="footer-copyright">
-            <div class="container <?php echo changeFontColorBasedOn();?>">
+            <div class="container <?php echo changeFontColorByColor($color);?>">
             &copy 2014 Copyright Text
-            <a class="<?php echo changeFontColorBasedOn();?> text-lighten-4 right" href="#!">More Links</a>
+            <a class="<?php echo changeFontColorByColor($color);?> text-lighten-4 right" href="#!">More Links</a>
             </div>
         </div>
     </footer>
@@ -207,7 +207,7 @@ function changePageColors($connection, $collegeId = false)
     or if the color is lightened
     or darkened
     and return the text color based on that */
-function changeFontColorBasedOn($backgroundTint = false) {    
+function changeFontColorBasedOn($backgroundTint) {
     if(contains('lighten', $backgroundTint)){
         return "black-text";
     } else if (contains('darken', $backgroundTint)){
@@ -216,6 +216,14 @@ function changeFontColorBasedOn($backgroundTint = false) {
         // if it is a base color
         return "black-text";
     }    
+}
+function changeFontColorByColor($color){
+    if(contains('deep-purple', $color) || contains('purple', $color) || contains('indigo', $color) || contains('brown', $color) || contains('blue-grey', $color)){
+        return "white-text";
+    }
+    else{
+        return "black-text";
+    }
 }
 function contains($needle, $haystack)
 {

@@ -1,5 +1,5 @@
-<?php include("inc/functions.php");?>
-<?php
+<?php include("inc/functions.php"); 
+include("inc/mpdf60/mpdf.php");
 checkSession();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
@@ -7,8 +7,9 @@ if($_SESSION['rol'] == ""){
 // dump($_SESSION);
 $connection = ConnectToDatabase();
 $schoolId = $_SESSION['school_id'];
+$collegeId=$_SESSION['college_id'];
 $query = 
-"   SELECT colleges.naam AS college_naam, colleges.id AS college_id
+"   SELECT colleges.id, colleges.kleur, colleges.naam AS college_naam, colleges.id AS college_id
     FROM colleges
     INNER JOIN scholen
     ON colleges.scholen_id = scholen.id
@@ -16,6 +17,9 @@ $query =
 ";
 $result = mysqli_query($connection, $query);
 while($row = mysqli_fetch_assoc($result)){
+    if ($row['id'] == $collegeId){
+        $color = $row["kleur"];
+    }
     $colleges[] = $row;
 }
 $query = 
@@ -27,9 +31,6 @@ $result = mysqli_query($connection, $query);
 while($row = mysqli_fetch_assoc($result)){
     $schoolInfo = $row;
 }
-// dump($colleges);
-// dump($schoolInfo);
-
 ?>
 <!DOCTYPE html>
 
@@ -46,7 +47,7 @@ while($row = mysqli_fetch_assoc($result)){
     </head>
 </head>
 <body >
-<?php createHeader();?>
+<?php createHeader($color);?>
 <main>
   <div class="container">
     <div class="section">
@@ -86,7 +87,7 @@ while($row = mysqli_fetch_assoc($result)){
     </div>
   </div>
 </main>
-<?php createFooter();?>
+<?php createFooter($color);?>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/ajaxfunctions.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
