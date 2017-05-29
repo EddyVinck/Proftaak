@@ -128,7 +128,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
         <?php   }
             }?>
             <div class="col s4">
-                <a  class="btn waves-effect waves-light purple darken-1 right" name="action" >Nieuw Project
+                <a href="nieuw_project.php"  class="btn waves-effect waves-light purple darken-1 right" name="action" >Nieuw Project
                     <i class="material-icons right">library_add</i>                    
                 </a>
             </div>

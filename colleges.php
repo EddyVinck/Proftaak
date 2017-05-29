@@ -61,14 +61,14 @@ while($row = mysqli_fetch_assoc($result)){
     <div class="section">
       <div class="row">
       <?php if(count($colleges) > 1) { ?>
-        <div class="col s12 m4">
+         <div class="col s12 m4">
+          <a href="projecten_lijst.php" class="white-text">
               <div class="card-panel teal">
-                <span >
-                    <a href="projecten_lijst.php" class="white-text">
-                        Alle colleges
-                    </a>
-                </span>
+                <span>                   
+                    Alle colleges
+                </span>                
               </div>
+             </a>
           </div>
         <?php } ?>
         <?php for ($i=0; $i < count($colleges); $i++) {?>

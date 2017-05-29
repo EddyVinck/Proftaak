@@ -56,3 +56,7 @@
 body.busy .loading-modal {
     display: block;
 }
+.col-md {
+    margin: 0 auto;
+    max-width: 500px
+}
