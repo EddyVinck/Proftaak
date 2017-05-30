@@ -6,7 +6,7 @@ $rol = $_SESSION['rol'];
 if($rol == ""){
     header("location: index.php");
 }
-dump($_SESSION);
+// dump($_SESSION);
 //sets status that is used in the query, if the user is a student, unverified is automatically changed to "bezig"
 $status = "bezig";
 if(isset($_GET['status'])){

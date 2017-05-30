@@ -37,8 +37,6 @@ if(isset($_POST['hulpcolleges'])){
     $hulpcolleges = str_replace("'", '"', $_POST['hulpcolleges']);
     $hulpcolleges = json_decode($hulpcolleges, true);
 
-    
-
     $mpdf->WriteHTML('<h3 style="font-family: arial;">Opleidingen die wij nodig hebben</h3>');
     if(isset($_POST['omschrijving_nodig'])){
         $mpdf->WriteHTML('<label>'.$_POST['omschrijving_nodig'].'</label>');
@@ -60,7 +58,7 @@ if(isset($_POST['contact'])){
                 
     }
 }
-$mpdf->WriteHTML('<p style="font-size: 8px; position: absolute; bottom: 5px; width: 100%;">Gemaakt met PROJECTNAAM door Dylan Bos en Eddy Vinck</p>');
+$mpdf->WriteHTML('<p style="font-size: 8px; position: absolute; bottom: 5px; width: 100%;">Gemaakt met PROJECTNAAM - &copy; Dylan Bos en Eddy Vinck</p>');
 
 $mpdf->Output();
 ?>

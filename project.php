@@ -11,7 +11,7 @@ $query =
 "   SELECT projecten.id AS project_id, 
     projecten.omschrijving, projecten.omschrijving_nodig,
     projecten.status, projecten.naam AS project_naam,
-    users.naam AS projectstarter,
+    users.naam AS projectstarter, users.id AS user_id,
     klassen.id AS klas_id,
     colleges.naam AS college_naam,
      colleges.id AS college_id
@@ -209,14 +209,29 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                     ?>
                     <input type="hidden" name="hulpcolleges" value="<?php echo $json_colleges ?>">
                     <div class="row">
-                        <div class="col s12 m6 offset-m3">
-                            <p>
-                                Vul hier in hoe mensen contact met je kunnen maken:
-                            </p>
-                            <input type="text" name="contact" placeholder="bv. Telefoonnummer of e-mail">                  
+                        <div class="col s12 m8 offset-m2">
+                            <?php if($projectData[0]['user_id'] == $_SESSION['id']) { ;?>
+                            <div class="card">
+                                <div class="card-content">
+                                    
+                                    <div class="row">
+                                        <div class="col s10 offset-s1">
+                                            <p>
+                                                Vul hier in hoe mensen contact met je kunnen maken:
+                                            </p>
+                                            <input type="text" name="contact" placeholder="bv. Telefoonnummer of e-mail">                  
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                    <div class="row">
+                                        <div class="col s12 center">
+                                            <button type="submit" class="btn waves-effect green">Maak PDF</button>                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" class="btn waves-effect green">Maak PDF</button>                                                            
+                    </div>                                                                                       
                 </form>
             </div>
         </div>
