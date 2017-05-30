@@ -6,6 +6,7 @@ $rol = $_SESSION['rol'];
 if($rol == ""){
     header("location: index.php");
 }
+dump($_SESSION);
 //sets status that is used in the query, if the user is a student, unverified is automatically changed to "bezig"
 $status = "bezig";
 if(isset($_GET['status'])){
@@ -28,6 +29,7 @@ $query =
 "   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status, projecten.omschrijving,
     users.naam AS user_naam, 
     colleges.naam AS college_naam,
+    colleges.id as college_id,
     images.path AS img_path
     FROM projecten
 	RIGHT OUTER JOIN hulpcolleges
@@ -42,21 +44,27 @@ $query =
 	ON colleges.scholen_id = scholen.id
 	LEFT OUTER JOIN images
 	ON projecten.id = images.projecten_id";
-    if(isset($_GET['college'])){
-        // check of de ingevulde get variabele wel een nummer is
-        if(is_numeric($_GET['college'])){
-            $college = $_GET['college'];
-            $query .= (" WHERE (hulpcolleges.colleges_id = " . $college
-                    ." OR colleges.id = ".$college . ") AND projecten.status = '$status'");
-        }
+if(isset($_GET['college'])){
+    // check of de ingevulde get variabele wel een nummer is
+    if(is_numeric($_GET['college'])){
+        $college = $_GET['college'];
+        $query .= (" WHERE (hulpcolleges.colleges_id = " . $college
+                ." OR colleges.id = ".$college . ") AND projecten.status = '$status'");
     }
-    else{
-        $query .= " WHERE projecten.status = '$status'";
-        
-    }  
-    $query .= " GROUP BY projecten.id";
+}
+else{
+    $query .= " WHERE projecten.status = '$status'";
+    
+}  
+$query .= " GROUP BY projecten.id";
     // op de lege plek komt de where college = 1 als je die hebt
-
+$collegeId = $_SESSION['college_id'];
+$collegeNaamQuery = "SELECT naam FROM colleges WHERE id = '$collegeId' LIMIT 1";
+$result = mysqli_query($db, $collegeNaamQuery);
+$collegeNaam = "";
+if($row = mysqli_fetch_assoc($result)){
+    $collegeNaam = $row['naam'];
+}
 $result = mysqli_query($db,$query);
 $data = [];
 while($row = mysqli_fetch_assoc($result)){
@@ -145,6 +153,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
                             <div class="col m2 s12 truncate no-padding">Projectnaam</div>
                             <div class="col m2 hide-on-small-only">Projectstarter</div>
                             <div class="col m3 hide-on-small-only">Opleiding</div>
+                            <div class="col m2 hide-on-small-only">jouw hulp nodig</div>
                             <div class="col m2 hide-on-small-only">Status</div>    
                             <div class="col m1 hide-on-small-only"></div>
                         </div>
@@ -153,8 +162,10 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
 
                 <!-- database versie -->
                 <?php                
-                    for($i = 0; $i < count($data); $i++)
-                    {
+                    for($i = 0; $i < count($data); $i++){
+                        $hulpColleges = [];
+                        $hulpColleges = getHulpCollegesFromDB($data[$i]['project_id'],$db);
+                        $nodig = neededOrNot($collegeId,$hulpColleges);
                         ?>
                         <li>
                         <div class="collapsible-header">
@@ -162,6 +173,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
                                 <div class="col m2 s12 truncate"><?php echo $data[$i]['project_naam'];?></div>
                                 <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['user_naam'];?></div>
                                 <div class="col m3 hide-on-small-only truncate"><?php echo $data[$i]['college_naam'];?></div>
+                                <div class="col m2 hide-on-small-only truncate"><?= $nodig?></div>
                                 <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
                                 <div class="col m1 truncate">
                                     <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content">

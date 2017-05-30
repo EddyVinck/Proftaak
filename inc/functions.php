@@ -230,3 +230,45 @@ function contains($needle, $haystack)
     return strpos($haystack, $needle) !== false;
 }
 
+function explodeStr($stringToConvert){
+    $arr = explode(",",substr($stringToConvert,1));
+    return $arr;
+}
+
+function returnIdHulpCollege($hulpColArray,$forId){
+    if (in_array($forId,$hulpColArray)){
+        return 'checked="checked"';
+    }
+    else{
+        return "";
+    }
+}
+function getHulpCollegesFromDB($projectId,$connection){
+    $query = 
+    "   SELECT naam,id
+        FROM colleges
+        WHERE id
+        IN (
+        SELECT colleges_id
+        FROM projecten
+        INNER JOIN hulpcolleges
+        ON projecten.id = hulpcolleges.projecten_id
+        WHERE projecten.id = $projectId
+        );
+    ";
+    $result = mysqli_query($connection, $query);
+    while($row = mysqli_fetch_assoc($result)){
+        $hulpColleges[] = $row;
+    }
+    return $hulpColleges;
+}
+function neededOrNot($id,$arr){
+    $nodig = "nee";
+    for($x=0;$x<count($arr);$x++){
+        if ($arr[$x]['id'] == $id){
+            $nodig = "ja";
+            break;
+        }
+    }
+    return $nodig;
+}

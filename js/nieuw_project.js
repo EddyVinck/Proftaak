@@ -115,6 +115,7 @@ var feedback = function (res) {
         initImgs(); //initializes all materialboxed images
         imgsrcCount++;
         imgCounter++;
+        console.log(imgCounter);
     }
 };
 
@@ -152,4 +153,11 @@ function addchbxValue(chbxElem){
         var tempVal = invisElem.value;
         invisElem.value  = tempVal.replace("," + chbxElem.value,"");
     }
+}
+function setCounter(){
+    originalTempVal = document.getElementById("invisImages").value;
+    tempVal = originalTempVal.substring(1);
+    tempArray = tempVal.split(",");
+
+    imgCounter = tempArray.length;
 }

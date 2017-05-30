@@ -28,22 +28,7 @@ $result = mysqli_query($connection, $query);
 while($row = mysqli_fetch_assoc($result)){
     $projectData[] = $row;
 }
-$query = 
-"   SELECT naam
-    FROM colleges
-    WHERE id
-    IN (
-    SELECT colleges_id
-    FROM projecten
-    INNER JOIN hulpcolleges
-    ON projecten.id = hulpcolleges.projecten_id
-    WHERE projecten.id = $projectId
-    );
-";
-$result = mysqli_query($connection, $query);
-while($row = mysqli_fetch_assoc($result)){
-    $hulpColleges[] = $row;
-}
+$hulpColleges = getHulpCollegesFromDB($projectId,$connection);
 $query = 
 "   SELECT path
     FROM images
