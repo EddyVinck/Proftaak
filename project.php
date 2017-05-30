@@ -53,6 +53,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="css/materializeAddons.css"  media="screen,projection"/>
       <link type="text/css" rel="stylesheet" href="css/footer.css"  media="screen,projection"/>
       <link rel="stylesheet" href="font-awesome-4.7.0\css\font-awesome.min.css">
       <!--Let browser know website is optimized for mobile-->
@@ -64,9 +65,22 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <main>
   <div class="container">
       <div class="section">
-        <div class="row">
+        <!--small screen-->
+        <div class="row hide-on-med-and-up">
             <div class="col s12 m8 center-on-small center-on-small-only">
-                <h3><?= $projectData[0]['project_naam'];?></h3>
+                <h5 class="hide-on-med-and-up"><?= $projectData[0]['project_naam'];?></h5>                
+            </div>
+            <div class="col s12 m4">
+                <a class="btn purple darken-1 col s10 offset-s1" onclick="alert('publiceer')">Publiceren</a>
+            </div>
+        </div>
+        <!--medium and up -->
+        <div class="row hide-on-small-only valign-wrapper">
+            <div class="col s12 m8 center-on-small center-on-small-only">
+                <h3 class="hide-on-small-only"><?= $projectData[0]['project_naam'];?></h3>
+            </div>
+            <div class="col s12 m4">
+                <a class="btn purple darken-1  right" onclick="alert('publiceer')">Publiceren</a>
             </div>
         </div>
       </div>
@@ -200,7 +214,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                                     <div class="row">
                                         <div class="col s10 offset-s1">
                                             <p>
-                                                Vul hier in hoe mensen contact met je kunnen maken:
+                                                Vul hier in hoe mensen contact met je kunnen maken(dit komt op het PDF):
                                             </p>
                                             <input type="text" name="contact" placeholder="bv. Telefoonnummer of e-mail">                  
                                         </div>
@@ -208,7 +222,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                                     <?php } ?>
                                     <div class="row">
                                         <div class="col s12 center">
-                                            <button type="submit" class="btn waves-effect green">Maak PDF</button>                                           
+                                            <button type="submit" class="btn waves-effect green">genereer PDF</button>                                           
                                         </div>
                                     </div>
                                 </div>

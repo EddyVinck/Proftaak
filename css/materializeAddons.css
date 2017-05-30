@@ -1,4 +1,8 @@
-/* stolen from Materialize website*/
+.no-margin {
+    margin: 0 !important;
+}
+
+/* promo stuff stolen from Materialize website*/
 .promo-caption {
     font-size: 1.7rem;
     font-weight: 500;
