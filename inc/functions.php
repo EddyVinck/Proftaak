@@ -272,3 +272,24 @@ function neededOrNot($id,$arr){
     }
     return $nodig;
 }
+function getProjectStatusIcon($projectStatus)
+{
+    switch ($projectStatus) 
+    {
+    case 'gestaakt':
+        return "cancel";
+        break;
+    case 'bezig':
+        return "build";
+        break;
+    case 'klaar':
+        return "build";
+        break;
+    case 'archief':
+        return "archive";
+        break;
+    default:
+        return "help";
+        break;
+    }
+}

@@ -35,6 +35,7 @@ $query =
     WHERE projecten_id = $projectId;
 ";
 $result = mysqli_query($connection, $query);
+$images = [];
 while($row = mysqli_fetch_assoc($result)){
     $images[] = $row;
 }
@@ -61,39 +62,31 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <body >
 <?php createHeader($pageColor);?>
 <main>
-            <!--Work in progress
-    deze pagina is mobile-first ontworpen 
-    en nog niet geschikt voor desktop gebruik-->
   <div class="container">
       <div class="section">
         <div class="row">
             <div class="col s12 m8 center-on-small center-on-small-only">
                 <h3><?= $projectData[0]['project_naam'];?></h3>
             </div>
-            <div class="col s12 m4">                      
-                <div class="col s12 center-on-small-only hide-on-med-and-up">
-                    <i class="material-icons medium">cancel</i><h5>Gestaakt</h5>
-                    <!--<i class="material-icons medium">build</i><h4>Bezig</h4>-->
-                    <!--<i class="material-icons medium">check_circle</i><h4>Klaar!</h4>-->
+        </div>
+      </div>
+    <?php if(count($images) != 0) { ?>
+    <div class="row">
+      <div class="col offset-s1 s10 m12">
+            <div class="slider">
+                    <ul class="slides">
+                        <?php for($i = 0; $i < count($images); $i++){?>                  
+                        <li>
+                            <img src="<?php echo $images[$i]['path']?>"> <!-- random image -->
+                            <div class="caption left-align">
+                        </li>
+                        <?php } ?>                    
+                    </ul>
                 </div>
             </div>
         </div>
       </div>
-      <div class="row">
-          <div class="col offset-s1 s10 m12">
-            <div class="slider">
-                <ul class="slides">
-                    <?php for($i = 0; $i < count($images); $i++){?>                  
-                    <li>
-                        <img src="<?php echo $images[$i]['path']?>"> <!-- random image -->
-                        <div class="caption left-align">
-                    </li>
-                    <?php } ?>
-                    
-                </ul>
-            </div>
-        </div>
-      </div>
+      <?php } ?>
       <!--end of slider-->
       <div class="section">
         <div class="container">
@@ -119,22 +112,10 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                         </div>
                         <div class="divider"></div>
                         <tbody>
-                            <!--deze dingen ook in php afgekort moeten worden-->
-                            <!--want als je bv de opleiding heel lang maakt is-->
-                            <!--de hele layout verpest omdat truncate niet goed werkt-->
-                            
                             <tr>
                                 <td><div class="row">Projectstarter:</div></td>
                                 <td class="right-align truncate"><?php echo $projectData[0]['projectstarter']; ?></td>                                                        
                             </tr>
-                            <!--<tr>
-                                <td><div class="row">Projectlid 2:</div></td>
-                                <td class="right-align truncate">Bruce Lee</td>                                                        
-                            </tr>
-                            <tr>
-                                <td><div class="row">Projectlid 3:</div></td>
-                                <td class="right-align truncate">Foe Yong Hai</td>                                                        
-                            </tr>-->
                             <tr>
                                 <td><div class="row">Opleiding:</div></td>
                                 <td class="right-align truncate"><?php echo $projectData[0]['college_naam']; ?></td>                                           
@@ -185,12 +166,14 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                     <h5>Status</h5>
                 </div>
             </div>      
-            <div class="row">
-                <div class="col s12">
-                    <p>
-                        <?php echo $projectData[0]['status'];?>
-                    </p>
+            <div class="row">                     
+                <div class="col s12 m4 offset-m4">
+                    <i class="material-icons medium">
+                    <?php echo getProjectStatusIcon($projectData[0]['status']); ?>                    
+                    </i>
+                    <p><?php echo $projectData[0]['status'];?></p>
                 </div>
+            </div>
                 <form action="pdf.php" method="post" target="_blank">
                     <input type="hidden" name="project_title" value="<?= $projectData[0]['project_naam'];?>">                
                     <input type="hidden" name="image" value="<?php if(isset($images[0]['path'])){echo $images[0]['path'];};?>">
@@ -236,7 +219,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
             </div>
         </div>
       </div>      
-  </div>
+  </v>
 </main>
 <?php createFooter($pageColor);?>
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>
