@@ -10,7 +10,7 @@ $projectId = $_GET['id'];
 $query = 
 "   SELECT projecten.id AS project_id, 
     projecten.omschrijving, projecten.omschrijving_nodig,
-    projecten.status,
+    projecten.status, projecten.naam AS project_naam,
     users.naam AS projectstarter,
     klassen.id AS klas_id,
     colleges.naam AS college_naam,
@@ -68,7 +68,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
       <div class="section">
         <div class="row">
             <div class="col s12 m8 center-on-small center-on-small-only">
-                <h3>Projectnaam</h3>
+                <h3><?= $projectData[0]['project_naam'];?></h3>
             </div>
             <div class="col s12 m4">                      
                 <div class="col s12 center-on-small-only hide-on-med-and-up">
@@ -191,9 +191,33 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                         <?php echo $projectData[0]['status'];?>
                     </p>
                 </div>
-                <div class="col s12">
-                    <a onclick="renderPDF()" class="btn waves-effect green">Maak PDF</a>
-                </div>
+                <form action="pdf.php" method="post" target="_blank">
+                    <input type="hidden" name="project_title" value="<?= $projectData[0]['project_naam'];?>">                
+                    <input type="hidden" name="image" value="<?php if(isset($images[0]['path'])){echo $images[0]['path'];};?>">
+                    <input type="hidden" name="project_description" value="<?php echo $projectData[0]['omschrijving']; ?>">                    
+                    <input type="hidden" name="project_starter" value="<?php echo $projectData[0]['projectstarter']; ?>">
+                    <input type="hidden" name="college_name" value="<?php echo $projectData[0]['college_naam']; ?>">
+                    <input type="hidden" name="omschrijving_nodig" value="<?php echo $projectData[0]['omschrijving_nodig'];?>">
+                    <?php 
+                    /*  
+                    because PHP is poop it surrounds json_encoded array values and keys with
+                    double quotes and it also always surrounds $_POST values with double quotes
+                    the json encoded array would always be passed as "[{" and everything after
+                    that is lost.
+                    */
+                    $json_colleges = str_replace('"', "'",json_encode($hulpColleges)); 
+                    ?>
+                    <input type="hidden" name="hulpcolleges" value="<?php echo $json_colleges ?>">
+                    <div class="row">
+                        <div class="col s12 m6 offset-m3">
+                            <p>
+                                Vul hier in hoe mensen contact met je kunnen maken:
+                            </p>
+                            <input type="text" name="contact" placeholder="bv. Telefoonnummer of e-mail">                  
+                        </div>
+                    </div>
+                    <button type="submit" class="btn waves-effect green">Maak PDF</button>                                                            
+                </form>
             </div>
         </div>
       </div>      
