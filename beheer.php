@@ -5,8 +5,8 @@ checkSession();
 $activeTab = [
     'colleges' => "",
     'leraren' =>  "",
+    'studenten' => "",
     'studenten' => ""
-
 ];
 if (isset($_GET['active'])){
     $activeTab[$_GET['active']] = "active";
@@ -19,8 +19,45 @@ if($_SESSION['rol'] != "sch" && $_SESSION['rol'] != "doc" && $_SESSION['rol'] !=
 }
 //getting vars from the session
 $rol = $_SESSION['rol'];
-$schoolId = $_SESSION['school_id'];
+$hrefText = "";
+if ($rol == "adm"){
+    if (isset($_GET['id'])){
+        $schoolId = $_GET['id'];
+        $hrefText = "&id=" . $schoolId;
+    }
+    else{
+        $schoolId = $_SESSION['school_id'];
+    }
+}
+else{
+    $schoolId = $_SESSION['school_id'];
+}
 
+$invalidKlasId = -1;
+$klasAttemptDelete = 0; //0 = no try, 1 = try success, 2 = try fail due to students, 3 = try fail unexpected
+if (isset($_GET['klasdel'])){
+    $klasToDelete = $_GET['klasdel'];
+    $delKlasGetStudentQuery = 
+    "SELECT * FROM users WHERE klassen_id = $klasToDelete";
+    $studentsResult = mysqli_query($db,$delKlasGetStudentQuery);
+    if (mysqli_num_rows($studentsResult)>0) {
+        $klasAttemptDelete = 2;
+        $invalidKlasId = $klasToDelete;
+    }
+    else{
+        $sqlDeleteKlas = 
+        "DELETE FROM klassen WHERE id = $klasToDelete";
+        $deleteresult = mysqli_query($db,$sqlDeleteKlas);
+        if (!$deleteresult){
+            $klasAttemptDelete = 3;
+            $invalidKlasId = $klasToDelete;
+        }
+        else{
+            $klasAttemptDelete = 1;
+            $invalidKlasId = -1;
+        }
+    }
+}
 //getting the schoolnaam from database using the school_id in the session
 $schoolNaamQuery = "SELECT naam FROM scholen WHERE id = $schoolId LIMIT 1";
 $result = mysqli_query($db, $schoolNaamQuery);
@@ -28,11 +65,28 @@ $schoolNaam = "";
 if($row = mysqli_fetch_assoc($result)){
     $schoolNaam = $row['naam'];
 }
-
+//krijgt alle colleges uit de database
 $query = "SELECT * FROM colleges WHERE scholen_id = $schoolId";
 $result = mysqli_query($db,$query);
-while($result2 = mysqli_fetch_assoc($result)){
-    $colleges[] = $result2; 	//places everything in the array
+while($row = mysqli_fetch_assoc($result)){
+    $colleges[] = $row; 	//places everything in the array
+}
+//krijgt alle scholen uit de database
+$query = "SELECT * FROM scholen";
+$result = mysqli_query($db,$query);
+while($row = mysqli_fetch_assoc($result)){
+    $scholen[] = $row; 	//places everything in the array
+}
+//krijgt alle klassen uit de database
+$query = "SELECT klassen.colleges_id, klassen.naam, klassen.id, klassen.rol FROM klassen
+INNER JOIN colleges
+ON colleges.id = klassen.colleges_id
+INNER JOIN scholen
+ON scholen.id = colleges.scholen_id
+WHERE scholen.id = $schoolId AND klassen.rol != 'docenten'";
+$result = mysqli_query($db,$query);
+while($row = mysqli_fetch_assoc($result)){
+    $klassen[] = $row; 	//places everything in the array
 }
 if(isset($_GET['doc'])){
     $docentenVerificatie = $_GET['doc'];
@@ -113,8 +167,20 @@ if(isset($_SESSION['college_id']))
     <div class="container">
         <div class="section">
             <div class="card">
-                <div class="card-content">
-                <h3><?=$schoolNaam?></h3>
+                <div class="row">
+                    <div class="card-content">
+                        <h3><?=$schoolNaam?></h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card-content">
+                        <select name="colleges" class="collegeSelect" onchange="location = this.value">
+                            <?php
+                            for($y=0;$y<count($scholen);$y++){?>
+                                <option value="beheer.php?id=<?=$scholen[$y]['id']?>"><?=$scholen[$y]['naam']?> </option>
+                            <?php } ?>
+                        </select>
+                    </div>
                 </div>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -124,6 +190,7 @@ if(isset($_SESSION['college_id']))
                         <?php }
                         if ($rol == "doc" || $rol == 'adm'){
                         ?>
+                        <li class="tab"><a class="<?=$activeTab['klassen']?>" href="#klassen">klassen</a></li>
                         <li class="tab"><a class="<?=$activeTab['studenten']?>" href="#studenten">studenten</a></li>
                         <?php } ?>
                     </ul>
@@ -184,7 +251,7 @@ if(isset($_SESSION['college_id']))
                                 <td class="center">
                                 <div class="row center ">
                                     <form method="POST">
-                                    <div  class="input-field beheer-inputs col s2 center">
+                                    <div  class="input-field beheer-inputs col s10 offset-s1 center">
                                         <input value="<?=$colleges[$tableRow]['naam']?>" 
                                         id="input<?=$colleges[$tableRow]['id']?>" 
                                         type="text" class="validate">
@@ -214,11 +281,12 @@ if(isset($_SESSION['college_id']))
                         <div class="row">
                         <?php if ($docentenVerificatie == "doc"){?>
                             <div class="col s12 m3 l3">
-                                <a href="?doc=odo&active=leraren" class="waves-effect waves-light btn">ongeverifieerd</a>
+                                <a href="?doc=odo&active=leraren<?=$hrefText?>" 
+                                class="waves-effect waves-light btn">ongeverifieerd</a>
                             </div>
                         <?php }else if ($docentenVerificatie == "odo"){ ?>
                             <div class="col s12 m3 l3">
-                                <a href="?doc=doc&active=leraren" class="waves-effect waves-light btn">geverifieerd</a>
+                                <a href="?doc=doc&active=leraren<?=$hrefText?>" class="waves-effect waves-light btn">geverifieerd</a>
                             </div>
                         <?php } ?>
                         </div>
@@ -269,21 +337,96 @@ if(isset($_SESSION['college_id']))
                         </table>
                     </div>
                     <?php } if ($rol == "doc" || $rol == 'adm'){
+                        
                     ?>
+                    <!--begin tabje klassen-->
+                    <div id="klassen">
+                        <table  class="">
+                            <thead>
+                            <tr>
+                                <th class="center" style="width: 20%">Bewerk</th>
+                                <th class="center" style="width: 40%">Naam</th>
+                                <th class="center" style="width: 20%">aantal studenten</th>
+                                <th class="center" style="width: 20%">verwijder</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <?php for($x=0;$x<count($klassen);$x++){
+                            $tempID = $klassen[$x]['id'];
+                            $getnum = "SELECT * FROM users WHERE klassen_id = $tempID ";
+                            $studentsResult = mysqli_query($db,$getnum);
+                            if ($invalidKlasId == $klassen[$x]['id']){
+                                if ($klasAttemptDelete == 2){
+                                    $dataError = "Deze klas bevat studenten, verwijder of verplaats deze eerst";
+                                    $validOrInvalid = "invalid";
+                                }
+                                else if ($klasAttemptDelete == 3){
+                                    $dataError = "Er is iets mis gegaan";
+                                    $validOrInvalid = "invalid";
+                                }
+                            }
+                            else{
+                                $dataError = "";
+                                $validOrInvalid = "";
+                            }
+                            ?>
+                            <tr>
+                                <td class="center">
+                                <a onclick="editKlasAjax(<?=$klassen[$x]['id']?>);" 
+                                    class="btn-floating btn-medium waves-effect waves-light red tooltipped"
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om deze rij te bewerken">
+                                    <i class="material-icons">edit</i></a>
+                                </td>
+                                <td class="center">
+                                <div class="row center ">
+                                    <form method="POST">
+                                    <div  class="input-field beheer-inputs col s10 offset-s1 center">
+                                        <input class="validate <?=$validOrInvalid?>" value="<?=$klassen[$x]['naam']?>" 
+                                        id="inputKlas<?=$klassen[$x]['id']?>" 
+                                        type="text" class="validate">
+                                        <label id="lblKlas<?=$klassen[$x]['id']?>" class="active " 
+                                        data-error="<?=$dataError?>" 
+                                        data-success=""
+                                        for="inputKlas<?=$klassen[$x]['id']?>"> </label>
+                                    </div>
+                                    </form>
+                                </div>
+                                </td>
+                                <td class="center">
+                                    <?=mysqli_num_rows($studentsResult)?>
+                                </td>
+                                <td class="center">
+                                    <a href="beheer.php?klasdel=<?=$klassen[$x]['id']?>&active=klassen<?=$hrefText?>" 
+                                    class="btn-floating btn-medium waves-effect waves-light red tooltipped"
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om deze klas te verwijderen">
+                                    <i class="material-icons">delete</i></a>
+                                </td>
+                            </tr>
+                            <?php }?>
+                            </tbody>
+                        </table>
+                    </div>
                     <!--begin tabje studenten-->
                     <div id="studenten">
                         <div class="row">
                             <?php if ($studentenVerificatie == "stu"){?>
                                 <div class="col s12 m3 l3">
-                                    <a href="?stu=ost&active=studenten" class="waves-effect waves-light btn">ongeverifieerd</a>
+                                    <a href="?stu=ost&active=studenten<?=$hrefText?>" 
+                                    class="waves-effect waves-light btn">ongeverifieerd</a>
                                 </div>
                             <?php }else if ($studentenVerificatie == "ost"){ ?>
                                 <div class="col s12 m3 l3">
-                                    <a href="?stu=stu&active=studenten" class="waves-effect waves-light btn">geverifieerd</a>
+                                    <a href="?stu=stu&active=studenten<?=$hrefText?>" 
+                                    class="waves-effect waves-light btn">geverifieerd</a>
                                 </div>
                             <?php } ?>
                         </div>
-                        <table  class="responsive-table">
+                        <table  class="">
                             <thead>
                             <tr>
                                 <th>Naam</th>

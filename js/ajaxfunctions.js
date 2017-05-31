@@ -205,3 +205,32 @@ function changeStudentKlas(klasId, userId){
             console.log(msg);
     })
 }
+function editKlasAjax(klassenId){
+    var elemInp = document.getElementById("inputKlas" + klassenId);
+    var elemLbl = document.getElementById("lblKlas" + klassenId);
+    var inpVal = elemInp.value;
+    if (inpVal == "") {
+        $("#lblKlas" + klassenId).attr('data-error', 'De tekst kan niet leeg zijn');
+        elemInp.classList.remove("valid");
+        elemInp.classList.add("invalid");
+    }
+    else {
+        var send = $.ajax({
+            url: "changeKlasName.ajax.php",
+            type: "POST",
+            dataType: "json",
+            data: { "text":inpVal,"klasId": klassenId},
+            error: function (xhr, text, error) {
+                console.warn(xhr.responseText);
+                console.log(text);
+                console.log(error);
+            }          //I do change this `main_array` when using the above stringify!
+        });
+        send.done(function (msg) {
+            console.log(msg);
+            $("#lblKlas" + klassenId).attr('data-success', 'De naam is aangepast');
+            elemInp.classList.remove("invalid");
+            elemInp.classList.add("valid");
+        })
+    }
+}

@@ -1,5 +1,5 @@
 .beheer-inputs{
-    width: 50% !important;
+    
 }
 .tabs-fixed-width{
     overflow: hidden !important;
@@ -16,7 +16,6 @@
     margin-left: 20px;
 }
 .inputs{
-    position:relative !important;
 }
 #saveAllRows{
     margin: 0px !important
