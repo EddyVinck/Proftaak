@@ -11,7 +11,7 @@ $query =
 "   SELECT projecten.id AS project_id, 
     projecten.omschrijving, projecten.omschrijving_nodig,
     projecten.status, projecten.naam AS project_naam,
-    users.naam AS projectstarter,
+    users.naam AS projectstarter, users.id AS user_id,
     klassen.id AS klas_id,
     colleges.naam AS college_naam,
      colleges.id AS college_id
@@ -35,6 +35,7 @@ $query =
     WHERE projecten_id = $projectId;
 ";
 $result = mysqli_query($connection, $query);
+$images = [];
 while($row = mysqli_fetch_assoc($result)){
     $images[] = $row;
 }
@@ -52,6 +53,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="css/materializeAddons.css"  media="screen,projection"/>
       <link type="text/css" rel="stylesheet" href="css/footer.css"  media="screen,projection"/>
       <link rel="stylesheet" href="font-awesome-4.7.0\css\font-awesome.min.css">
       <!--Let browser know website is optimized for mobile-->
@@ -61,39 +63,44 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <body >
 <?php createHeader($pageColor);?>
 <main>
-            <!--Work in progress
-    deze pagina is mobile-first ontworpen 
-    en nog niet geschikt voor desktop gebruik-->
   <div class="container">
       <div class="section">
-        <div class="row">
+        <!--small screen-->
+        <div class="row hide-on-med-and-up">
             <div class="col s12 m8 center-on-small center-on-small-only">
-                <h3><?= $projectData[0]['project_naam'];?></h3>
+                <h5 class="hide-on-med-and-up"><?= $projectData[0]['project_naam'];?></h5>                
             </div>
-            <div class="col s12 m4">                      
-                <div class="col s12 center-on-small-only hide-on-med-and-up">
-                    <i class="material-icons medium">cancel</i><h5>Gestaakt</h5>
-                    <!--<i class="material-icons medium">build</i><h4>Bezig</h4>-->
-                    <!--<i class="material-icons medium">check_circle</i><h4>Klaar!</h4>-->
+            <div class="col s12 m4">
+                <a class="btn purple darken-1 col s10 offset-s1" onclick="alert('publiceer')">Publiceren</a>
+            </div>
+        </div>
+        <!--medium and up -->
+        <div class="row hide-on-small-only valign-wrapper">
+            <div class="col s12 m8 center-on-small center-on-small-only">
+                <h3 class="hide-on-small-only"><?= $projectData[0]['project_naam'];?></h3>
+            </div>
+            <div class="col s12 m4">
+                <a class="btn purple darken-1  right" onclick="alert('publiceer')">Publiceren</a>
+            </div>
+        </div>
+      </div>
+    <?php if(count($images) != 0) { ?>
+    <div class="row">
+      <div class="col offset-s1 s10 m12">
+            <div class="slider">
+                    <ul class="slides">
+                        <?php for($i = 0; $i < count($images); $i++){?>                  
+                        <li>
+                            <img src="<?php echo $images[$i]['path']?>"> <!-- random image -->
+                            <div class="caption left-align">
+                        </li>
+                        <?php } ?>                    
+                    </ul>
                 </div>
             </div>
         </div>
       </div>
-      <div class="row">
-          <div class="col offset-s1 s10 m12">
-            <div class="slider">
-                <ul class="slides">
-                    <?php for($i = 0; $i < count($images); $i++){?>                  
-                    <li>
-                        <img src="<?php echo $images[$i]['path']?>"> <!-- random image -->
-                        <div class="caption left-align">
-                    </li>
-                    <?php } ?>
-                    
-                </ul>
-            </div>
-        </div>
-      </div>
+      <?php } ?>
       <!--end of slider-->
       <div class="section">
         <div class="container">
@@ -119,22 +126,10 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                         </div>
                         <div class="divider"></div>
                         <tbody>
-                            <!--deze dingen ook in php afgekort moeten worden-->
-                            <!--want als je bv de opleiding heel lang maakt is-->
-                            <!--de hele layout verpest omdat truncate niet goed werkt-->
-                            
                             <tr>
                                 <td><div class="row">Projectstarter:</div></td>
                                 <td class="right-align truncate"><?php echo $projectData[0]['projectstarter']; ?></td>                                                        
                             </tr>
-                            <!--<tr>
-                                <td><div class="row">Projectlid 2:</div></td>
-                                <td class="right-align truncate">Bruce Lee</td>                                                        
-                            </tr>
-                            <tr>
-                                <td><div class="row">Projectlid 3:</div></td>
-                                <td class="right-align truncate">Foe Yong Hai</td>                                                        
-                            </tr>-->
                             <tr>
                                 <td><div class="row">Opleiding:</div></td>
                                 <td class="right-align truncate"><?php echo $projectData[0]['college_naam']; ?></td>                                           
@@ -185,12 +180,14 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                     <h5>Status</h5>
                 </div>
             </div>      
-            <div class="row">
-                <div class="col s12">
-                    <p>
-                        <?php echo $projectData[0]['status'];?>
-                    </p>
+            <div class="row">                     
+                <div class="col s12 m4 offset-m4">
+                    <i class="material-icons medium">
+                    <?php echo getProjectStatusIcon($projectData[0]['status']); ?>                    
+                    </i>
+                    <p><?php echo $projectData[0]['status'];?></p>
                 </div>
+            </div>
                 <form action="pdf.php" method="post" target="_blank">
                     <input type="hidden" name="project_title" value="<?= $projectData[0]['project_naam'];?>">                
                     <input type="hidden" name="image" value="<?php if(isset($images[0]['path'])){echo $images[0]['path'];};?>">
@@ -209,19 +206,34 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                     ?>
                     <input type="hidden" name="hulpcolleges" value="<?php echo $json_colleges ?>">
                     <div class="row">
-                        <div class="col s12 m6 offset-m3">
-                            <p>
-                                Vul hier in hoe mensen contact met je kunnen maken:
-                            </p>
-                            <input type="text" name="contact" placeholder="bv. Telefoonnummer of e-mail">                  
+                        <div class="col s12 m8 offset-m2">
+                            <?php if($projectData[0]['user_id'] == $_SESSION['id']) { ;?>
+                            <div class="card">
+                                <div class="card-content">
+                                    
+                                    <div class="row">
+                                        <div class="col s10 offset-s1">
+                                            <p>
+                                                Vul hier in hoe mensen contact met je kunnen maken(dit komt op het PDF):
+                                            </p>
+                                            <input type="text" name="contact" placeholder="bv. Telefoonnummer of e-mail">                  
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                    <div class="row">
+                                        <div class="col s12 center">
+                                            <button type="submit" class="btn waves-effect green">genereer PDF</button>                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" class="btn waves-effect green">Maak PDF</button>                                                            
+                    </div>                                                                                       
                 </form>
             </div>
         </div>
       </div>      
-  </div>
+  </v>
 </main>
 <?php createFooter($pageColor);?>
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>

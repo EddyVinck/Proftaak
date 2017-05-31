@@ -93,20 +93,65 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
 <main>
   <div class="container">
     <div class="section">
-      <div class="row valign-wrapper" style="padding: 0 24px;">
+    <!--buttons for mobile-->
+      <div class="row hide-on-med-and-up" style="">
+            <?php if ($status == "bezig" || $status == "ongeverifieerd"){?>
+                <div class="col s10 offset-s1" style="margin-bottom: 4px;">
+                    <a href="javascript:setParam('status', 'gearchiveerd');" 
+                        class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" 
+                        name="action" >Gearchiveerd
+                        <i class="material-icons right">archive</i>                    
+                    </a>
+                </div>
+            <?php }else if ($status == "gearchiveerd"){?>
+                <div class="col s10 offset-s1" style="margin-bottom: 4px;">
+                    <a href="javascript:setParam('status', 'bezig');" 
+                        class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" 
+                        name="action" >bezig
+                        <i class="material-icons right">archive</i>                    
+                    </a>
+                </div>
+            <?php }
+            if ($rol == "adm" || $rol == "sch" || $rol == "doc"){
+                if ($status == "bezig" || $status == "gearchiveerd"){?>
+                    <div class="col s10 offset-s1" style="margin-bottom: 4px;">
+                        <a href="javascript:setParam('status', 'ongeverifieerd');" 
+                            class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" 
+                            name="action" >Ongeverifieerd
+                            <i class="material-icons right">close</i>                    
+                        </a>
+                    </div>
+                <?php }else if ($status == "ongeverifieerd"){?>
+                    <div class="col s10 offset-s1" style="margin-bottom: 4px;">
+                        <a href="javascript:setParam('status', 'bezig');" 
+                            class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" 
+                            name="action" >Geverifieerd
+                            <i class="material-icons right">check</i>                    
+                        </a>
+                    </div>
+        <?php   }
+            }?>
+            <div class="col s10 offset-s1">
+                <a href="nieuw_project.php" class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" name="action" >Nieuw Project
+                    <i class="material-icons right">library_add</i>                    
+                </a>
+            </div>
+      </div>
+      <!--buttons for medium screens and up -->
+      <div class="row valign-wrapper hide-on-small-only" style="padding: 0 24px;">
             <?php if ($status == "bezig" || $status == "ongeverifieerd"){?>
                 <div class="col s3" style="margin: 0px;">
                     <a href="javascript:setParam('status', 'gearchiveerd');" 
-                    class="btn waves-effect waves-light purple darken-1 left" 
-                    name="action" >Gearchiveerd
+                        class="btn waves-effect waves-light purple darken-1 left" 
+                        name="action" >Gearchiveerd
                         <i class="material-icons right">archive</i>                    
                     </a>
                 </div>
             <?php }else if ($status == "gearchiveerd"){?>
                 <div class="col s3" style="margin: 0px;">
                     <a href="javascript:setParam('status', 'bezig');" 
-                    class="btn waves-effect waves-light purple darken-1 left" 
-                    name="action" >bezig
+                        class="btn waves-effect waves-light purple darken-1 left" 
+                        name="action" >bezig
                         <i class="material-icons right">archive</i>                    
                     </a>
                 </div>
@@ -115,16 +160,16 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
                 if ($status == "bezig" || $status == "gearchiveerd"){?>
                     <div class="col s3" style="margin: 0px;">
                         <a href="javascript:setParam('status', 'ongeverifieerd');" 
-                        class="btn waves-effect waves-light purple darken-1 left" 
-                        name="action" >Ongeverifieerd
+                            class="btn waves-effect waves-light purple darken-1 left" 
+                            name="action" >Ongeverifieerd
                             <i class="material-icons right">close</i>                    
                         </a>
                     </div>
                 <?php }else if ($status == "ongeverifieerd"){?>
                     <div class="col s3" style="margin: 0px;">
                         <a href="javascript:setParam('status', 'bezig');" 
-                        class="btn waves-effect waves-light purple darken-1 left" 
-                        name="action" >Geverifieerd
+                            class="btn waves-effect waves-light purple darken-1 left" 
+                            name="action" >Geverifieerd
                             <i class="material-icons right">check</i>                    
                         </a>
                     </div>
@@ -148,7 +193,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
                             <div class="col m2 s12 truncate no-padding">Projectnaam</div>
                             <div class="col m2 hide-on-small-only">Projectstarter</div>
                             <div class="col m3 hide-on-small-only">Opleiding</div>
-                            <div class="col m2 hide-on-small-only">jouw hulp nodig</div>
+                            <div class="col m2 hide-on-small-only">Jouw hulp nodig</div>
                             <div class="col m2 hide-on-small-only">Status</div>    
                             <div class="col m1 hide-on-small-only"></div>
                         </div>
@@ -211,8 +256,8 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
                 <div class="section">
                     <div class="row valign-wrapper">
                         <div class="col s12 center">
-                            <h4>Helaas, geen projecten in dit college!</h4>
-                            <h5>Probeer het eens bij een ander college.</h5>
+                            <h4>Helaas, geen projecten hier!</h4>
+                            <h5>Probeer het eens bij een ander college of een ander filter.</h5>
                         </div>
                     </div>
                 </div>                 
