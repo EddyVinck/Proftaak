@@ -324,39 +324,6 @@ if($_SESSION['loggedIn'] == true)
               </div>
             </div>
           </div>
-      <div class="row">
-        <div class="col s12">
-          <h3 class="center-align">Featured Projects</h3>
-          <h5 class="center-align">Bekijk al deze coole dingen die jij niet kan</h5>
-        </div>
-      </div>
-      <div class="row">
-          <div class="col s12 m4 offset-m2">
-            <div class="card">            
-              <div class="card-image">
-                <img src="https://baconmockup.com/999/749/">
-                <span class="card-title">Featured project</span>
-                <a href="project.php" class="btn-floating halfway-fab waves-effect waves-light purple darken-1"><i class="material-icons">add</i></a>
-              </div>
-              <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col s12 m4">
-            <div class="card">
-              <div class="card-image">
-                <img src="https://baconmockup.com/999/749/">
-                <span class="card-title">Featured project</span>
-                <a href="project.php" class="btn-floating halfway-fab waves-effect waves-light purple darken-1"><i class="material-icons">add</i></a>
-              </div>
-              <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-              </div>          
-            </div>
-          </div>
-      </div>
-      <!--end of featured projects -->
     </div>
     <!--end of info section's container div   -->
   </div>
