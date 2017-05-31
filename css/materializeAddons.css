@@ -1,6 +1,10 @@
 .no-margin {
     margin: 0 !important;
 }
+.profile-image {
+    height: 60px !important;
+    width: 60px !important;
+}
 
 /* promo stuff stolen from Materialize website*/
 .promo-caption {
@@ -42,7 +46,6 @@
       padding-bottom: 7px !important;
   }
 }
-
 @media only screen and (max-width: 600px) {
   .left-on-s-only {
         float: left !important;

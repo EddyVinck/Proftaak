@@ -39,10 +39,27 @@ $images = [];
 while($row = mysqli_fetch_assoc($result)){
     $images[] = $row;
 }
+$query = 
+"   SELECT reacties.id AS response_id, reacties.text AS response_text,
+    users.id AS user_id, users.naam AS user_name
+    FROM reacties
+    INNER JOIN users
+    ON reacties.user_id = users.id
+    WHERE reacties.projecten_id = $projectId
+    ORDER BY response_id;
+";
+$result = mysqli_query($connection, $query);
+$responses = [];
+while($row = mysqli_fetch_assoc($result))
+{
+    $responses[] = $row;
+}
 // dump($projectData);
 // dump($hulpColleges);
 // dump($images);   
+dump($responses);
 $pageColor = changePageColors($connection, $projectData[0]['college_id']);
+
 
 ?>
 <!DOCTYPE html>
@@ -231,9 +248,35 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                     </div>                                                                                       
                 </form>
             </div>
+        </div>        
+        <!--reacties-->
+        <div class="section center">
+            <div class="row">
+                <div class="col s12">
+                    <h3>Reacties</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m8 offset-m2">                  
+                    <?php for($i = 0; $i < count($responses); $i++) { ?>
+                    <div class="card">
+                        <div class="card-stacked">
+                            <div class="card-content center">
+                                <img class="circle responsive-img profile-image" src="http://lorempixel.com/100/190/nature/6">
+                                <span class="card-title"><?=$responses[$i]['user_name'];?></span>
+                                <p><?=$responses[$i]['response_text'];?></p>                               
+                            </div>                
+                            <div class="card-action">
+                                <a class="btn purple darken-1" href="#privebericht.php?sendto=<?=$responses[$i]['user_id']?>">
+                                    Priv&eacute;bericht<i class="material-icons right">message</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
         </div>
-      </div>      
-  </v>
 </main>
 <?php createFooter($pageColor);?>
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>

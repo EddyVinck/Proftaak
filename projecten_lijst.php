@@ -23,8 +23,6 @@ if(isset($_GET['college']) && is_numeric($_GET['college']) )
 }
 
 // dump($_SESSION);
-
-
 $query = 
 "   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status, projecten.omschrijving,
     users.naam AS user_naam, 
