@@ -20,11 +20,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college']) )
 {
     checkSchool();
 }
-<<<<<<< HEAD
 
-// dump($_SESSION);
-=======
->>>>>>> 401338cada4946d72e46bfe07712727312e56dc3
 $query = 
 "   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status, projecten.omschrijving,
     users.naam AS user_naam, 
