@@ -6,7 +6,6 @@ $rol = $_SESSION['rol'];
 if($rol == ""){
     header("location: index.php");
 }
-dump($_SESSION);
 //sets status that is used in the query, if the user is a student, unverified is automatically changed to "bezig"
 $status = "bezig";
 if(isset($_GET['status'])){
@@ -21,10 +20,6 @@ if(isset($_GET['college']) && is_numeric($_GET['college']) )
 {
     checkSchool();
 }
-
-// dump($_SESSION);
-
-
 $query = 
 "   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status, projecten.omschrijving,
     users.naam AS user_naam, 
