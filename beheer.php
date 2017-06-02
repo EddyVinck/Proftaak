@@ -78,13 +78,14 @@ while($row = mysqli_fetch_assoc($result)){
     $scholen[] = $row; 	//places everything in the array
 }
 //krijgt alle klassen uit de database
-$query = "SELECT klassen.colleges_id, klassen.naam, klassen.id, klassen.rol FROM klassen
+$query = "SELECT klassen.colleges_id, colleges.naam AS college_naam, klassen.naam, klassen.id, klassen.rol FROM klassen
 INNER JOIN colleges
 ON colleges.id = klassen.colleges_id
 INNER JOIN scholen
 ON scholen.id = colleges.scholen_id
-WHERE scholen.id = $schoolId AND klassen.rol != 'docenten'";
+WHERE scholen.id = $schoolId AND klassen.rol != 'docenten' ORDER BY colleges.naam";
 $result = mysqli_query($db,$query);
+$klassen = [];
 while($row = mysqli_fetch_assoc($result)){
     $klassen[] = $row; 	//places everything in the array
 }
@@ -203,7 +204,11 @@ if(isset($_SESSION['college_id']))
                         <thead>
                         <tr>
                             <th class="center" style="width: 15%">Bewerk</th>
-                            <th style="width: 45%">Naam</th>
+                            <th style="width: 45%">
+                                <div class="row nomargin-bot">
+                                    <div class="nomargin-bot col s10 offset-s1 valign-wrapper">Naam</div>
+                                </div>
+                            </th>
                             <th style="width: 25%">Kleur</th>
                             <th class="center" style="width: 15%">Selecteer</th>
                         </tr>
@@ -216,22 +221,17 @@ if(isset($_SESSION['college_id']))
                                     </a>
                                 </td>
                                 <td>
-                                    <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
-                                    data-position="bottom"
-                                    data-delay="10"
-                                    data-tooltip="Klik om alle nieuwe rijen op te slaan"
-                                    onclick="">
-                                        <i class="material-icons">save</i>
-                                    </a>
-                                <td></td>
-                                <td class="center">
-                                    <a id="deleteSelectedRows" class="btn-floating btn-large red tooltipped" 
-                                    data-position="bottom"
-                                    data-delay="10"
-                                    data-tooltip="Klik om alle nieuwe rijen op te slaan"
-                                    onclick="">
-                                        <i class="material-icons">delete</i>
-                                    </a>
+                                    <div class="row">
+                                        <div class="col s10 offset-s1">
+                                        <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
+                                        data-position="bottom"
+                                        data-delay="10"
+                                        data-tooltip="Klik om alle nieuwe rijen op te slaan"
+                                        onclick="">
+                                            <i class="material-icons">save</i>
+                                        </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </tfoot>    
@@ -262,14 +262,18 @@ if(isset($_SESSION['college_id']))
                                     </div>
                                     
                                     </form>
-                                </div>
+                                </dv>
                                 </td>
                                 <td class="center">
                                     <input id="col<?=$colleges[$tableRow]['id']?>" class='colorpicker' value='<?=$colleges[$tableRow]['kleur']?>'/>
                                 </td>
                                 <td class="center">
-                                    <input class="filled-in" type="checkbox" id="select<?=$colleges[$tableRow]['id']?>"/>
-                                    <label for="select<?=$colleges[$tableRow]['id']?>"></label>
+                                   <a href="beheer.php?active=colleges&deleteCollege=<?=$colleges[$tableRow]['id']?>" 
+                                        class="btn-floating btn-medium waves-effect waves-light red tooltipped"
+                                        data-position="bottom"
+                                        data-delay="10"
+                                        data-tooltip="Klik om deze rij te verwijderen">
+                                        <i class="material-icons">delete</i></a>
                                 </td>
                             </tr>
                         <?php }?>
@@ -346,7 +350,8 @@ if(isset($_SESSION['college_id']))
                             <tr>
                                 <th class="center" style="width: 20%">Bewerk</th>
                                 <th class="center" style="width: 40%">Naam</th>
-                                <th class="center" style="width: 20%">aantal studenten</th>
+                                <th class="center" style="width: 10%">College</th>
+                                <th class="center" style="width: 10%">aantal studenten</th>
                                 <th class="center" style="width: 20%">verwijder</th>
                             </tr>
                             </thead>
@@ -394,6 +399,9 @@ if(isset($_SESSION['college_id']))
                                     </div>
                                     </form>
                                 </div>
+                                </td>
+                                <td class="center">
+                                    <?=$klassen[$x]["college_naam"]?>
                                 </td>
                                 <td class="center">
                                     <?=mysqli_num_rows($studentsResult)?>

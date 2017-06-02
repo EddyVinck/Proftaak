@@ -20,3 +20,6 @@
 #saveAllRows{
     margin: 0px !important
 }
+.nomargin-bot{
+    margin-bottom:0px !important;
+}

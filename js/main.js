@@ -32,7 +32,7 @@ function addTableRow(){
             '<td class="center">'+
                 '<div class="row">' +
                 '<form method="POST">' +
-                '<div  class="input-field beheer-inputs col s2">' +
+                '<div  class="input-field beheer-inputs col s10 offset-s1 center">' +
                     '<input ' +
                     'id="newInput'+newRowCount+'" ' +
                     'type="text" class="validate">' +

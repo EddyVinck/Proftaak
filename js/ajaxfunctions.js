@@ -59,8 +59,9 @@ function saveNewRowAjax(colorCount, rowCount) {
                 $("#input" + msg[row]['id']).attr("value", newValue[counter]);//geeft de value mee aan de inputbox zodat deze niet leeg is
 
                 document.getElementById('newTd' + counter).innerHTML =
-                    '<input class="filled-in" type="checkbox" id="select' + msg[row]['id'] + '"/>' +
-                    '<label for="select' + msg[row]['id'] + '"></label>'; //zorgt ervoor dat de checkbox wordt gemaakt.
+                    '<a href="beheer.php?active=colleges&deleteCollege='+msg[row]['id']+'"' +//
+                    'class="btn-floating btn-medium waves-effect waves-light red">' +//
+                    '<i class="material-icons">delete</i></a>'; //
                 $("#newTd" + counter).attr("id", "td" + msg[row]['id']);
                 counter++;
             }
