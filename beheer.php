@@ -58,6 +58,60 @@ if (isset($_GET['klasdel'])){
         }
     }
 }
+$invalidCollegeId = -1;
+$collegeAttemptDelete = 0; 
+//0 = no try, 1 = try success, 2 = try fail due to students, 3 = try fail due to leraren, 4 = try fail unexpected
+if (isset($_GET['deleteCollege'])){
+    $collegeToDel = $_GET['deleteCollege'];
+    $getLerarenFromKlasQuery=
+    "SELECT users.id AS users_id, users.naam AS naam, klassen.id AS klassen_id
+    FROM colleges
+    INNER JOIN klassen ON klassen.colleges_id = colleges.id
+    INNER JOIN users ON users.klassen_id = klassen.id
+    WHERE (
+    users.rol =  'doc'
+    OR users.rol =  'odo'
+    )
+    AND colleges.id = $collegeToDel";
+    $lerarenResult = mysqli_query($db,$getLerarenFromKlasQuery);
+    if (mysqli_num_rows($lerarenResult) > 0){
+        $collegeAttemptDelete = 3;
+        $invalidCollegeId = $collegeToDel;
+    }
+    else{
+        $getLerarenKlasQuery =  
+        "SELECT id FROM klassen WHERE colleges_id = $collegeToDel AND rol = 'docenten'";
+        $getDocentenKlasId = mysqli_query($db,$getLerarenKlasQuery);
+        $docKlasToDel = mysqli_fetch_assoc($getDocentenKlasId)['id'];
+        $delCollegeGetKlassemQuery = 
+        "SELECT * FROM klassen WHERE colleges_id = $collegeToDel AND rol != 'docenten'";
+        $klassenresult = mysqli_query($db,$delCollegeGetKlassemQuery);
+        if (mysqli_num_rows($klassenresult)>0){
+            $collegeAttemptDelete = 2;
+            $invalidCollegeId = $collegeToDel;
+        }
+        else{
+            
+            $sqlDeleteCol = 
+            "DELETE FROM klassen WHERE id = $docKlasToDel;";
+            mysqli_query($db,$sqlDeleteCol);
+            dump($sqlDeleteCol);
+            $sqlDeleteCol = 
+            "DELETE FROM colleges 
+            WHERE id = $collegeToDel;";
+            dump($sqlDeleteCol);
+            $deleteresult = mysqli_multi_query($db,$sqlDeleteCol);
+            if (!$deleteresult){
+                $collegeAttemptDelete = 4;
+                $invalidCollegeId = $collegeToDel;
+            }
+            else{
+                $collegeAttemptDelete = 1;
+                $invalidCollegeId = -1;
+            }
+        }
+    }
+}
 //getting the schoolnaam from database using the school_id in the session
 $schoolNaamQuery = "SELECT naam FROM scholen WHERE id = $schoolId LIMIT 1";
 $result = mysqli_query($db, $schoolNaamQuery);
@@ -221,7 +275,7 @@ if(isset($_SESSION['college_id']))
                                     </a>
                                 </td>
                                 <td>
-                                    <div class="row">
+                                    <div class="row nomargin-bot">
                                         <div class="col s10 offset-s1">
                                         <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
                                         data-position="bottom"
@@ -238,6 +292,24 @@ if(isset($_SESSION['college_id']))
                         <tbody id="collegeTbody">
                         <?php
                         for($tableRow=0;$tableRow<count($colleges);$tableRow++){
+                             if ($invalidCollegeId == $colleges[$tableRow]['id']){
+                                if ($collegeAttemptDelete == 2){
+                                    $dataError = "Dit college klas bevat klassen, verwijder deze eerst";
+                                    $validOrInvalid = "invalid";
+                                }
+                                else if ($collegeAttemptDelete == 3){
+                                    $dataError = "Er zijn nog leraren gekoppeld aan dit college, verplaats of verwijder deze eerst";
+                                    $validOrInvalid = "invalid";
+                                }
+                                 else if ($collegeAttemptDelete == 4){
+                                    $dataError = "Er is iets mis gegaan";
+                                    $validOrInvalid = "invalid";
+                                }
+                            }
+                            else{
+                                $dataError = "";
+                                $validOrInvalid = "";
+                            }
                         ?>
                             <tr id="<?=$tableRow?>">
                                 <td class="center">
@@ -254,9 +326,9 @@ if(isset($_SESSION['college_id']))
                                     <div  class="input-field beheer-inputs col s10 offset-s1 center">
                                         <input value="<?=$colleges[$tableRow]['naam']?>" 
                                         id="input<?=$colleges[$tableRow]['id']?>" 
-                                        type="text" class="validate">
+                                        type="text" class="validate <?=$validOrInvalid?>">
                                         <label id="lbl<?=$colleges[$tableRow]['id']?>" class="active" 
-                                        data-error="Het is hetzelfde" 
+                                        data-error="<?=$dataError?>" 
                                         data-success=""
                                         for="input<?=$colleges[$tableRow]['id']?>"> </label>
                                     </div>
@@ -389,9 +461,9 @@ if(isset($_SESSION['college_id']))
                                 <div class="row center ">
                                     <form method="POST">
                                     <div  class="input-field beheer-inputs col s10 offset-s1 center">
-                                        <input class="validate <?=$validOrInvalid?>" value="<?=$klassen[$x]['naam']?>" 
+                                        <input class="validate  " value="<?=$klassen[$x]['naam']?>" 
                                         id="inputKlas<?=$klassen[$x]['id']?>" 
-                                        type="text" class="validate">
+                                        type="text">
                                         <label id="lblKlas<?=$klassen[$x]['id']?>" class="active " 
                                         data-error="<?=$dataError?>" 
                                         data-success=""
