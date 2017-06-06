@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("inc/functions.php");
-
+checkUserVerification();
 if(isset($_POST['reply']))
 {
     if(isset($_POST['reply_body']))

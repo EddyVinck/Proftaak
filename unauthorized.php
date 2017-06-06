@@ -1,6 +1,7 @@
 <?php include("inc/functions.php");?>
 <?php
 checkSession();
+checkUserVerification();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }

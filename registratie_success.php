@@ -50,6 +50,8 @@ else{
         $textVar = "school beheerder.";
     }
 }
+
+dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <head>

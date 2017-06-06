@@ -1,6 +1,7 @@
 <?php
 include("inc/functions.php");
 checkSession();
+checkUserVerification();
 $db = ConnectToDatabase();
 $query = "SELECT `id` , `naam` FROM scholen";
 $result = mysqli_query($db, $query);

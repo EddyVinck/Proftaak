@@ -1,6 +1,7 @@
 <?php include("inc/functions.php"); 
 include("inc/mpdf60/mpdf.php");
 checkSession();
+checkUserVerification();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }

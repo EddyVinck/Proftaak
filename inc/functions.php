@@ -18,6 +18,7 @@ function checkSession(){
 		$_SESSION['rol'] = '';
 		$_SESSION['id'] = '';
 		$_SESSION['naam'] = '';
+        header("location: unauthorized.php");
 	}
 }
 function checkSchool($debug = false) {
@@ -291,5 +292,14 @@ function getProjectStatusIcon($projectStatus)
     default:
         return "help";
         break;
+    }
+}
+function checkUserVerification()
+{
+    dump($_SESSION);
+    $rol = $_SESSION['rol'];
+    if($rol == 'ost' || $rol == "odo")
+    {
+        header("location: registratie_success.php");
     }
 }
