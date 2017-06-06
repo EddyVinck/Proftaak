@@ -58,7 +58,10 @@ while($row = mysqli_fetch_assoc($result))
 // dump($images);   
 // dump($responses);
 // dump($_SESSION);
+// dump($_POST);
+
 $pageColor = changePageColors($connection, $projectData[0]['college_id']);
+
 ?>
 <!DOCTYPE html>
 
@@ -80,6 +83,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <?php createHeader($pageColor);?>
 <main>
 <div id="reply-container">
+    <form action="projectReply.php" method="post">
     <div class="section">
         <div class="container">            
             <div class="row">
@@ -91,13 +95,12 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                                     <a onclick="closeReply()" class="black-text">
                                         <div class="col s6 valign-wrapper"><i class="material-icons left">keyboard_backspace</i>Reactie</div>
                                     </a>
-                                </div>
-                                    
+                                </div>                                    
                                 <div class="col s2 offset-s4 hide-on-med-and-up">
-                                    <a class="btn-floating right btn-small"><i class="material-icons left">reply</i></a>
+                                    <button type="submit" name="reply" class="btn-floating right btn-small"><i class="material-icons left">reply</i></button>
                                 </div>
                                 <div class="col s2 offset-s4 hide-on-small-only m6">
-                                    <a class="btn right"><i class="material-icons left">reply</i>Plaats reactie</a>
+                                    <button type="submit" name="reply" class="btn right"><i class="material-icons left">reply</i>Plaats reactie</button>
                                 </div>                                
                             </div>
                         </li>
@@ -106,7 +109,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
             </div>
             <div class="row">
                 <div class="input-field col s12 m12 l10 offset-l1">
-                    <textarea id="reply-area" class="materialize-textarea" maxlength="400"></textarea>
+                    <textarea id="reply-area" class="materialize-textarea" name="reply_body" maxlength="400"></textarea>
                     <label for="reply-area">Reageer</label>                    
                 </div>
                 <div class="col s12 m12 l10 offset-l1">
@@ -114,7 +117,9 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                 </div>
             </div>
         </div>
+        <input type="hidden" name="project_id" value="<?= $projectData[0]['project_id'] ?>">
     </div>
+    </form>
 </div>
 
 

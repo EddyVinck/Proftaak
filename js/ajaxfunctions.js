@@ -235,3 +235,4 @@ function editKlasAjax(klassenId){
         })
     }
 }
+
