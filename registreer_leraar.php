@@ -4,7 +4,7 @@ checkSession();
 $db = ConnectToDatabase();
 if($_SESSION["loggedIn"] == true){
     header("location: projecten_lijst.php");
-} 
+}
 $query = "SELECT `id` , `naam` FROM scholen";
 $result = mysqli_query($db, $query);
 $data = [];
@@ -46,11 +46,6 @@ if (isset($_POST['submit'])){
         $errors[4] = "Het college moet ingevuld worden";
         $errorState[4] = "invalid";
     }
-    if (!isset($_POST['klas'])){
-        $errorWhenEmptyCount++;
-        $errors[5] = "De klas moet ingevuld worden";
-        $errorState[5] = "invalid";
-    }
     if ($errorWhenEmptyCount == 0){
         $errorWithDataCount = 0;
         $naam = $_POST['naam'];
@@ -58,7 +53,6 @@ if (isset($_POST['submit'])){
         $wachtwoord = $_POST['password'];
         $school = $_POST['school'];
         $college = $_POST['college'];
-        $klas = $_POST['klas'];
         $checkEmailQuery = "SELECT * FROM users WHERE email = '$email'";
         dump($checkEmailQuery);
         $checkEmailResult = mysqli_query($db,$checkEmailQuery);
@@ -68,6 +62,11 @@ if (isset($_POST['submit'])){
             $errorWithDataCount++;
         }
         if ($errorWithDataCount == 0){
+            $getDocKlasQuery = 
+            "SELECT id FROM klassen WHERE rol = 'docenten' AND colleges_id = $college";
+            $docKlasResult = mysqli_query($db,$getDocKlasQuery);
+            $docKlasId = mysqli_fetch_assoc($docKlasResult)['id'];
+            
             $CreateUserQuery = "INSERT INTO `users` (
                 `id` ,
                 `naam` ,
@@ -77,7 +76,7 @@ if (isset($_POST['submit'])){
                 `klassen_id`
                 )
                 VALUES (
-                NULL ,  '$naam',  '$wachtwoord',  '$email',  'ost',  '$klas');";
+                NULL ,  '$naam',  '$wachtwoord',  '$email',  'odo',  '$docKlasId');";
             mysqli_query($db,$CreateUserQuery);
             $newId = mysqli_insert_id($db);
             $_SESSION['register'] = $newId;
@@ -125,7 +124,7 @@ if (isset($_POST['submit'])){
         <div class="row">
           <div class="col s12 card">
             <div class="card-content center">
-              <span class="card-title">Registreer als student:</span>
+              <span class="card-title">Registreer als leraar:</span>
               <div class="divider"></div>
               <form method="POST">
                 <div class="row">
@@ -162,24 +161,16 @@ if (isset($_POST['submit'])){
                 </div>
                 <div class="row">
                     <div class="input-field col s12 m8 offset-m2">
-                        <select class="validate <?=$errorState[4]?>" name="college" id="collegeSelect" onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')">
+                        <select class="validate <?=$errorState[4]?>" name="college" id="collegeSelect">
                             <option value="" disabled selected>Kies je college</option>
                         </select>
                         <label>Kies je college</label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s12 m8 offset-m2">
-                        <select class="validate <?=$errorState[5]?>" name="klas" id="klasSelect">
-                            <option value="" disabled selected>Kies je klas</option>
-                        </select>
-                        <label>Kies je klas</label>
-                    </div>
-                </div>
-                <div class="row">
                   <div class="col s10 m4 offset-m2 offset-s1 vpadding-on-s-only">
                     <button class="btn purple darken-1 waves-effect waves-light" 
-                    type="submit" value="1" name="submit">Aanmelden</button>
+                    type="submit" value="1" name="submit">Registreer</button>
                   </div>
                   <div class="col s10 offset-s1 m4 vpadding-on-s-only">
                     <a class="btn white black-text waves-effect waves-light" href="index.php">Terug
