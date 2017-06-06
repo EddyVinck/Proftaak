@@ -2,6 +2,7 @@
 include("inc/functions.php");
 checkSession();
 $db = ConnectToDatabase();
+$textVar = "";
 if (isset($_SESSION['register'])){
     $id = $_SESSION['register'];
     $queryVar = "SELECT users.id , users.rol , users.naam, 
@@ -32,11 +33,22 @@ if (isset($_SESSION['register'])){
         $_SESSION['klas_id'] = $data[0]['klas_id'];      
         $_SESSION['college_id'] = $data[0]['college_id'];
         $_SESSION['school_id'] = $data[0]['school_id'];
+        if ($_SESSION['rol'] == "ost"){
+            $textVar = "leraar";
+        }
+        else if ($_SESSION['rol'] == "odo"){
+            $textVar = "school beheerder";
+        }
     }
     unset($_SESSION['register']);
 }
 else{
-    
+    if ($_SESSION['rol'] == "ost"){
+        $textVar = "leraar.";
+    }
+    else if ($_SESSION['rol'] == "odo"){
+        $textVar = "school beheerder.";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -65,7 +77,7 @@ else{
                 <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
                 <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>-->
                 <!--<li><a href="#"><i class="small material-icons left">info_outline</i>Wat is dit? </a></li>-->
-                <li><a href="#info">Wat is dit?</a></li>                
+                <li><a href="index.php?logout=true" class="white-text waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>            
             </ul>
             </div>       
             <!--<a href="#" class="brand-logo">Logo</a>-->        
@@ -82,7 +94,7 @@ else{
             <div class="row valign-wrapper">
                 <div class="col s8 center">
                     <h3>Je account is geregistreerd!</h3>
-                    <h5>Het account moet nog eerst geverifi&euml;erd worden door een leraar</h5>                    
+                    <h5>Het account moet nog eerst geverifi&euml;erd worden door een <?=$textVar?></h5>                    
                 </div>
                 <div class="col s4">
                     <i class="material-icons large">watch_later</i>
