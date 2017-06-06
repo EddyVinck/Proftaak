@@ -28,6 +28,7 @@ $result = mysqli_query($connection, $query);
 while($row = mysqli_fetch_assoc($result)){
     $projectData[] = $row;
 }
+dump($projectData);
 $hulpColleges = getHulpCollegesFromDB($projectId,$connection);
 $query = 
 "   SELECT path
@@ -132,7 +133,14 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                 <h5 class="hide-on-med-and-up"><?= $projectData[0]['project_naam'];?></h5>                
             </div>
             <div class="col s12 m4">
-                <a class="btn purple darken-1 col s10 offset-s1" onclick="alert('publiceer')">Publiceren</a>
+                <?php if ($projectData[0]['status'] == "ongeverifieerd" && 
+                ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
+                    <a class="btn purple darken-1 col s10 offset-s1" onclick="alert('publiceer')">Publiceren</a>
+                    <a style="margin-top:10px;" class="btn purple darken-1 col s10 offset-s1" onclick="alert('archiveren')">Archiveer</a>
+                <?php }else if ($projectData[0]['status'] == "gearchiveerd" && 
+                ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
+                    <a class="btn purple darken-1 col s10 offset-s1" onclick="alert('publiceer')">Opnieuw publiceren</a>
+                <?php }?>
             </div>
         </div>
         <!--medium and up -->
@@ -141,7 +149,18 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                 <h3 class="hide-on-small-only"><?= $projectData[0]['project_naam'];?></h3>
             </div>
             <div class="col s12 m4">
-                <a class="btn purple darken-1  right" onclick="alert('publiceer')">Publiceren</a>
+                <?php if ($projectData[0]['status'] == "ongeverifieerd" && 
+                ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
+                    <a class="btn purple darken-1 col m10  right" onclick="alert('publiceer')">Publiceren</a>
+                    <a style="margin-top: 10px;" class="btn purple darken-1 col m10  right" onclick="alert('archiveren')">Archiveer</a>
+                <?php }else if ($projectData[0]['status'] == "gearchiveerd" && 
+                ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
+                    <a class="btn purple darken-1 col m12 l12 right" onclick="alert('opnieuw public')">Opnieuw publiceren</a>
+                <?php }else if ($projectData[0]['status'] == "bezig" && 
+                ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
+                    <a class="btn purple darken-1 col m12 l12 right" onclick="alert('public intrek')">Publicatie intrekken</a>
+                    <a style="margin-top: 10px;" class="btn purple darken-1 col m12 l12 right" onclick="alert('archiveren')">Archiveren</a>
+                <?php }?>
             </div>
         </div>
       </div>
@@ -275,7 +294,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                                     <div class="row">
                                         <div class="col s10 offset-s1">
                                             <p>
-                                                Vul hier in hoe mensen contact met je kunnen maken(dit komt op het PDF):
+                                                Vul hier in hoe mensen contact met je kunnen maken (dit komt op het PDF):
                                             </p>
                                             <input type="text" name="contact" placeholder="bv. Telefoonnummer of e-mail">                  
                                         </div>
