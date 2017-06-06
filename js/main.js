@@ -1,5 +1,6 @@
 var colorCount = 0;
 var newRowCount = 0;
+var newRowCountKlas = 0;
 var colorpickerCount = 0;
 var elemArray =[
     document.getElementById("home"),
@@ -182,7 +183,7 @@ function closeReply()
     document.body.classList.remove("noscroll");
     
 }
-function onReply()
-{
-    // ajax
+function hrefNewKlasRows(){
+    elem = document.getElementById("newKlasRowsSelect");
+    location.href = "beheer.php?active=klassen&new=" + elem.value;
 }

@@ -235,4 +235,38 @@ function editKlasAjax(klassenId){
         })
     }
 }
-
+function saveNewKlassen(amount){
+    if (amount > 0){
+        var newnamen = [];
+        var newColleges = [];
+        for (var x=0; x < amount; x++){
+            var newNaamElem = document.getElementById("newInpKlas" + x);
+            var newCollegeElem = document.getElementById("newSelect" + x);
+            newnamen[x] = newNaamElem.value;
+            newColleges[x] = newCollegeElem.value;
+        }
+        console.log("de namen:");
+        console.log(newnamen);
+        console.log("de colleges:");
+        console.log(newColleges);
+        var send = $.ajax({
+            url: "saveNewKlassen.ajax.php",
+            type: "POST",
+            dataType: "json",
+            data: { "naam":newnamen,"college": newColleges},
+            error: function (xhr, text, error) {
+                console.warn(xhr.responseText);
+                console.log(text);
+                console.log(error);
+            }
+        });
+        send.done(function (msg) {
+            if (msg == "1"){
+                location.href ="beheer.php?active=klassen";
+            }
+            else{
+                console.log("error");
+            }
+        })
+    }
+}
