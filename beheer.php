@@ -231,8 +231,15 @@ if(isset($_SESSION['college_id']))
                     <div class="card-content">
                         <select name="colleges" class="collegeSelect" onchange="location = this.value">
                             <?php
-                            for($y=0;$y<count($scholen);$y++){?>
-                                <option value="beheer.php?id=<?=$scholen[$y]['id']?>"><?=$scholen[$y]['naam']?> </option>
+                            for($y=0;$y<count($scholen);$y++){
+                                if ($scholen[$y]["id"] == $schoolId){
+                                    $selec = "selected";
+                                }
+                                else{
+                                    $selec = "";
+                                }
+                            ?>
+                                <option <?=$selec?> value="beheer.php?id=<?=$scholen[$y]['id']?>"><?=$scholen[$y]['naam']?> </option>
                             <?php } ?>
                         </select>
                     </div>
@@ -435,17 +442,17 @@ if(isset($_SESSION['college_id']))
                             $studentsResult = mysqli_query($db,$getnum);
                             if ($invalidKlasId == $klassen[$x]['id']){
                                 if ($klasAttemptDelete == 2){
-                                    $dataError = "Deze klas bevat studenten, verwijder of verplaats deze eerst";
-                                    $validOrInvalid = "invalid";
+                                    $dataKlasError = "Deze klas bevat studenten, verwijder of verplaats deze eerst";
+                                    $validOrInvalidKlas = "invalid";
                                 }
                                 else if ($klasAttemptDelete == 3){
-                                    $dataError = "Er is iets mis gegaan";
-                                    $validOrInvalid = "invalid";
+                                    $dataKlasError = "Er is iets mis gegaan";
+                                    $validOrInvalidKlas = "invalid";
                                 }
                             }
                             else{
-                                $dataError = "";
-                                $validOrInvalid = "";
+                                $dataKlasError = "";
+                                $validOrInvalidKlas = "";
                             }
                             ?>
                             <tr>
@@ -461,11 +468,11 @@ if(isset($_SESSION['college_id']))
                                 <div class="row center ">
                                     <form method="POST">
                                     <div  class="input-field beheer-inputs col s10 offset-s1 center">
-                                        <input class="validate  " value="<?=$klassen[$x]['naam']?>" 
+                                        <input class="validate  <?=$validOrInvalidKlas?>" value="<?=$klassen[$x]['naam']?>" 
                                         id="inputKlas<?=$klassen[$x]['id']?>" 
                                         type="text">
                                         <label id="lblKlas<?=$klassen[$x]['id']?>" class="active " 
-                                        data-error="<?=$dataError?>" 
+                                        data-error="<?=$dataKlasError?>" 
                                         data-success=""
                                         for="inputKlas<?=$klassen[$x]['id']?>"> </label>
                                     </div>

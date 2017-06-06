@@ -47,6 +47,9 @@ if(isset($_GET['college'])){
         $query .= (" WHERE (hulpcolleges.colleges_id = " . $college
                 ." OR colleges.id = ".$college . ") AND projecten.status = '$status'");
     }
+    else{
+        $query .= " WHERE projecten.status = '$status'";
+    }
 }
 else{
     $query .= " WHERE projecten.status = '$status'";
@@ -70,7 +73,7 @@ while($row = mysqli_fetch_assoc($result)){
 if(isset($_GET['college']) && is_numeric($_GET['college'])){
         $pageColor = changePageColors($db, $_GET['college']);
 } else {
-    $pageColor = changePageColors($db);
+    $pageColor = changePageColors($db, $_SESSION["college_id"]);
 }
 // dump($pageColor, __FILE__, __LINE__);
 
