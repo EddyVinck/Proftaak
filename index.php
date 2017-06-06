@@ -232,6 +232,9 @@ if($_SESSION['loggedIn'] == true)
                       </button>
                     </div>                  
                   </div>
+                  <div class="">                    
+                      <a class="" href="registreer_leraar.php">Of klik hier om te registreren</a>                    
+                  </div>
                   <?php if($loginSuccess == false && $loginAttempt == true){?>
                     <div class="row">
                       <div class="divider"></div>                  

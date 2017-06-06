@@ -586,7 +586,6 @@ if(isset($_SESSION['college_id']))
                             </thead>
                             <tbody>
                             <?php
-                            // dump($unverifiedStudents);
                                 for ($i=0; $i < count($unverifiedStudents); $i++) { 
                                 ?>
                                     <tr class="">
@@ -618,7 +617,6 @@ if(isset($_SESSION['college_id']))
                                                 for($k = 0; $k < count($options); $k++){?>
                                                     <option value=""><?= $options[$k]['naam']?></option><?php
                                                 }
-                                                dump($options);
                                             ?>                                    
                                             </select>                                            
                                         </td>                                    
