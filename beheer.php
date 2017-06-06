@@ -32,7 +32,10 @@ if ($rol == "adm"){
 else{
     $schoolId = $_SESSION['school_id'];
 }
-
+$newRowsKlassen = 0;
+if (isset($_GET['new'])){
+    $newRowsKlassen = $_GET['new'] + 1;
+}
 $invalidKlasId = -1;
 $klasAttemptDelete = 0; //0 = no try, 1 = try success, 2 = try fail due to students, 3 = try fail unexpected
 if (isset($_GET['klasdel'])){
@@ -95,11 +98,9 @@ if (isset($_GET['deleteCollege'])){
             $sqlDeleteCol = 
             "DELETE FROM klassen WHERE id = $docKlasToDel;";
             mysqli_query($db,$sqlDeleteCol);
-            dump($sqlDeleteCol);
             $sqlDeleteCol = 
             "DELETE FROM colleges 
             WHERE id = $collegeToDel;";
-            dump($sqlDeleteCol);
             $deleteresult = mysqli_multi_query($db,$sqlDeleteCol);
             if (!$deleteresult){
                 $collegeAttemptDelete = 4;
@@ -434,7 +435,7 @@ if(isset($_SESSION['college_id']))
                                 <th class="center" style="width: 20%">verwijder</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="klasTbody">
 
                             <?php for($x=0;$x<count($klassen);$x++){
                             $tempID = $klassen[$x]['id'];
@@ -455,7 +456,7 @@ if(isset($_SESSION['college_id']))
                                 $validOrInvalidKlas = "";
                             }
                             ?>
-                            <tr>
+                            <tr id="<?=$x?>">
                                 <td class="center">
                                 <a onclick="editKlasAjax(<?=$klassen[$x]['id']?>);" 
                                     class="btn-floating btn-medium waves-effect waves-light red tooltipped"
@@ -494,10 +495,71 @@ if(isset($_SESSION['college_id']))
                                     <i class="material-icons">delete</i></a>
                                 </td>
                             </tr>
+                            <?php }
+                            for ($y=0;$y<$newRowsKlassen;$y++){
+                            ?>
+                            <form>
+                            <tr>
+                            <td></td>
+                            <td>
+                                <div class="row center ">
+                                    <div  class="input-field beheer-inputs col s10 offset-s1 center">
+                                        <input class="validate" value="" 
+                                        id="newInpKlas<?=$y?>" 
+                                        type="text">
+                                        <label id="newLblKlas<?=$y?>" class="active " 
+                                        data-error="" 
+                                        data-success=""
+                                        for="newInpKlas<?=$y?>"> </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                            <select id="newSelect<?=$y?>">
+                                <?php 
+                                for($j=0;$j < count($colleges); $j++)
+                                {?>
+                                    <option value="<?= $colleges[$j]['id']?>"><?= $colleges[$j]['naam']?></option>
+                                <?php }
+                                ?>
+                            </select>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            </tr>
+                            </form>
                             <?php }?>
                             </tbody>
                         </table>
+                         <div class="card-action">
+                            <div class="row">
+                                <div class="col l2 s6">
+                                    <select id=newKlasRowsSelect"" class="col l6 s6" >
+                                        <?php for ($x = 1; $x < 9; $x ++){?>
+                                            <option value="<?=$x?>"><?=$x?></option>
+                                        <?php }?>
+                                    </select>
+                                    <a id="addnewKlasRows" class="btn-floating btn-large red tooltipped" 
+                                    onclick="hrefNewKlasRows();"
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om aantal nieuwe rijen toe te voegen">
+                                        <i class="material-icons">add</i>
+                                    </a>
+                                </div>
+                                <div class="col l2 s2">
+                                    <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om alle nieuwe rijen op te slaan"
+                                    onclick="saveNewKlassen(<?=$newRowsKlassen?>);">
+                                        <i class="material-icons">save</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                
                     <!--begin tabje studenten-->
                     <div id="studenten">
                         <div class="row">

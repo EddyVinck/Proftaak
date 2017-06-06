@@ -1,5 +1,6 @@
 var colorCount = 0;
 var newRowCount = 0;
+var newRowCountKlas = 0;
 var colorpickerCount = 0;
 var elemArray =[
     document.getElementById("home"),
