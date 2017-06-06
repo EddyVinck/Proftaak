@@ -1,6 +1,7 @@
 <?php
 include("inc/functions.php");
 checkSession();
+checkUserVerification();
 $db = ConnectToDatabase();
 if($_SESSION["loggedIn"] == true){
     header("location: projecten_lijst.php");

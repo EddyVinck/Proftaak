@@ -1,5 +1,6 @@
 <?php
 include("inc/functions.php");
+checkUserVerification();
 ?>
 <!DOCTYPE html>
 <head>

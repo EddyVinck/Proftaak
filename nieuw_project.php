@@ -2,6 +2,7 @@
 include("inc/functions.php");
 $db =  ConnectToDatabase();
 checkSession();
+checkUserVerification();
 if($_SESSION['rol'] != "doc" && $_SESSION['rol'] != "adm" && $_SESSION['rol'] != "stu"){
     header("location: unauthorized.php");
 }

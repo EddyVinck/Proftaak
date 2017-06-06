@@ -2,6 +2,7 @@
 include("inc/functions.php");
 $db =  ConnectToDatabase();
 checkSession();
+checkUserVerification();
 $activeTab = [
     'colleges' => "",
     'leraren' =>  "",

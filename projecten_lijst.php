@@ -78,6 +78,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
 // dump($pageColor, __FILE__, __LINE__);
 
 // dump($data);
+checkUserVerification();
 ?>
 <!DOCTYPE html>
 <head>
