@@ -171,7 +171,18 @@ function setParam(name, value) {
     /* execute search */
     l.search = search;
 }
+function openReply()
+{
+    document.getElementById("reply-container").style.height = "100%";
+    document.body.classList.add("noscroll");
+}
+function closeReply()
+{
+    document.getElementById("reply-container").style.height = "0%";
+    document.body.classList.remove("noscroll");
+    
+}
 function onReply()
 {
-    
+    // ajax
 }

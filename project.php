@@ -69,6 +69,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
       <link type="text/css" rel="stylesheet" href="css/materializeAddons.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="css/style.css"  media="screen,projection"/>      
       <link type="text/css" rel="stylesheet" href="css/footer.css"  media="screen,projection"/>
       <link rel="stylesheet" href="font-awesome-4.7.0\css\font-awesome.min.css">
       <!--Let browser know website is optimized for mobile-->
@@ -80,15 +81,20 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <main>
 <div id="reply-container">
     <div class="section">
-        <div class="container">
+        <div class="container">            
             <div class="row">
-                <div class="col s12">
+                <div class="col s12 m10 offset-m1">
                     <ul class="collection">
                         <li class="collection-item">
                             <div class="row no-margin valign-wrapper">
-                                <div class="col s6 valign-wrapper"><i class="material-icons left">keyboard_backspace</i>Reageer</div>
+                                <div class="col s6">
+                                    <a onclick="closeReply()" class="black-text">
+                                        <div class="col s6 valign-wrapper"><i class="material-icons left">keyboard_backspace</i>Reactie</div>
+                                    </a>
+                                </div>
+                                    
                                 <div class="col s2 offset-s4 hide-on-med-and-up">
-                                    <a class="btn-floating right"><i class="material-icons left">reply</i></a>
+                                    <a class="btn-floating right btn-small"><i class="material-icons left">reply</i></a>
                                 </div>
                                 <div class="col s2 offset-s4 hide-on-small-only m6">
                                     <a class="btn right"><i class="material-icons left">reply</i>Plaats reactie</a>
@@ -99,11 +105,11 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s12">
-                    <textarea id="reply-area" class="materialize-textarea"></textarea>
+                <div class="input-field col s12 m12 l10 offset-l1">
+                    <textarea id="reply-area" class="materialize-textarea" maxlength="400"></textarea>
                     <label for="reply-area">Reageer</label>                    
                 </div>
-                <div class="col s12">
+                <div class="col s12 m12 l10 offset-l1">
                     <label id="character-counter" class="right">0/400</label>
                 </div>
             </div>
@@ -288,7 +294,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                     <h3>Reacties</h3>
                 </div>
                 <div class="col s12">
-                    <a onclick="onReply()" class="btn waves-effect purple darken-1">
+                    <a onclick="openReply()" class="btn waves-effect purple darken-1">
                         <i class="material-icons left">reply</i>
                         Reageer
                     </a>
@@ -332,7 +338,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 </script>
 <script>
 $("#reply-area").keyup(function(){
-  $("#character-counter").text((400 - $(this).val().length) + "/400");
+  $("#character-counter").text((0 + $(this).val().length) + "/400");
 });   
 </script>
 
