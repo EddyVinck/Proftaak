@@ -23,7 +23,7 @@ function loginFade2(key){
     }
     elemArray[key].classList.remove("hide");
 }
-function addTableRow(){
+function addTableRow(school_id){
     var tbodyElement = document.getElementById("collegeTbody");
     var lastRow = tbodyElement.rows[ tbodyElement.rows.length - 1 ];
     var newID = parseInt( lastRow.id) + 1;
@@ -49,7 +49,7 @@ function addTableRow(){
         '</tr>'+
         '</form>' +
     '</div>');
-    $("#saveAllRows").attr("onclick",'saveNewRowAjax('+"'"+colorCount+"','"+newRowCount+"'"+');');
+    $("#saveAllRows").attr("onclick",'saveNewRowAjax('+"'"+colorCount+"','"+newRowCount+"'"+','+"'"+school_id+"'"+');');
     newRowCount++;
     initSpecificColorPicker(colorpickerCount);
     colorCount++;

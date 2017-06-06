@@ -1,9 +1,18 @@
 <?php
 include("inc/functions.php");
 $db = ConnectToDatabase();
+checkSession();
 header('Content-type: application/json');
 $names = $_POST["naam"];
 $colors = $_POST["colors"];
+$school_id = $_POST['schoolId'];
+if ($_SESSION['school_id'] != $school_id){
+    if ($_SESSION['rol'] != "adm"){
+        $school_id = $_SESSION['school_id'];
+        
+    }
+}
+echo json_encode($school_id);
 $numb = count($colors);
 $query = "INSERT INTO  `mydb`.`colleges` (`id` ,
 `naam` ,
@@ -13,10 +22,10 @@ $query = "INSERT INTO  `mydb`.`colleges` (`id` ,
 VALUES ";
 for ($x=0; $x < $numb; $x++){
     if ($x == 0){
-        $query .= "(NULL , '" . $names[$x] . "','" . $colors[$x] . "','1')";
+        $query .= "(NULL , '" . $names[$x] . "','" . $colors[$x] . "','$school_id')";
     }
     else{
-        $query .= ",(NULL , '" . $names[$x] . "','" . $colors[$x] . "','1')";
+        $query .= ",(NULL , '" . $names[$x] . "','" . $colors[$x] . "','$school_id')";
     }
 }
 $query .= ";";
@@ -46,4 +55,3 @@ for ($y=0; $y < $numb; $y++){
 
 $lerarenKlassenQuery .= ";";
 mysqli_query($db,$lerarenKlassenQuery);
-echo json_encode($ids);

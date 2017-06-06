@@ -1,5 +1,5 @@
 var counter = 0;
-function saveNewRowAjax(colorCount, rowCount) {
+function saveNewRowAjax(colorCount, rowCount, school_id) {
     var newValue = [];
     var newColors = [];
     var errorCount = 0;
@@ -31,7 +31,7 @@ function saveNewRowAjax(colorCount, rowCount) {
             url: "addNewCollege.ajax.php",
             type: "POST",
             dataType: "json",
-            data: { "naam": newValue, "colors": newColors },
+            data: { "naam": newValue, "colors": newColors, "schoolId": school_id},
             error: function (xhr, text, error) {
                 console.log(xhr.responseText);
                 console.log(text);

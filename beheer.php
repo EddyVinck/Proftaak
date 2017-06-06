@@ -229,6 +229,7 @@ if(isset($_SESSION['college_id']))
                         <h3><?=$schoolNaam?></h3>
                     </div>
                 </div>
+                <?php if ($rol  == "adm") {?>
                 <div class="row">
                     <div class="card-content">
                         <select name="colleges" class="collegeSelect" onchange="location = this.value">
@@ -246,6 +247,7 @@ if(isset($_SESSION['college_id']))
                         </select>
                     </div>
                 </div>
+                <?php } ?>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
                         <?php if($rol == "sch" || $rol == 'adm'){?>
@@ -263,7 +265,7 @@ if(isset($_SESSION['college_id']))
                     <!--begin Tabje colleges-->
                     <?php if($rol == "sch" || $rol == 'adm'){?>
                     <div id="colleges"> 
-                        <table id="collegeTable" class="responsive-table">
+                        <table id="collegeTable">
                         <thead>
                         <tr>
                             <th class="center" style="width: 15%">Bewerk</th>
@@ -279,7 +281,7 @@ if(isset($_SESSION['college_id']))
                         <tfoot> 
                             <tr>
                                 <td class="center">
-                                    <a class="btn-floating btn-large red" onclick="addTableRow();">
+                                    <a class="btn-floating btn-large red" onclick="addTableRow(<?=$schoolId?>);">
                                     <i class="material-icons">add</i>
                                     </a>
                                 </td>
