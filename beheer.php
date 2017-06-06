@@ -534,7 +534,7 @@ if(isset($_SESSION['college_id']))
                          <div class="card-action">
                             <div class="row">
                                 <div class="col l2 s6">
-                                    <select id=newKlasRowsSelect"" class="col l6 s6" >
+                                    <select id="newKlasRowsSelect" class="col l6 s6" >
                                         <?php for ($x = 1; $x < 9; $x ++){?>
                                             <option value="<?=$x?>"><?=$x?></option>
                                         <?php }?>

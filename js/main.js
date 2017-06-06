@@ -183,7 +183,7 @@ function closeReply()
     document.body.classList.remove("noscroll");
     
 }
-function onReply()
-{
-    // ajax
+function hrefNewKlasRows(){
+    elem = document.getElementById("newKlasRowsSelect");
+    location.href = "beheer.php?active=klassen&new=" + elem.value;
 }
