@@ -296,7 +296,6 @@ function getProjectStatusIcon($projectStatus)
 }
 function checkUserVerification()
 {
-    dump($_SESSION);
     $rol = $_SESSION['rol'];
     if($rol == 'ost' || $rol == "odo")
     {
