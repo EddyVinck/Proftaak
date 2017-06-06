@@ -26,6 +26,7 @@ $hideCards = ['','hide','hide','hide']; //this array is used in the HTML to hide
 # inloggen
 # checken of de combinatie van een email en wachtwoord in de database bestaat
 if (isset($_POST['rol'])){
+  dump($_POST);
   $email = $_POST['email'];
   $formRol = $_POST['rol'];
   $pass  = $_POST['password'];
@@ -201,7 +202,7 @@ if($_SESSION['loggedIn'] == true)
                 <?php }?>
               </form>
             </div>
-          </div><!-- end of #login_as_school -->
+          </div><!-- end of #login_as_school begin login as leraar-->
           <div class="card <?=$hideCards[2]?>" id="login_as_leraar">
             <div class="card-content">
               <span class="card-title center-align">Log in als leraar</span>
@@ -221,7 +222,7 @@ if($_SESSION['loggedIn'] == true)
                   </div>
                   <div class="row">
                     <div class="col s12 m6 center-on-small-only vpadding-on-s-only">
-                      <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="1" name="rol">Log in
+                      <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="2" name="rol">Log in
                         <i class="material-icons right">send</i>
                       </button>
                     </div>
@@ -241,7 +242,7 @@ if($_SESSION['loggedIn'] == true)
                   <?php }?>
                 </form>
             </div>
-          </div><!-- end of #login_as_leraar -->
+          </div><!-- end of #login_as_leraar begin login_as_student -->
           <div class="card <?=$hideCards[3]?>" id="login_as_student">
             <div class="card-content">
               <span class="card-title center-align">Log in als student</span>
@@ -261,7 +262,7 @@ if($_SESSION['loggedIn'] == true)
                 </div>
                 <div class="row">
                   <div class="col s12 m6 center-on-small-only vpadding-on-s-only">
-                    <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="1" name="rol">Log in
+                    <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="3" name="rol">Log in
                       <i class="material-icons right">send</i>
                     </button>
                   </div>
