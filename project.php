@@ -4,7 +4,6 @@ checkSession();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
-// dump($_SESSION);
 $connection = ConnectToDatabase();
 $projectId = $_GET['id'];
 $query = 
@@ -57,10 +56,9 @@ while($row = mysqli_fetch_assoc($result))
 // dump($projectData);
 // dump($hulpColleges);
 // dump($images);   
-dump($responses);
+// dump($responses);
+// dump($_SESSION);
 $pageColor = changePageColors($connection, $projectData[0]['college_id']);
-
-
 ?>
 <!DOCTYPE html>
 
@@ -80,6 +78,40 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <body >
 <?php createHeader($pageColor);?>
 <main>
+<div id="reply-container">
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="collection">
+                        <li class="collection-item">
+                            <div class="row no-margin valign-wrapper">
+                                <div class="col s6 valign-wrapper"><i class="material-icons left">keyboard_backspace</i>Reageer</div>
+                                <div class="col s2 offset-s4 hide-on-med-and-up">
+                                    <a class="btn-floating right"><i class="material-icons left">reply</i></a>
+                                </div>
+                                <div class="col s2 offset-s4 hide-on-small-only m6">
+                                    <a class="btn right"><i class="material-icons left">reply</i>Plaats reactie</a>
+                                </div>                                
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="reply-area" class="materialize-textarea"></textarea>
+                    <label for="reply-area">Reageer</label>                    
+                </div>
+                <div class="col s12">
+                    <label id="character-counter" class="right">0/400</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
   <div class="container">
       <div class="section">
         <!--small screen-->
@@ -255,9 +287,15 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                 <div class="col s12">
                     <h3>Reacties</h3>
                 </div>
+                <div class="col s12">
+                    <a onclick="onReply()" class="btn waves-effect purple darken-1">
+                        <i class="material-icons left">reply</i>
+                        Reageer
+                    </a>
+                </div>
             </div>
             <div class="row">
-                <div class="col s12 m8 offset-m2">                  
+                <div class="col s12 m6 offset-m3">                  
                     <?php for($i = 0; $i < count($responses); $i++) { ?>
                     <div class="card">
                         <div class="card-stacked">
@@ -288,9 +326,14 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <script>
   initSideNav();
   initImageSlider();
+  $(document).ready(function() {
+    Materialize.updateTextFields();
+  });
 </script>
-<!--jsPDF stuff-->
-<script type="text/javascript" src="js/jsPDF-1.3.2/dist/jspdf.min.js"></script>
-<script type="text/javascript" src="js/jsPDF-1.3.2/plugins/split_text_to_size.js"></script>
-<script type="text/javascript" src="js/projectPDF.js"></script>
+<script>
+$("#reply-area").keyup(function(){
+  $("#character-counter").text((400 - $(this).val().length) + "/400");
+});   
+</script>
+
 </html>

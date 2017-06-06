@@ -203,8 +203,6 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
                         </div>
                     </div>
                 </li>
-
-                <!-- database versie -->
                 <?php                
                     for($i = 0; $i < count($data); $i++){
                         $hulpColleges = [];

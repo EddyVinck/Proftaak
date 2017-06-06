@@ -171,3 +171,7 @@ function setParam(name, value) {
     /* execute search */
     l.search = search;
 }
+function onReply()
+{
+    
+}
