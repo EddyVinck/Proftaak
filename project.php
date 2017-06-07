@@ -1,5 +1,4 @@
-<?php include("inc/functions.php");?>
-<?php
+<?php include("inc/functions.php");
 checkSession();
 checkUserVerification();
 if($_SESSION['rol'] == ""){

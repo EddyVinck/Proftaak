@@ -1,10 +1,12 @@
-<?php include("inc/functions.php");?>
-<?php
+<?php include("inc/functions.php");
 $db = ConnectToDatabase();
 checkSession();
 $rol = $_SESSION['rol'];
 if($rol == ""){
     header("location: index.php");
+}
+if ($rol == "odo" || $rol == "ost"){
+    header("location: registratie_success.php");
 }
 //sets status that is used in the query, if the user is a student, unverified is automatically changed to "bezig"
 $status = "bezig";
@@ -14,6 +16,7 @@ if(isset($_GET['status'])){
         $status = "bezig";
     }
 }
+
 # check if college in $_SESSION belongs to the same school as
 # the school that corresponds to the college from $_GET variable
 if(isset($_GET['college']) && is_numeric($_GET['college']))

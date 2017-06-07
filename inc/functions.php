@@ -47,6 +47,14 @@ function checkSchool($debug = false) {
 		// dump($scholenId, __FILE__, __LINE__);
 	}    
 }
+function getNumberOfMessages(){
+    $userID = $_SESSION['id'];
+    $db = ConnectToDatabase();
+    $queryGetMessageNumber = "SELECT id FROM messages WHERE to_id=$userID AND is_read = 0;";
+    $messageResult = mysqli_query($db,$queryGetMessageNumber);
+    $number_of_messages = mysqli_num_rows($messageResult);
+    return $number_of_messages;
+}
 function truncate($text, $maxLength) 
 {
 	if(strlen($text) > $maxLength)
@@ -84,7 +92,10 @@ function properRole($rol){
             break;
     }
 }
-function createHeader($color = 'teal') { ?>
+function createHeader($color = 'teal') { 
+    $num_of_messages = getNumberOfMessages();
+    // $num_of_messages = 0;
+    ?>
     <header>    
         <nav class="top-nav <?=$color;?>">
             <div class="nav-wrapper">
@@ -95,11 +106,16 @@ function createHeader($color = 'teal') { ?>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
                     <li><a href="colleges.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
-                    <li><a href="#inbox.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
+                    <li>
+                        <a href="inbox.php" 
+                            class="<?= changeFontColorByColor($color);?> waves-effect">
+<i class="small material-icons left">message</i>Priveberichten<?php if ($num_of_messages > 0){?><span class="new badge" data-badge-caption="Nieuwe"><?=$num_of_messages?></span><?php }?>
+                        </a>
+                    </li>
                     <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">settings</i> Beheer </a></li>
                     <li><a href="index.php?logout=true" class="<?=changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
                 </ul>
-                </div>       
+                </div>      
                 <!--<a href="#" class="brand-logo">Logo</a>-->
                 </div>        
             </div>        
@@ -118,7 +134,16 @@ function createHeader($color = 'teal') { ?>
             </li>
             <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
             <li><a href="colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
-            <li><a href="#inbox.php" class=" waves-effect"><i class="small material-icons left">message</i>Priveberichten</a></li>
+            <li>
+                <a href="#inbox.php" 
+                    class="waves-effect">
+                    <i class="small material-icons left">message</i>Priveberichten
+                    <?php if ($num_of_messages > 0){?>
+                        <span class="new badge" data-badge-caption="Nieuwe">
+                    <?=$num_of_messages?></span>
+                    <?php }?>
+                </a>
+            </li>
             <li><a href="beheer.php"><i class="small material-icons left">settings</i> Beheer </a></li>
             <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
             <li><a href="#!">Second Link</a></li>
