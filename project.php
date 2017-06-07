@@ -132,60 +132,44 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
     </div>
     </form>
 </div>
-
-
   <div class="container">
       <div class="section">
-        <!--small screen-->
-        <div class="row hide-on-med-and-up">
-            <div class="col s12 m8 center-on-small center-on-small-only">
-                <h5 class="hide-on-med-and-up"><?= $projectData[0]['project_naam'];?></h5>                
-            </div>
-            <div class="col s12 m4">
-                <?php if ($projectData[0]['status'] == "ongeverifieerd" && 
-                ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
-                    <a class="btn purple darken-1 col s10 offset-s1" onclick="alert('publiceer')">Publiceren</a>
-                    <a style="margin-top:10px;" class="btn purple darken-1 col s10 offset-s1" onclick="alert('archiveren')">Archiveer</a>
-                <?php }else if ($projectData[0]['status'] == "gearchiveerd" && 
-                ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
-                    <a class="btn purple darken-1 col s10 offset-s1" onclick="alert('publiceer')">Opnieuw publiceren</a>
-                <?php }?>
-            </div>
+        <div class="row hide-on-med-and-up center">
+            <h5 class="hide-on-med-and-up"><?= $projectData[0]['project_naam'];?></h5> 
         </div>
-        <!--medium and up -->
-        <div class="row hide-on-small-only valign-wrapper">
-            <div class="col s12 m8 center-on-small center-on-small-only">
-                <h3 class="hide-on-small-only"><?= $projectData[0]['project_naam'];?></h3>
+        <div class="row valign-wrapper">
+            <div class="col s12 m8 hide-on-small-only">
+                <h3><?= $projectData[0]['project_naam'];?></h3>
             </div>
             <div class="col s12 m4">
                 <form method="POST">
                 <?php if ($projectData[0]['status'] == "ongeverifieerd" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
-                    <button class="btn purple darken-1 col m10  right" 
+                    <button class="btn purple darken-1 col m10 s10 offset-s1" 
                         type="submit" 
                         name="action"
                         value="bezig">Publiceren
                     </button>
-                    <button style="margin-top: 10px;" class="btn purple darken-1 col m10  right" 
+                    <button style="margin-top: 10px;" class=" s10 offset-s1 btn purple darken-1 col m10" 
                         type="submit" 
                         name="action"
                         value="gearchiveerd">Archiveren
                     </button>
                 <?php }else if ($projectData[0]['status'] == "gearchiveerd" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
-                    <button class="btn purple darken-1 col m12 l12 right" 
+                    <button class="btn purple darken-1 col m12 l12 s10 offset-s1" 
                         type="submit" 
                         name="action"
                         value="bezig">Opnieuw publiceren
                     </button>
                 <?php }else if ($projectData[0]['status'] == "bezig" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
-                    <button class="btn purple darken-1 col m12 l12 right" 
+                    <button class="btn purple darken-1 col m12 l12 s10 offset-s1" 
                         type="submit" 
                         name="action"
                         value="ongeverifieerd">Publicatie intrekken
                     </button>
-                    <button style="margin-top: 10px;" class="btn purple darken-1 col m12 l12 right" 
+                    <button style="margin-top: 10px;" class="btn purple darken-1 col m12 l12 s10 offset-s1" 
                         type="submit" 
                         name="action"
                         value="gearchiveerd">Archiveren
