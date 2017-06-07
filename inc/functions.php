@@ -192,17 +192,20 @@ function changePageColors($connection, $collegeId = false)
             $query = 
             "   SELECT kleur
                 FROM colleges
-                WHERE id = $collegeId";
-            $result = mysqli_query($connection, $query);
-            while($row = mysqli_fetch_assoc($result))
-            {
-                $myColor = $row;
+                WHERE id = ?";
+            $prepare_Color = $connection->prepare($query);
+            $prepare_Color->bind_param("i", $collegeId);
+            $prepare_Color->execute();
+            $result=$prepare_Color->get_result();
+            while ($data = $result->fetch_assoc()){
+                $myColor = $data['kleur'];
             }
+
         }
     } else {
         return $myColor = 'teal';
     }
-    return $myColor['kleur'];
+    return $myColor;
 }
 /*  check if color is default(500 type color from Material Design)
     or if the color is lightened
@@ -254,12 +257,16 @@ function getHulpCollegesFromDB($projectId,$connection){
         FROM projecten
         INNER JOIN hulpcolleges
         ON projecten.id = hulpcolleges.projecten_id
-        WHERE projecten.id = $projectId
+        WHERE projecten.id = ?
         );
     ";
-    $result = mysqli_query($connection, $query);
-    while($row = mysqli_fetch_assoc($result)){
-        $hulpColleges[] = $row;
+    
+    $prepare_hulpCol = $connection->prepare($query);
+    $prepare_hulpCol->bind_param("i", $projectId);
+    $prepare_hulpCol->execute();
+    $result=$prepare_hulpCol->get_result();
+    while ($data = $result->fetch_assoc()){
+        $hulpColleges[] = $data;
     }
     return $hulpColleges;
 }

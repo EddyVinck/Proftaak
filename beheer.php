@@ -42,16 +42,22 @@ $klasAttemptDelete = 0; //0 = no try, 1 = try success, 2 = try fail due to stude
 if (isset($_GET['klasdel'])){
     $klasToDelete = $_GET['klasdel'];
     $delKlasGetStudentQuery = 
-    "SELECT * FROM users WHERE klassen_id = $klasToDelete";
-    $studentsResult = mysqli_query($db,$delKlasGetStudentQuery);
+    "SELECT * FROM users WHERE klassen_id = ?";
+    $prepare_KlasDelGetStudent = $db->prepare($delKlasGetStudentQuery);
+    $prepare_KlasDelGetStudent->bind_param("i", $klasToDelete);
+    $prepare_KlasDelGetStudent->execute();
+    $studentsResult=$prepare_KlasDelGetStudent->get_result();
     if (mysqli_num_rows($studentsResult)>0) {
         $klasAttemptDelete = 2;
         $invalidKlasId = $klasToDelete;
     }
     else{
         $sqlDeleteKlas = 
-        "DELETE FROM klassen WHERE id = $klasToDelete";
-        $deleteresult = mysqli_query($db,$sqlDeleteKlas);
+        "DELETE FROM klassen WHERE id = ?";
+        $prepare_KlasDel = $db->prepare($sqlDeleteKlas);
+        $prepare_KlasDel->bind_param("i", $klasToDelete);
+        $prepare_KlasDel->execute();
+        $deleteresult=$prepare_KlasDel->get_result();
         if (!$deleteresult){
             $klasAttemptDelete = 3;
             $invalidKlasId = $klasToDelete;
@@ -76,33 +82,47 @@ if (isset($_GET['deleteCollege'])){
     users.rol =  'doc'
     OR users.rol =  'odo'
     )
-    AND colleges.id = $collegeToDel";
-    $lerarenResult = mysqli_query($db,$getLerarenFromKlasQuery);
+    AND colleges.id = ?";
+    $prepare_getLerarenFromKlas = $db->prepare($getLerarenFromKlasQuery);
+    $prepare_getLerarenFromKlas->bind_param("i", $collegeToDel);
+    $prepare_getLerarenFromKlas->execute();
+    $lerarenResult=$prepare_getLerarenFromKlas->get_result();
     if (mysqli_num_rows($lerarenResult) > 0){
         $collegeAttemptDelete = 3;
         $invalidCollegeId = $collegeToDel;
     }
     else{
-        $getLerarenKlasQuery =  
-        "SELECT id FROM klassen WHERE colleges_id = $collegeToDel AND rol = 'docenten'";
-        $getDocentenKlasId = mysqli_query($db,$getLerarenKlasQuery);
-        $docKlasToDel = mysqli_fetch_assoc($getDocentenKlasId)['id'];
+        $getLerarenKlasQuery_prepareQuery = "SELECT * FROM klassen WHERE colleges_id = ? AND rol = 'docenten'";
+        $prepare_getLerarenKlas = $db->prepare($getLerarenKlasQuery_prepareQuery);
+        $prepare_getLerarenKlas->bind_param("i", $collegeToDel);
+        $prepare_getLerarenKlas->execute();
+        $getDocentenKlasIdResult = $prepare_getLerarenKlas->get_result();
+        $docKlasToDel = mysqli_fetch_assoc($getDocentenKlasIdResult)['id'];
+
         $delCollegeGetKlassemQuery = 
-        "SELECT * FROM klassen WHERE colleges_id = $collegeToDel AND rol != 'docenten'";
-        $klassenresult = mysqli_query($db,$delCollegeGetKlassemQuery);
+        "SELECT * FROM klassen WHERE colleges_id = ? AND rol != 'docenten'";
+        $prepare_getLerarenKlas = $db->prepare($delCollegeGetKlassemQuery);
+        $prepare_getLerarenKlas->bind_param("i", $collegeToDel);
+        $prepare_getLerarenKlas->execute();
+        $klassenresult = $prepare_getLerarenKlas->get_result();
         if (mysqli_num_rows($klassenresult)>0){
             $collegeAttemptDelete = 2;
             $invalidCollegeId = $collegeToDel;
         }
         else{
-            
             $sqlDeleteCol = 
-            "DELETE FROM klassen WHERE id = $docKlasToDel;";
-            mysqli_query($db,$sqlDeleteCol);
+            "DELETE FROM klassen WHERE id = ?;";
+            $prepare_getLerarenKlas = $db->prepare($sqlDeleteCol);
+            $prepare_getLerarenKlas->bind_param("i", $docKlasToDel);
+            $prepare_getLerarenKlas->execute();
+
             $sqlDeleteCol = 
             "DELETE FROM colleges 
-            WHERE id = $collegeToDel;";
-            $deleteresult = mysqli_multi_query($db,$sqlDeleteCol);
+            WHERE id = ?;";
+            $prepare_getLerarenKlas = $db->prepare($sqlDeleteCol);
+            $prepare_getLerarenKlas->bind_param("i", $collegeToDel);
+            $prepare_getLerarenKlas->execute();
+            $deleteresult = $prepare_getLerarenKlas->get_result();
             if (!$deleteresult){
                 $collegeAttemptDelete = 4;
                 $invalidCollegeId = $collegeToDel;
@@ -167,13 +187,15 @@ $docentenQuery = "SELECT users.id , users.rol , users.naam,
             ON klassen.colleges_id = colleges.id
             INNER JOIN scholen
             ON colleges.scholen_id = scholen.id
-            WHERE users.rol = '$docentenVerificatie' AND scholen.id = $schoolId  ORDER BY users.id";
-$sqlResult = mysqli_query($db, $docentenQuery);
+            WHERE users.rol = ? AND scholen.id = $schoolId  ORDER BY users.id";
+$prepare_getDocenten = $db->prepare($docentenQuery);
+$prepare_getDocenten->bind_param("s", $docentenVerificatie);
+$prepare_getDocenten->execute();
+$sqlResult = $prepare_getDocenten->get_result();
 $docenten = [];
 while($row = mysqli_fetch_assoc($sqlResult)){
     $docenten[] = $row; 	//places everything in the array
 }
-
 // query for unverified students
 $query = 
 "SELECT users.id, users.naam, users.email, users.klassen_id, users.rol,
@@ -187,9 +209,12 @@ $query =
 	ON klassen.colleges_id = colleges.id
     INNER JOIN scholen
     ON colleges.scholen_id = scholen.id
-    WHERE users.rol = '$studentenVerificatie' AND scholen.id = $schoolId"; 
+    WHERE users.rol = ? AND scholen.id = $schoolId"; 
 
-$result = mysqli_query($db,$query);
+$prepare_getStudenten = $db->prepare($query);
+$prepare_getStudenten->bind_param("s", $studentenVerificatie);
+$prepare_getStudenten->execute();
+$result = $prepare_getStudenten->get_result();
 $unverifiedStudents = [];
 while($row = mysqli_fetch_assoc($result)){
     $unverifiedStudents[] = $row; 	//places everything in the array

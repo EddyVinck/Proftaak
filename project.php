@@ -24,8 +24,7 @@ if (isset($_POST['action'])){
         }
     }
 }
-$query = 
-"   SELECT projecten.id AS project_id, 
+$prepare_getProjectData = $connection->prepare( "SELECT projecten.id AS project_id, 
     projecten.omschrijving, projecten.omschrijving_nodig,
     projecten.status, projecten.naam AS project_naam,
     users.naam AS projectstarter, users.id AS user_id,
@@ -39,39 +38,47 @@ $query =
     ON users.klassen_id = klassen.id
     INNER JOIN colleges
     ON klassen.colleges_id = colleges.id
-    WHERE projecten.id = $projectId;
-";
-$result = mysqli_query($connection, $query);
-while($row = mysqli_fetch_assoc($result)){
-    $projectData[] = $row;
+    WHERE projecten.id = ?;");
+$prepare_getProjectData->bind_param("i", $projectId);
+$prepare_getProjectData->execute();
+$result=$prepare_getProjectData->get_result();
+while ($data = $result->fetch_assoc()){
+    $projectData[] = $data;
 }
+
 $hulpColleges = getHulpCollegesFromDB($projectId,$connection);
-$query = 
+
+$queryGetImages = 
 "   SELECT path
     FROM images
-    WHERE projecten_id = $projectId;
+    WHERE projecten_id = ?;
 ";
-$result = mysqli_query($connection, $query);
-$images = [];
-while($row = mysqli_fetch_assoc($result)){
-    $images[] = $row;
+$prepare_getProjectImages = $connection->prepare($queryGetImages);
+$prepare_getProjectImages->bind_param("i", $projectId);
+$prepare_getProjectImages->execute();
+$result=$prepare_getProjectImages->get_result();
+while ($data = $result->fetch_assoc()){
+    $images[] = $data;
 }
-$query = 
+
+$responses = [];
+
+$queryGetReacties = 
 "   SELECT reacties.id AS response_id, reacties.text AS response_text,
     users.id AS user_id, users.naam AS user_name
     FROM reacties
     INNER JOIN users
     ON reacties.user_id = users.id
-    WHERE reacties.projecten_id = $projectId
+    WHERE reacties.projecten_id = ?
     ORDER BY response_id;
 ";
-$result = mysqli_query($connection, $query);
-$responses = [];
-while($row = mysqli_fetch_assoc($result))
-{
-    $responses[] = $row;
+$prepare_getProjectReacties = $connection->prepare($queryGetReacties);
+$prepare_getProjectReacties->bind_param("i", $projectId);
+$prepare_getProjectReacties->execute();
+$result=$prepare_getProjectReacties->get_result();
+while ($data = $result->fetch_assoc()){
+    $responses[] = $data;
 }
-
 $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 ?>
 <!DOCTYPE html>
@@ -375,11 +382,8 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
   $(document).ready(function() {
     Materialize.updateTextFields();
   });
+  $("#reply-area").keyup(function(){
+    $("#character-counter").text((0 + $(this).val().length) + "/400");
+    });
 </script>
-<script>
-$("#reply-area").keyup(function(){
-  $("#character-counter").text((0 + $(this).val().length) + "/400");
-});   
-</script>
-
 </html>
