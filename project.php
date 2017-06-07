@@ -5,8 +5,25 @@ checkUserVerification();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
+else if ($_SESSION['rol'] == "odo" || $_SESSION['rol'] == "ost"){
+    header("location: registratie_success.php");
+}
+
 $connection = ConnectToDatabase();
 $projectId = $_GET['id'];
+
+// next part happens if one of the buttons: archiveren, publicatie intrekken, publiceren is pressed
+if (isset($_POST['action'])){
+    $action = $_POST['action'];
+    if ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc"){
+        if ($action == 'bezig' || $action == 'gearchiveerd' ||$action == 'ongeverifieerd'){
+            $query = "UPDATE projecten 
+            SET `status` = '$action'
+            WHERE `id` = $projectId";
+            $result = mysqli_query($connection,$query);
+        }
+    }
+}
 $query = 
 "   SELECT projecten.id AS project_id, 
     projecten.omschrijving, projecten.omschrijving_nodig,
@@ -28,7 +45,6 @@ $result = mysqli_query($connection, $query);
 while($row = mysqli_fetch_assoc($result)){
     $projectData[] = $row;
 }
-dump($projectData);
 $hulpColleges = getHulpCollegesFromDB($projectId,$connection);
 $query = 
 "   SELECT path
@@ -55,15 +71,8 @@ while($row = mysqli_fetch_assoc($result))
 {
     $responses[] = $row;
 }
-// dump($projectData);
-// dump($hulpColleges);
-// dump($images);   
-// dump($responses);
-// dump($_SESSION);
-// dump($_POST);
 
 $pageColor = changePageColors($connection, $projectData[0]['college_id']);
-
 ?>
 <!DOCTYPE html>
 
@@ -149,18 +158,40 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                 <h3 class="hide-on-small-only"><?= $projectData[0]['project_naam'];?></h3>
             </div>
             <div class="col s12 m4">
+                <form method="POST">
                 <?php if ($projectData[0]['status'] == "ongeverifieerd" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
-                    <a class="btn purple darken-1 col m10  right" onclick="alert('publiceer')">Publiceren</a>
-                    <a style="margin-top: 10px;" class="btn purple darken-1 col m10  right" onclick="alert('archiveren')">Archiveer</a>
+                    <button class="btn purple darken-1 col m10  right" 
+                        type="submit" 
+                        name="action"
+                        value="bezig">Publiceren
+                    </button>
+                    <button style="margin-top: 10px;" class="btn purple darken-1 col m10  right" 
+                        type="submit" 
+                        name="action"
+                        value="gearchiveerd">Archiveren
+                    </button>
                 <?php }else if ($projectData[0]['status'] == "gearchiveerd" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
-                    <a class="btn purple darken-1 col m12 l12 right" onclick="alert('opnieuw public')">Opnieuw publiceren</a>
+                    <button class="btn purple darken-1 col m12 l12 right" 
+                        type="submit" 
+                        name="action"
+                        value="bezig">Opnieuw publiceren
+                    </button>
                 <?php }else if ($projectData[0]['status'] == "bezig" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
-                    <a class="btn purple darken-1 col m12 l12 right" onclick="alert('public intrek')">Publicatie intrekken</a>
-                    <a style="margin-top: 10px;" class="btn purple darken-1 col m12 l12 right" onclick="alert('archiveren')">Archiveren</a>
+                    <button class="btn purple darken-1 col m12 l12 right" 
+                        type="submit" 
+                        name="action"
+                        value="ongeverifieerd">Publicatie intrekken
+                    </button>
+                    <button style="margin-top: 10px;" class="btn purple darken-1 col m12 l12 right" 
+                        type="submit" 
+                        name="action"
+                        value="gearchiveerd">Archiveren
+                    </button>
                 <?php }?>
+                </form>
             </div>
         </div>
       </div>

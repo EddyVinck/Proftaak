@@ -35,7 +35,7 @@ else{
 }
 $newRowsKlassen = 0;
 if (isset($_GET['new'])){
-    $newRowsKlassen = $_GET['new'] + 1;
+    $newRowsKlassen = $_GET['new'];
 }
 $invalidKlasId = -1;
 $klasAttemptDelete = 0; //0 = no try, 1 = try success, 2 = try fail due to students, 3 = try fail unexpected
@@ -365,19 +365,25 @@ if(isset($_SESSION['college_id']))
                     </div>
                     <!--begin tabje leraren-->
                     <div id="leraren">
-                        <div class="row">
+                        <div class="row ">
                         <?php if ($docentenVerificatie == "doc"){?>
                             <div class="col s12 m3 l3">
                                 <a href="?doc=odo&active=leraren<?=$hrefText?>" 
-                                class="waves-effect waves-light btn">ongeverifieerd</a>
+                                class="waves-effect waves-light btn tooltipped"
+                                data-position="bottom"
+                                data-delay="10"
+                                data-tooltip="Klik hier om de ongeverifieerde docenten te zien">ongeverifieerd</a>
                             </div>
                         <?php }else if ($docentenVerificatie == "odo"){ ?>
                             <div class="col s12 m3 l3">
-                                <a href="?doc=doc&active=leraren<?=$hrefText?>" class="waves-effect waves-light btn">geverifieerd</a>
+                                <a href="?doc=doc&active=leraren<?=$hrefText?>" class="waves-effect waves-light btn tooltipped"
+                                data-position="bottom"
+                                data-delay="10"
+                                data-tooltip="Klik hier om de geverifieerde docenten te zien">geverifieerd</a>
                             </div>
                         <?php } ?>
                         </div>
-                        <table  class="centered responsive-table" id="lerarenTabel">
+                        <table  class="centered" id="lerarenTabel">
                         <thead>
                         <tr>
                             <th>Naam</th>
@@ -405,8 +411,8 @@ if(isset($_SESSION['college_id']))
                                     </select>
                                 </td>
                                <td class="valign-wrapper">
-                                    <div class="row">
-                                        <div class="col s12">
+                                    <div class="row" style="width:100%">
+                                        <div class="col s10 offset-s1">
                                             <a id="verifyLeraren<?=$x; ?>" class="btn waves-effect <?= properButtonColorForRole($docenten[$x]['rol']); ?>"
                                             onclick="updateVerifiedStatusAjax(
                                                 <?= $docenten[$x]['id'];?>,
@@ -569,12 +575,18 @@ if(isset($_SESSION['college_id']))
                             <?php if ($studentenVerificatie == "stu"){?>
                                 <div class="col s12 m3 l3">
                                     <a href="?stu=ost&active=studenten<?=$hrefText?>" 
-                                    class="waves-effect waves-light btn">ongeverifieerd</a>
+                                    class="waves-effect waves-light btn tooltipped"
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik hier om de ongeverifieerde studenten te zien">ongeverifieerd</a>
                                 </div>
                             <?php }else if ($studentenVerificatie == "ost"){ ?>
                                 <div class="col s12 m3 l3">
                                     <a href="?stu=stu&active=studenten<?=$hrefText?>" 
-                                    class="waves-effect waves-light btn">geverifieerd</a>
+                                    class="waves-effect waves-light btn tooltipped"
+                                    data-position="bottom"
+                                    data-delay="10"
+                                    data-tooltip="Klik om de geverifieerde studenten te zien">geverifieerd</a>
                                 </div>
                             <?php } ?>
                         </div>
