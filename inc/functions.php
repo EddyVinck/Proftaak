@@ -260,7 +260,6 @@ function getHulpCollegesFromDB($projectId,$connection){
         WHERE projecten.id = ?
         );
     ";
-    
     $prepare_hulpCol = $connection->prepare($query);
     $prepare_hulpCol->bind_param("i", $projectId);
     $prepare_hulpCol->execute();

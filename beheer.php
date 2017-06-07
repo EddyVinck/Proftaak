@@ -219,15 +219,11 @@ $unverifiedStudents = [];
 while($row = mysqli_fetch_assoc($result)){
     $unverifiedStudents[] = $row; 	//places everything in the array
 }
-
-// dump($_SESSION);
-
 if(isset($_SESSION['college_id']))
 {
     $collegeId = $_SESSION['college_id'];
     $pageColor = changePageColors($db, $collegeId);
 }
-
 ?>
 <!DOCTYPE html>
 <head>
