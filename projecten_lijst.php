@@ -16,9 +16,30 @@ if(isset($_GET['status'])){
 }
 # check if college in $_SESSION belongs to the same school as
 # the school that corresponds to the college from $_GET variable
-if(isset($_GET['college']) && is_numeric($_GET['college']) )
+if(isset($_GET['college']) && is_numeric($_GET['college']))
 {
     checkSchool();
+}
+
+// Set the right header and search value for the query
+if(isset($_POST['search']))
+{
+    $projectSearch = $_POST['search'];
+
+    if(isset($_GET['college']) && is_numeric($_GET['college']))
+    {
+        $collegeGet = $_GET['college'];
+        header("location: projecten_lijst.php?college=".$collegeGet."&search=".$projectSearch);
+    } else {
+        header("location: projecten_lijst.php?search=".$projectSearch);
+    }
+} else {
+    if(isset($_GET['search']))
+    {
+        $projectSearch = $_GET['search'];       
+    } else {
+        $projectSearch = "";        
+    }
 }
 
 $query = 
@@ -40,21 +61,29 @@ $query =
 	ON colleges.scholen_id = scholen.id
 	LEFT OUTER JOIN images
 	ON projecten.id = images.projecten_id";
+
 if(isset($_GET['college'])){
     // check of de ingevulde get variabele wel een nummer is
     if(is_numeric($_GET['college'])){
         $college = $_GET['college'];
         $query .= (" WHERE (hulpcolleges.colleges_id = " . $college
                 ." OR colleges.id = ".$college . ") AND projecten.status = '$status'");
-    }
-    else{
+    } else{
         $query .= " WHERE projecten.status = '$status'";
     }
 }
 else{
     $query .= " WHERE projecten.status = '$status'";
     
-}  
+}
+
+if(!empty($projectSearch)){
+    $query .= " AND (
+                projecten.naam LIKE '%" .$projectSearch. "%'
+                OR projecten.omschrijving LIKE '%" .$projectSearch. "%' 
+                )";
+}
+
 $query .= " GROUP BY projecten.id";
     // op de lege plek komt de where college = 1 als je die hebt
 $collegeId = $_SESSION['college_id'];
@@ -188,7 +217,29 @@ checkUserVerification();
       </div>
       <?php 
         if($data != NULL) {
-      ?>       
+      ?>
+      <!--searchbar-->
+      <div class="row" style="padding: 0 24px;">
+        <div class="col s12">          
+            <div class="navbar">
+                <nav class="white">
+                    <div class="nav-wrapper">
+                        <a href="#!" class="brand-logo"></a>
+                        <ul class="right" style="position:absolute; right:10%;">
+                        <li><label for="search"><i class="material-icons">search</i></label></li>
+                        </ul>
+                        <form method="post">
+                        <div class="input-field">
+                            <input id="search" type="search" name="search" value="<?=$projectSearch?>">
+                            <i class="mdi-navigation-close"></i>
+                        </div>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+      </div>
+      
       <div class="row">
           <div class="col s12">
             <ul id="collapsable" class="collapsible popout" data-collapsible="accordion">                   
@@ -256,6 +307,26 @@ checkUserVerification();
             </ul>
             <?php } else { // als er geen projecten zijn voor dit college
                 ?>
+                <div class="row" style="padding: 0 24px;">
+        <div class="col s12">          
+            <div class="navbar">
+                <nav class="white">
+                    <div class="nav-wrapper">
+                        <a href="#!" class="brand-logo"></a>
+                        <ul class="right" style="position:absolute; right:10%;">
+                        <li><label for="search"><i class="material-icons">search</i></label></li>
+                        </ul>
+                        <form method="post">
+                        <div class="input-field">
+                            <input id="search" type="search" name="search" value="<?=$projectSearch?>">
+                            <i class="mdi-navigation-close"></i>
+                        </div>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+      </div>
                 <div class="section">
                     <div class="row valign-wrapper">
                         <div class="col s12 center">
