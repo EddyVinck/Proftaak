@@ -9,7 +9,10 @@ if($rol == ""){
 if ($rol == "odo" || $rol == "ost"){
     header("location: registratie_success.php");
 }
-
+$select = -1;
+if(isset($_GET['select'])){
+  $select = $_GET['select'];
+}
 $getAllMessagesQuery = 
 "SELECT messages.id, 
 messages.message,
@@ -22,8 +25,11 @@ users.naam AS users_naam
 FROM messages
 INNER JOIN users
 ON messages.from_id = users.id
-WHERE to_id = $userId
-ORDER BY CreationDate DESC";
+WHERE `to_id` = $userId";
+if ($select != -1){
+  $getAllMessagesQuery .= " AND messages.id = $select";
+}
+$getAllMessagesQuery .= " ORDER BY CreationDate DESC";
 $result = mysqli_query($db,$getAllMessagesQuery);
 $messages = [];
 while( $row = mysqli_fetch_assoc($result)){
@@ -67,16 +73,16 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
 </head>
 <body >
 <?php createHeader($pageColor);?>
-<main>
+<main class="valign-wrapper">
   <div class="container">
-    <div class="section">
+    <div class="section ">
       <?php for($x = 0; $x < count($messages); $x++) {
-      $id = $messages[$x]['projecten_id'];
-      $set = false;
-      if (isset($project_info[$id])){
-        $set=true;
-      }
-      ?>
+        $id = $messages[$x]['projecten_id'];
+        $set = false;
+        if (isset($project_info[$id])){
+          $set=true;
+        }
+        ?>
         <div class="card horizontal">
         <?php if ($set){?>
           <div style="max-width: 30% !important" class="card-image valign-wrapper">
@@ -99,7 +105,18 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
             </div>
           </div>
         </div>
-      <?php }?>
+      <?php }
+      if (count($messages) == 0){?>
+        <div class="row valign-wrapper">
+          <div class="col s8 center">
+              <h3>Er zijn geen berichten</h3>
+              <h5>Je hebt geen berichten in je inbox!</h5>                    
+          </div>
+          <div class="col s4">
+              <i class="material-icons large">mail</i>
+          </div>
+        </div>
+      <?php } ?>
     </div>
   </div>
 </main>
