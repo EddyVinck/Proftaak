@@ -187,3 +187,17 @@ function hrefNewKlasRows(){
     elem = document.getElementById("newKlasRowsSelect");
     location.href = "beheer.php?active=klassen&new=" + elem.value;
 }
+
+(function($) {
+    $(function() {
+
+$('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      hover: true, // Activate on hover
+      belowOrigin: true // Displays dropdown below the button
+    }
+  );
+
+		}); // End Document Ready
+})(jQuery); // End of jQuery name space

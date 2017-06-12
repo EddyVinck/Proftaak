@@ -5,7 +5,7 @@ $db = ConnectToDatabase();
 if($_SESSION["loggedIn"] == true){
     header("location: projecten_lijst.php");
 }
-$query = "SELECT `id` , `naam` FROM scholen";
+$query = "SELECT `id` , `naam` FROM scholen WHERE naam != 'admin'";
 $result = mysqli_query($db, $query);
 $data = [];
 while($row = mysqli_fetch_assoc($result))

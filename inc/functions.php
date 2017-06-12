@@ -50,10 +50,18 @@ function checkSchool($debug = false) {
 function getNumberOfMessages(){
     $userID = $_SESSION['id'];
     $db = ConnectToDatabase();
-    $queryGetMessageNumber = "SELECT id FROM messages WHERE to_id=$userID AND is_read = 0;";
+    $queryGetMessageNumber = 
+    "SELECT messages.id, messages.message, messages.from_id, users.id AS users_id, users.naam AS users_naam 
+    FROM messages 
+    INNER JOIN users
+    ON messages.from_id = users.id
+    WHERE to_id=$userID AND is_read = 0;";
     $messageResult = mysqli_query($db,$queryGetMessageNumber);
-    $number_of_messages = mysqli_num_rows($messageResult);
-    return $number_of_messages;
+    $messages=[];
+    while($row = mysqli_fetch_assoc($messageResult)){
+        $messages[] = $row;
+    }
+    return $messages;
 }
 function truncate($text, $maxLength) 
 {
@@ -93,8 +101,7 @@ function properRole($rol){
     }
 }
 function createHeader($color = 'teal') { 
-    $num_of_messages = getNumberOfMessages();
-    // $num_of_messages = 0;
+    $messages = getNumberOfMessages();
     ?>
     <header>    
         <nav class="top-nav <?=$color;?>">
@@ -107,10 +114,15 @@ function createHeader($color = 'teal') {
                     <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
                     <li><a href="colleges.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
                     <li>
-                        <a href="inbox.php" 
-                            class="<?= changeFontColorByColor($color);?> waves-effect">
-<i class="small material-icons left">message</i>Priveberichten<?php if ($num_of_messages > 0){?><span class="new badge" data-badge-caption="Nieuwe"><?=$num_of_messages?></span><?php }?>
+                        <a href="inbox.php" data-constrainwidth="false"
+                            class="<?= changeFontColorByColor($color);?> dropdown-button waves-effect" data-activates='dropdown1'>
+<i class="small material-icons left">message</i><?php if (count($messages) > 0){?><span class="new badge" data-badge-caption="Nieuwe"><?=count($messages)?></span><?php }?>
                         </a>
+                        <ul id="dropdown1" class='dropdown-content'>
+                            <?php for ($x = 0; $x < count($messages);$x++){ ?>
+                                <li><a href="inbox.php">Nieuw bericht van: <?=$messages[$x]['users_naam']?></a></li>
+                            <?php } ?>
+                        </ul>
                     </li>
                     <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">settings</i> Beheer </a></li>
                     <li><a href="index.php?logout=true" class="<?=changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
@@ -138,9 +150,9 @@ function createHeader($color = 'teal') {
                 <a href="#inbox.php" 
                     class="waves-effect">
                     <i class="small material-icons left">message</i>Priveberichten
-                    <?php if ($num_of_messages > 0){?>
+                    <?php if (count($messages) > 0){?>
                         <span class="new badge" data-badge-caption="Nieuwe">
-                    <?=$num_of_messages?></span>
+                    <?=count($messages)?></span>
                     <?php }?>
                 </a>
             </li>

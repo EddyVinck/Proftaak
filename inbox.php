@@ -10,14 +10,45 @@ if ($rol == "odo" || $rol == "ost"){
     header("location: registratie_success.php");
 }
 
-$getAllMessagesQuery = "SELECT * FROM messages WHERE to_id = $userId";
+$getAllMessagesQuery = 
+"SELECT messages.id, 
+messages.message,
+messages.from_id,
+messages.projecten_id,
+date_format(messages.CreationDate, '%d/%m/%Y %H:%i') CreationDate,
+users.id AS users_id,
+users.naam AS users_naam
+FROM messages
+INNER JOIN users
+ON messages.from_id = users.id
+WHERE to_id = $userId";
 $result = mysqli_query($db,$getAllMessagesQuery);
 $messages = [];
 while( $row = mysqli_fetch_assoc($result)){
-    $messages[] = $row;
+  $messages[] = $row;
+}
+$project_info = [];
+$execute = false;
+for ($x = 0; $x < count($messages);$x++){
+  if ($messages[$x]['projecten_id'] != null){
+    $tempId = $messages[$x]['projecten_id'];
+    $getProjectInfoQuery = 
+    "SELECT projecten.naam AS project_naam, 
+    projecten.id AS project_id, 
+    projecten.status, 
+    projecten.omschrijving,
+    images.path AS img_path
+    FROM projecten
+    LEFT OUTER JOIN images
+    ON projecten.id = images.projecten_id
+    WHERE projecten.id = $tempId";
+    $result = mysqli_query($db,$getProjectInfoQuery);
+    while($row = mysqli_fetch_assoc($result)){
+      $project_info[$tempId] =$row;
+    }
+  }
 }
 $pageColor = changePageColors($db, $_SESSION["college_id"]);
-dump($messages);
 ?>
 <!DOCTYPE html>
 <head>
@@ -37,6 +68,33 @@ dump($messages);
 <main>
   <div class="container">
     <div class="section">
+      <?php for($x = 0; $x < count($messages); $x++) {
+      $id = $messages[$x]['projecten_id'];
+      $set = false;
+      if (isset($project_info[$id])){
+        $set=true;
+      }
+      ?>
+        <div class="card horizontal">
+        <?php if ($set){?>
+          <div style="max-width: 30% !important" class="card-image valign-wrapper">
+            <img src="<?=$project_info[$id]['img_path']?>">
+          </div>
+        <?php }?>
+          <div class="card-stacked">
+            <div class="card-content">
+              <span class="card-title"><?=$messages[$x]['users_naam']?></span>
+              <p><?=$messages[$x]['message']?></p>
+            </div>
+            <div class="card-action">
+              <?php if ($set){?>
+                <a href="project.php?id=<?=$messages[$x]['projecten_id']?>">Ga naar dit project</a>
+              <?php }?>
+              <a href="#">Reageer</a>
+            </div>
+          </div>
+        </div>
+      <?php }?>
     </div>
   </div>
 </main>
