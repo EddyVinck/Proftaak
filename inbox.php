@@ -15,13 +15,15 @@ $getAllMessagesQuery =
 messages.message,
 messages.from_id,
 messages.projecten_id,
+messages.is_read,
 date_format(messages.CreationDate, '%d/%m/%Y %H:%i') CreationDate,
 users.id AS users_id,
 users.naam AS users_naam
 FROM messages
 INNER JOIN users
 ON messages.from_id = users.id
-WHERE to_id = $userId";
+WHERE to_id = $userId
+ORDER BY CreationDate DESC";
 $result = mysqli_query($db,$getAllMessagesQuery);
 $messages = [];
 while( $row = mysqli_fetch_assoc($result)){
@@ -85,6 +87,9 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
             <div class="card-content">
               <span class="card-title"><?=$messages[$x]['users_naam']?></span>
               <p><?=$messages[$x]['message']?></p>
+              <?php if ($messages[$x]['is_read'] == 0){?>
+                <span class="new badge" data-badge-caption="Nieuw"></span>
+              <?php }?>
             </div>
             <div class="card-action">
               <?php if ($set){?>

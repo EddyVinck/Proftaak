@@ -124,7 +124,7 @@ function createHeader($color = 'teal') {
                             <?php } ?>
                         </ul>
                     </li>
-                    <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">settings</i> Beheer </a></li>
+                    <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">settings</i></li>
                     <li><a href="index.php?logout=true" class="<?=changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
                 </ul>
                 </div>      
