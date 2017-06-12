@@ -26,7 +26,7 @@ $hideCards = ['','hide','hide','hide']; //this array is used in the HTML to hide
 # inloggen
 # checken of de combinatie van een email en wachtwoord in de database bestaat
 if (isset($_POST['rol'])){
-  dump($_POST);
+  // dump($_POST);
   $email = $_POST['email'];
   $formRol = $_POST['rol'];
   $pass  = $_POST['password'];

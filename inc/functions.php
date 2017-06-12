@@ -111,12 +111,12 @@ function createHeader($color = 'teal') {
                 <div class="col s12" style="padding: 0 .75rem;">                
                     <a href="index.php" class="brand-logo <?php echo changeFontColorByColor($color);?>">Logo</a>        
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
+                    <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">home</i>Projecten</a></li>
                     <li><a href="colleges.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
                     <li>
                         <a href="inbox.php" data-constrainwidth="false"
                             class="<?= changeFontColorByColor($color);?> dropdown-button waves-effect" data-activates='dropdown1'>
-<i class="small material-icons left">message</i><?php if (count($messages) > 0){?><span class="new badge" data-badge-caption="Nieuwe"><?=count($messages)?></span><?php }?>
+<i class="small material-icons ">message</i><?php if (count($messages) > 0){?><span class="new badge" data-badge-caption="Nieuwe"><?=count($messages)?></span><?php }?>
                         </a>
                         <ul id="dropdown1" class='dropdown-content'>
                             <?php for ($x = 0; $x < count($messages);$x++){ ?>
@@ -124,7 +124,7 @@ function createHeader($color = 'teal') {
                             <?php } ?>
                         </ul>
                     </li>
-                    <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">settings</i></li>
+                    <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons">settings</i></li>
                     <li><a href="index.php?logout=true" class="<?=changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
                 </ul>
                 </div>      
