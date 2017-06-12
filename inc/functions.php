@@ -55,7 +55,7 @@ function getNumberOfMessages(){
     FROM messages 
     INNER JOIN users
     ON messages.from_id = users.id
-    WHERE to_id=$userID AND is_read = 0;";
+    WHERE to_id=$userID AND is_read = 0 ORDER BY CreationDate DESC;";
     $messageResult = mysqli_query($db,$queryGetMessageNumber);
     $messages=[];
     while($row = mysqli_fetch_assoc($messageResult)){
@@ -120,7 +120,7 @@ function createHeader($color = 'teal') {
                         </a>
                         <ul id="dropdown1" class='dropdown-content'>
                             <?php for ($x = 0; $x < count($messages);$x++){ ?>
-                                <li><a href="inbox.php">Nieuw bericht van: <?=$messages[$x]['users_naam']?></a></li>
+                                <li><a href="inbox.php?select=<?=$messages[$x]['id']?>">Nieuw bericht van: <?=$messages[$x]['users_naam']?></a></li>
                             <?php } ?>
                         </ul>
                     </li>
