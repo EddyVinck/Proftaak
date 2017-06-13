@@ -115,14 +115,9 @@ function createHeader($color = 'teal') {
                     <li><a href="colleges.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
                     <li>
                         <a href="inbox.php" data-constrainwidth="false"
-                            class="<?= changeFontColorByColor($color);?> dropdown-button waves-effect" data-activates='dropdown1'>
+                            class="<?= changeFontColorByColor($color);?> waves-effect" data-activates=''>
 <i class="small material-icons <?php if (count($messages) > 0){ echo left;}?>">message</i><?php if (count($messages) > 0){?><span class="new badge" data-badge-caption="Nieuwe"><?=count($messages)?></span><?php }?>
                         </a>
-                        <ul id="dropdown1" class='dropdown-content'>
-                            <?php for ($x = 0; $x < count($messages);$x++){ ?>
-                                <li><a href="inbox.php?select=<?=$messages[$x]['id']?>">Nieuw bericht van: <?=$messages[$x]['users_naam']?></a></li>
-                            <?php } ?>
-                        </ul>
                     </li>
                     <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons">settings</i></li>
                     <li><a href="index.php?logout=true" class="<?=changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
