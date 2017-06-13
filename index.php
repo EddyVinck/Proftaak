@@ -29,7 +29,7 @@ if (isset($_POST['rol'])){
   // dump($_POST);
   $email = $_POST['email'];
   $formRol = $_POST['rol'];
-  $pass  = $_POST['password'];
+$pass  = $_POST['password'];
   if($email != '' && $pass != ''){
     $loginSuccess = true;
     $queryVar = " SELECT users.id , users.rol , users.naam, 

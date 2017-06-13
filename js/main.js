@@ -183,6 +183,25 @@ function closeReply()
     document.body.classList.remove("noscroll");
     
 }
+function openStatusDialog()
+{
+    document.getElementById("status-dialog-container").style.display = "block";
+    setTimeout(function(){
+        document.getElementById("status-dialog-container").style.opacity = 1;
+    },10); 
+    
+    // document.body.classList.add("noscroll");
+}
+function closeStatusDialog()
+{
+    document.getElementById("status-dialog-container").style.opacity = 0;    
+    setTimeout(function(){
+        document.getElementById("status-dialog-container").style.display = "none";
+    },250); 
+    // document.getElementById("status-dialog-container").style.opacity = 0;
+    // document.body.classList.remove("noscroll");
+    
+}
 function hrefNewKlasRows(){
     elem = document.getElementById("newKlasRowsSelect");
     location.href = "beheer.php?active=klassen&new=" + elem.value;

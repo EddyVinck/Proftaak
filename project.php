@@ -138,7 +138,40 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
     </div>
     </form>
 </div>
+<!--end of reply container -->
+
   <div class="container">
+      <?php // change status button as projectstarter
+    if($_SESSION['id'] == $projectData[0]['user_id'] 
+    && $projectData[0]['status'] != "ongeverifieerd" 
+    && $projectData[0]['status'] != "gearchiveerd")
+    {
+        ?>  
+        <div class="container z-depth-4" id="status-dialog-container">        
+            <div class="row valign-wrapper no-margin z-depth-1" style="background-color: lightgrey;">
+                <div class="col s12">
+                    <h5 class="left">&nbsp;Status veranderen</h5>
+                    <a class="btn red right col s2 m1" onclick="closeStatusDialog()"><i class="material-icons">close</i></a>
+                </div>
+            </div>
+            <div class="section">
+            <div class="row">
+                <div class="col s10 offset-s1">
+                    <h5 class="center">Selecteer status</h5>
+                </div>
+                <div class="col s10 offset-s1 m6 offset-m3">
+                    <select name="" id="">
+                        <option value="">1</option>
+                        <option value="">2</option>
+                        <option value="">3</option>
+                    </select>
+                </div>
+            </div>
+            </div>
+        </div>
+        <?php
+    }
+?>
       <div class="section">
         <div class="row hide-on-med-and-up center">
             <h5 class="hide-on-med-and-up"><?= $projectData[0]['project_naam'];?></h5> 
@@ -181,6 +214,17 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                         value="gearchiveerd">Archiveren
                     </button>
                 <?php }?>
+                <?php // change status button as projectstarter
+                if($_SESSION['id'] == $projectData[0]['user_id'] 
+                && $projectData[0]['status'] != "ongeverifieerd" 
+                && $projectData[0]['status'] != "gearchiveerd")
+                {
+                    ?>
+                    <a class='dropdown-button btn purple darken-1 col m12 l12 s10 offset-s1 waves-effect waves-light' 
+                    style="margin-top: 10px;" href='#' onclick="openStatusDialog()">Verander status</a>
+                    <?php
+                }
+                ?>
                 </form>
             </div>
         </div>
@@ -223,7 +267,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                 <div class="col s12 m6 offset-m3">
                     <table>
                         <div class="row center-align">
-                            <h5>Alegemene informatie</h5>
+                            <h5>Algemene informatie</h5>
                         </div>
                         <div class="divider"></div>
                         <tbody>
@@ -234,12 +278,27 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                             <tr>
                                 <td><div class="row">Opleiding:</div></td>
                                 <td class="right-align truncate"><?php echo $projectData[0]['college_naam']; ?></td>                                           
-                            </tr>                                                                      
+                            </tr>
+                            <tr>
+                                <td><div class="row">Startdatum:</div></td>
+                                <td class="right-align truncate"><?php echo $projectData[0]['projectstarter']; ?></td>                                           
+                            </tr>
+                            <tr>
+                                <td><div class="row">Deadline:</div></td>
+                                <td class="right-align truncate"><?php echo $projectData[0]['projectstarter']; ?></td>                                           
+                            </tr>                                                                       
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col s12 center">
+                <a class="btn purple darken-1" href="#privebericht.php?sendto=<?=$projectData[0]['user_id']?>">
+                    Stuur Priv&eacute;bericht<i class="material-icons right">message</i>
+                </a>
+            </div>
+        </div>        
       </div>
       <div class="section center">
         <div class="container">
@@ -384,5 +443,8 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
   $("#reply-area").keyup(function(){
     $("#character-counter").text((0 + $(this).val().length) + "/400");
     });
+    $(document).ready(function() {
+    $('select').material_select();
+  });
 </script>
 </html>

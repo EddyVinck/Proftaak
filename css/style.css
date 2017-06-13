@@ -26,12 +26,24 @@
     height:0%;
     width: 100%;
     position: fixed;
-    z-index: 99;
+    z-index: 98;
     top: 0;
     left: 0;
     background-color: rgb(255,255,255);
     overflow-y: hidden;
     transition: 0.5s;
+}
+#status-dialog-container {
+    /*width: 100%;*/
+    display: none;
+    opacity: 0;
+    /*border: 1px solid black;*/
+    background-color: white;
+    position: fixed;
+    top: 20%;
+    height: 50%;
+    z-index: 99;
+    transition: 0.25s;
 }
 .noscroll {
     overflow: hidden;
