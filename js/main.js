@@ -172,10 +172,18 @@ function setParam(name, value) {
     /* execute search */
     l.search = search;
 }
-function openReply()
+function openReply(id = "", naam="")
 {
+    
     document.getElementById("reply-container").style.height = "100%";
     document.body.classList.add("noscroll");
+    if (id != ""){
+        $("#hiddenBox").attr("value", id);
+    }
+    if (naam != ""){
+        document.getElementById("nameLabel").innerHTML = naam;
+        
+    }
 }
 function closeReply()
 {

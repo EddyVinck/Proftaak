@@ -110,7 +110,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                             <div class="row no-margin valign-wrapper">
                                 <div class="col s6">
                                     <a onclick="closeReply()" class="black-text">
-                                        <div class="col s6 valign-wrapper"><i class="material-icons left">keyboard_backspace</i>Reactie</div>
+                                        <div class="col s6 valign-wrapper"><i style="cursor:pointer" class="material-icons left">keyboard_backspace</i>Reactie</div>
                                     </a>
                                 </div>                                    
                                 <div class="col s2 offset-s4 hide-on-med-and-up">
