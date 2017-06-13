@@ -101,7 +101,7 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
               <?php if ($set){?>
                 <a href="project.php?id=<?=$messages[$x]['projecten_id']?>">Ga naar dit project</a>
               <?php }?>
-              <a href="#">Reageer</a>
+              <a href="bericht.php?send=<?=$messages[$x]['from_id']?>">Reageer</a>
             </div>
           </div>
         </div>
