@@ -116,7 +116,10 @@ function createHeader($color = 'teal') {
                     <li>
                         <a href="inbox.php" data-constrainwidth="false"
                             class="<?= changeFontColorByColor($color);?> waves-effect" data-activates=''>
-<i class="small material-icons <?php if (count($messages) > 0){ echo left;}?>">message</i><?php if (count($messages) > 0){?><span class="new badge" data-badge-caption="Nieuwe"><?=count($messages)?></span><?php }?>
+                            <i class="small material-icons <?php if (count($messages) > 0){ echo 'left';}?>">
+                            <?php echo count($messages) > 0 ? 'notifications_active' : 'notifications'?></i>
+                            <?php if (count($messages) > 0){?><span class="new badge" data-badge-caption="Nieuwe">
+                            <?=count($messages)?></span><?php }?>
                         </a>
                     </li>
                     <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons">settings</i></li>

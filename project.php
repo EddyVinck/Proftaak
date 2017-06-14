@@ -56,6 +56,7 @@ $prepare_getProjectImages = $connection->prepare($queryGetImages);
 $prepare_getProjectImages->bind_param("i", $projectId);
 $prepare_getProjectImages->execute();
 $result=$prepare_getProjectImages->get_result();
+$images = [];
 while ($data = $result->fetch_assoc()){
     $images[] = $data;
 }
@@ -99,6 +100,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 <body >
 <?php createHeader($pageColor);?>
 <main>
+
 <div id="reply-container">
     <form action="projectReply.php" method="post">
     <div class="section">
@@ -245,7 +247,15 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
             </div>
         </div>
       </div>
-      <?php } ?>
+      <?php } else {
+          ?>
+        <div class="row">
+            <div class="col offset-s1 s10 m12">
+                <p class="center" for="">Geen afbeeldingen beschikbaar</p>
+            </div>
+        </div>
+          <?php
+      } ?>
       <!--end of slider-->
       <div class="section">
         <div class="container">
@@ -294,7 +304,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
         </div>
         <div class="row">
             <div class="col s12 center">
-                <a class="btn purple darken-1" href="#privebericht.php?sendto=<?=$projectData[0]['user_id']?>">
+                <a class="btn purple darken-1" href="bericht.php?send=<?=$projectData[0]['user_id']?>">
                     Stuur Priv&eacute;bericht<i class="material-icons right">message</i>
                 </a>
             </div>
@@ -416,7 +426,7 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                                 <p><?=$responses[$i]['response_text'];?></p>                               
                             </div>                
                             <div class="card-action">
-                                <a class="btn purple darken-1" href="#privebericht.php?sendto=<?=$responses[$i]['user_id']?>">
+                                <a class="btn purple darken-1" href="bericht.php?send=<?=$responses[$i]['user_id']?>">
                                     Priv&eacute;bericht<i class="material-icons right">message</i>
                                 </a>
                             </div>

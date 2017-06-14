@@ -22,7 +22,6 @@ $naam = "";
 $userID = $_SESSION['id'];
 $collegeId= $_SESSION['college_id'];
 
-
 if(isset($_POST['action'])){
   $status = $_POST['action'];
   if ($status == 'bezig'){

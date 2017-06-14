@@ -6,6 +6,8 @@ include("inc/functions.php");
 
 //Create an instance of the class:
 $mpdf = new mPDF();
+$mpdf->WriteHTML('<img style="max-height:10px; display:block; float:right;" src="img/ROC-logo.jpg" alt="ROC Ter AA">');
+
 
 if(isset($_POST['project_title'])){
     $mpdf->WriteHTML('
@@ -27,7 +29,6 @@ if(isset($_POST['project_description'])){
     $mpdf->WriteHTML('<p style="font-family: arial;">'.$_POST['project_description'].'</p>');
 }
 
-
 if(isset($_POST['hulpcolleges'])){
     /*  because PHP is poop it surrounds json_encoded array values and keys with
     double quotes and it also always surrounds $_POST values with double quotes
@@ -46,8 +47,6 @@ if(isset($_POST['hulpcolleges'])){
     {
         $mpdf->WriteHTML("<li style='padding-left: 5mm;'>".$hulpcolleges[$i]['naam']."</li>");      
     }
-    
-
 }
 if(isset($_POST['contact'])){
     if(!empty($_POST['contact']))
@@ -58,7 +57,7 @@ if(isset($_POST['contact'])){
                 
     }
 }
-$mpdf->WriteHTML('<p style="font-size: 8px; position: absolute; bottom: 5px; width: 100%;">Gemaakt met PROJECTNAAM - &copy; Dylan Bos en Eddy Vinck</p>');
+$mpdf->WriteHTML('<p style="font-size: 10px; position: absolute; bottom: 5px; width: 100%;">Gemaakt met Uniplan - &copy; Dylan Bos en Eddy Vinck</p>');
 
 $mpdf->Output();
 ?>
