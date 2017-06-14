@@ -48,3 +48,12 @@
 .noscroll {
     overflow: hidden;
 }
+.custom-a{
+    background-color: transparent;
+    color: #ffab40;
+    margin-right: 24px;
+    transition: color .3s ease;
+    text-transform: uppercase;
+    border: 0px;
+    text-decoration: none;
+}

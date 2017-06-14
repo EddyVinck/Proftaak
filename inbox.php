@@ -13,13 +13,16 @@ $select = -1;
 if(isset($_GET['select'])){
   $select = $_GET['select'];
 }
+if(isset($_POST['delete'])){
+  
+}
 $getAllMessagesQuery = 
 "SELECT messages.id, 
 messages.message,
 messages.from_id,
 messages.projecten_id,
 messages.is_read,
-date_format(messages.CreationDate, '%d/%m/%Y %H:%i') CreationDate,
+date_format(messages.CreationDate, '%d-%m-%Y %H:%i') CreationDate,
 users.id AS users_id,
 users.naam AS users_naam
 FROM messages
@@ -68,6 +71,7 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
       <link type="text/css" rel="stylesheet" href="css/footer.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="css/style.css"  media="screen,projection"/>
       <link rel="stylesheet" href="font-awesome-4.7.0\css\font-awesome.min.css">
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -104,6 +108,10 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
                 <a href="project.php?id=<?=$messages[$x]['projecten_id']?>">Ga naar dit project</a>
               <?php }?>
               <a href="bericht.php?send=<?=$messages[$x]['from_id']?>">Reageer</a>
+              <label class="right"><?=$messages[$x]['CreationDate']?></label>
+              <form method="post" class="right" style="display:inline-flex !important;">
+                <button class="custom-a" type="submit" name="delete" value="<?=$messages[$x]['id']?>">Delete</button>
+              </form>
             </div>
           </div>
         </div>

@@ -6,10 +6,12 @@ $color = $_POST["color"];
 $text = $_POST["text"];
 $query="
     UPDATE colleges
-    SET naam = '$text',
-    kleur = '$color'
-    WHERE id = $id;
+    SET naam = ?,
+    kleur = ?
+    WHERE id = ?;
     ";
-$result = mysqli_query($db,$query);
+$prepare_changeName = $db->prepare($query);
+$prepare_changeName->bind_param("ssi",$text,$color, $id);
+$prepare_changeName->execute();
 echo 1;
 ?>
