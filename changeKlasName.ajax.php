@@ -5,9 +5,11 @@ $id = $_POST['klasId'];
 $text = $_POST["text"];
 $query="
     UPDATE klassen
-    SET naam = '$text'
-    WHERE id = $id;
+    SET naam = ?
+    WHERE id = ?;
     ";
-$result = mysqli_query($db,$query);
+$prepare_changeNameKlas = $db->prepare($query);
+$prepare_changeNameKlas->bind_param("si",$text, $id);
+$prepare_changeNameKlas->execute();
 echo 1;
 ?>

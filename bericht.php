@@ -55,7 +55,6 @@ $send = -1;
 if (isset($_GET['send'])){
   $send = $_GET['send'];
   $userDetails = getUserDetails($send,$db);
-  dump($userDetails);
 }
 $school_id = $_SESSION['school_id'];
 $getusersQuery =
@@ -72,20 +71,29 @@ INNER JOIN colleges
 ON colleges.id = klassen.colleges_id
 INNER JOIN scholen
 ON scholen.id = colleges.scholen_id
-WHERE scholen.id = $school_id AND (users.rol = 'doc' || users.rol = 'stu')";
+WHERE scholen.id = ? AND (users.rol = 'doc' || users.rol = 'stu')";
 if ($search != ""){
   $getusersQuery .= " AND (
-                users.naam LIKE '%" .$search. "%'
-                OR users.email LIKE '%" .$search. "%' 
-                )";
+    users.naam LIKE ?
+    OR users.email LIKE ?
+    )";
+    dump($getusersQuery);
+    $prepare_getusers = $db->prepare($getusersQuery);
+    $searchBind = "%" . $search . "%";
+    $prepare_getusers->bind_param("iss", $school_id,$searchBind,$searchBind);    
 }
-$result = mysqli_query($db,$getusersQuery);
+else{
+    $prepare_getusers = $db->prepare($getusersQuery);
+    $prepare_getusers->bind_param("i", $school_id);   
+}
+$prepare_getusers->execute();
+$sqlResult = $prepare_getusers->get_result();
 $users = [];
-while($row = mysqli_fetch_assoc($result)){
-  $users[] = $row;
+while($row = mysqli_fetch_assoc($sqlResult)){
+    $users[] = $row; 	//places everything in the array
 }
-$pageColor = changePageColors($db, $_SESSION["college_id"]);
 
+$pageColor = changePageColors($db, $_SESSION["college_id"]);
 $errors = 0;
 if(isset($_POST['send_id'])){
     $send_id = $_POST['send_id'];

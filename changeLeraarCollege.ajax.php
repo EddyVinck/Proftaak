@@ -11,8 +11,10 @@ while($row = mysqli_fetch_assoc($result)){
 $newKlas = $newKlasID['id'];
 $query="
     UPDATE users
-    SET klassen_id = '$newKlas'
-    WHERE id = '$userID'; ";
-mysqli_query($db,$query);
-echo 1;
+    SET klassen_id = ?
+    WHERE id = ?; ";
+$prepare_changeNameKlas = $db->prepare($query);
+$prepare_changeNameKlas->bind_param("ii",$newKlas, $userID);
+$prepare_changeNameKlas->execute();
+echo $newKlas;
 ?>
