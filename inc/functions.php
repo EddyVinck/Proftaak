@@ -122,7 +122,9 @@ function createHeader($color = 'teal') {
                             <?=count($messages)?></span><?php }?>
                         </a>
                     </li>
+                    <?php if($_SESSION['rol'] == 'adm' || $_SESSION['rol'] == 'sch' || $_SESSION['rol'] == 'doc'){ ?>
                     <li><a href="beheer.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons">settings</i></li>
+                    <?php }?>
                     <li><a href="index.php?logout=true" class="<?=changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
                 </ul>
                 </div>      
@@ -177,7 +179,7 @@ function createFooter($color = 'teal'){?>
                     <li><a class="<?= changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 1</a></li>
                     <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 2</a></li>
                     <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 3</a></li>
-                    <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 4</a></li>
+                    <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="https://github.com/EddyVinck/Proftaak">GitHub</a></li>
                 </ul>
                 </div>
             </div>
