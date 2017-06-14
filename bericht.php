@@ -24,31 +24,47 @@ else{
   $search = "";
 }
 
+function getUserDetails($id,$db){
+    $queryGetUserDetails = 
+    "SELECT users.naam, 
+    users.id AS users_id, 
+    users.email, 
+    users.rol, 
+    scholen.id AS school_id
+    FROM users
+    INNER JOIN klassen 
+    ON klassen.id = users.klassen_id
+    INNER JOIN colleges
+    ON colleges.id = klassen.colleges_id
+    INNER JOIN scholen
+    ON scholen.id = colleges.scholen_id
+    WHERE users.id = ?";
+    $userDetails = [];
+    $prepare_userDetails = $db->prepare($queryGetUserDetails);
+    $prepare_userDetails->bind_param("i", $id);
+    $prepare_userDetails->execute();
+    $result=$prepare_userDetails->get_result();
+    while ($row = $result->fetch_assoc()){
+        $userDetails = $row;
+    }
+    return $userDetails;
+}
+
 //checks if get var send is set, if so it will check if the send user is on the same school as you
 $send = -1;
 if (isset($_GET['send'])){
   $send = $_GET['send'];
-  $queryGetUserDetails = "SELECT users.naam, users.id AS users_id, users.email, users.rol, scholen.id AS school_id
-  FROM users
-  INNER JOIN klassen 
-  ON klassen.id = users.klassen_id
-  INNER JOIN colleges
-  ON colleges.id = klassen.colleges_id
-  INNER JOIN scholen
-  ON scholen.id = colleges.scholen_id
-  WHERE users.id = ?";
-  $userDetails = [];
-  $prepare_userDetails = $db->prepare($queryGetUserDetails);
-  $prepare_userDetails->bind_param("i", $send);
-  $prepare_userDetails->execute();
-  $result=$prepare_userDetails->get_result();
-  while ($row = $result->fetch_assoc()){
-      $userDetails = $row;
-  }
+  $userDetails = getUserDetails($send,$db);
+  dump($userDetails);
 }
 $school_id = $_SESSION['school_id'];
 $getusersQuery =
-"SELECT users.naam, users.id AS users_id, users.email, users.rol, scholen.id AS school_id
+"SELECT users.naam, users.id 
+AS users_id, users.email, 
+users.rol, 
+scholen.id AS school_id, 
+colleges.id AS college_id, 
+klassen.id AS klassen_id
 FROM users
 INNER JOIN klassen 
 ON klassen.id = users.klassen_id
@@ -70,14 +86,38 @@ while($row = mysqli_fetch_assoc($result)){
 }
 $pageColor = changePageColors($db, $_SESSION["college_id"]);
 
+$errors = 0;
 if(isset($_POST['send_id'])){
-  $message = $_POST['message_body'];
-  $send_id = $_POST['send_id'];
-  $query = "INSERT INTO `messages` (`id`, `message`, `is_read`, `CreationDate`, `projecten_id`, `from_id`, `to_id`)
-   VALUES (NULL, ?, '0', CURRENT_TIMESTAMP, NULL,?,? )";
-  $prepare_userDetails = $db->prepare($query);
-  $prepare_userDetails->bind_param("sii", $message, $userId,$send_id);
-  $prepare_userDetails->execute();
+    $send_id = $_POST['send_id'];
+    if (isset($_GET['send'])){
+        if ($_GET['send'] == $send_id){
+            if ($userDetails['school_id'] != $school_id){
+                $errors = 1;
+            }
+        }
+        else{
+            $userDetails = getUserDetails($send_id,$db);
+            if ($userDetails['school_id'] != $school_id){
+                $errors = 1;
+            }
+        }
+    }
+    else{
+        $userDetails = getUserDetails($send_id,$db);
+        if ($userDetails['school_id'] != $school_id){
+            $errors = 1;
+        }
+    }
+
+    if ($errors == 0){
+        $message = $_POST['message_body'];
+        $query = "INSERT INTO `messages` (`id`, `message`, `is_read`, `CreationDate`, `projecten_id`, `from_id`, `to_id`)
+        VALUES (NULL, ?, '0', CURRENT_TIMESTAMP, NULL,?,? )";
+        $prepare_userDetails = $db->prepare($query);
+        $prepare_userDetails->bind_param("sii", $message, $userId,$send_id);
+        $prepare_userDetails->execute();
+        header("location: bericht.php");
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -163,18 +203,24 @@ if(isset($_POST['send_id'])){
             </div>
         </div>
       </div>
+      <?php if ($errors != 0){?>
+      <div class="row">
+        <div class="col s12">
+            <h3 class="red-text"><?php if($errors == 1){echo "Je probeert een bericht naar iemand van een andere school te sturen";}?></h3>
+        </div>
+      </div>
+      <?php }?>
       <div class="collection">
         <?php 
         for ($x = 0; $x < count($users);$x++){
           $rol = GetRolNaam($users[$x]['rol']);?>
-          <a onclick="openReply(<?=$users[$x]['users_id']?>,'<?=$users[$x]['naam']?>')" class="collection-item avatar">
+          <a style="cursor:pointer;" onclick="openReply(<?=$users[$x]['users_id']?>,'<?=$users[$x]['naam']?>')" class="collection-item avatar">
             <i class="material-icons circle">person</i>
             <span class="black-text title"><?=$users[$x]['naam']?></span>
-            <i class="material-icons right">send</i>
+            <i class="material-icons right">mail</i>
             <p class="black-text"><?=$users[$x]['email']?> <br>
               <?=$rol?>
             </p>
-            
           </a>
         <?php }?>
       </div>

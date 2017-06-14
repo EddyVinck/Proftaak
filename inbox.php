@@ -56,6 +56,8 @@ for ($x = 0; $x < count($messages);$x++){
     }
   }
 }
+$setAllMessagesAsReadQuery = "UPDATE messages SET is_read = 1 WHERE is_read = 0 AND to_id = $userId;";
+mysqli_query($db,$setAllMessagesAsReadQuery);
 $pageColor = changePageColors($db, $_SESSION["college_id"]);
 ?>
 <!DOCTYPE html>
