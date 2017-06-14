@@ -298,7 +298,7 @@ if($_SESSION['loggedIn'] == true)
     <div class="container">
       <div class="row">
         <div class="col s12">
-          <h3 class="center-align">Waarom deze website?</h3>
+          <h3 class="center-align">Waarom Uniplan?</h3>
           <h5 class="center-align">Dit zijn de voordelen</h5>
         </div>
       </div>
@@ -306,24 +306,24 @@ if($_SESSION['loggedIn'] == true)
             <div class="col s12 m4">
               <div class="center promo">
                 <i class="material-icons purple-text text-darken-1">flash_on</i>
-                <p class="promo-caption">Speeds up development</p>
-                <p class="light center">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+                <p class="promo-caption">Werk sneller</p>
+                <p class="light center">We hebben er veel moeite in gestoken om het makkelijk te maken je projecten te delen. Binnen een minuut kan je project al door anderen te vinden zijn.</p>
               </div>
             </div>
 
             <div class="col s12 m4">
               <div class="center promo">
                 <i class="material-icons purple-text text-darken-1">group</i>
-                <p class="promo-caption">User Experience Focused</p>
-                <p class="light center">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+                <p class="promo-caption">Samen sta je sterker</p>
+                <p class="light center">Door in contact to komen met studenten van andere collegegs kun je gebruik maken van elkaars sterke punten. Er zijn genoeg mensen die je kunnen helpen.</p>
               </div>
             </div>
 
             <div class="col s12 m4">
               <div class="center promo">
                 <i class="material-icons purple-text text-darken-1">settings</i>
-                <p class="promo-caption">Easy to work with</p>
-                <p class="light center">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+                <p class="promo-caption">Makkelijk mee te werken</p>
+                <p class="light center">Uniplan is makkelijk te navigeren en maakt communicatie met studenten uit bepaalde colleges heel gemakkelijk. Je kan projecten uploaden en bekijken, reacties op projecten plaatsen en elkaar privéberichten sturen.</p>
               </div>
             </div>
           </div>
