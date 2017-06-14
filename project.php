@@ -26,6 +26,7 @@ if (isset($_POST['action'])){
 $prepare_getProjectData = $connection->prepare( "SELECT projecten.id AS project_id, 
     projecten.omschrijving, projecten.omschrijving_nodig,
     projecten.status, projecten.naam AS project_naam,
+    date_format(projecten.date, '%d-%m-%Y') AS startdatum, projecten.deadline AS deadline,
     users.naam AS projectstarter, users.id AS user_id,
     klassen.id AS klas_id,
     colleges.naam AS college_naam,
@@ -291,11 +292,11 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
                             </tr>
                             <tr>
                                 <td><div class="row">Startdatum:</div></td>
-                                <td class="right-align truncate"><?php echo $projectData[0]['projectstarter']; ?></td>                                           
+                                <td class="right-align truncate"><?php echo $projectData[0]['startdatum']; ?></td>                                           
                             </tr>
                             <tr>
                                 <td><div class="row">Deadline:</div></td>
-                                <td class="right-align truncate"><?php echo $projectData[0]['projectstarter']; ?></td>                                           
+                                <td class="right-align truncate"><?php echo $projectData[0]['deadline']; ?></td>                                           
                             </tr>                                                                       
                         </tbody>
                     </table>

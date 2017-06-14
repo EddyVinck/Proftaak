@@ -21,6 +21,7 @@ $nodig = "";
 $naam = "";
 $userID = $_SESSION['id'];
 $collegeId= $_SESSION['college_id'];
+$deadline = "";
 
 if(isset($_POST['action'])){
   $status = $_POST['action'];
@@ -37,6 +38,7 @@ if(isset($_POST['action'])){
     $beschrijving = $_POST['beschrijving'];
     $nodig = $_POST['nodig'];
     $naam = $_POST['naam'];
+    $deadline = $_POST['deadline'];    
     if (!empty($_POST['images'])){
       $images_array = explodeStr($_POST['images']);
     }
@@ -47,7 +49,9 @@ if(isset($_POST['action'])){
     `naam` ,
     `omschrijving` ,
     `omschrijving_nodig` ,
-    `status` ,
+    `status`,
+    `date`,
+    `deadline`,
     `users_id`
     )
     VALUES (
@@ -55,11 +59,27 @@ if(isset($_POST['action'])){
     '$naam',  
     '$beschrijving',  
     '$nodig',  
-    '$status',  
+    '$status',
+     NULL,
+    '$deadline',
     '$userID');
     ";
-    mysqli_query($db,$insertProjectQuery);
+    /* 
+
+    WORK IN PROGRESS
+
+    */
+    $resultaat = mysqli_query($db,$insertProjectQuery);
+    if(!$resultaat){
+      echo mysqli_error($db);
+    }
     $newId = mysqli_insert_id($db);
+    // echo "deadline: ".$deadline;
+    // $dateFormat ="F j, Y";
+    // $deadline = date($dateFormat, $deadline);
+    // echo " & formatted deadline: ". $deadline;
+    
+
 
     $insertHulpColleges = 
     "INSERT INTO `hulpcolleges` (
@@ -279,6 +299,19 @@ while($row = mysqli_fetch_assoc($result)){
               <label class="chbxLabel" for="chbxCollege<?=$row?>"><?=$colleges[$row]['naam']?></label>
             <?php } ?>
         </div>
+
+        <div class="row">
+          <div class="col s12 center">
+            <h5>Wanneer is de deadline?</h5>
+          </div>
+        </div>
+        <div class="row center">
+            <div class="input-field col offset-l2 l8 s10">
+              <input type="date" class="datepicker" name="deadline">
+              <label for="deadline">Deadline</label>              
+            </div>
+        </div>
+        
         <div class="row">
           <?php if ($rol == "adm" || $rol == "doc"){?>
           <div class="col s4 offset-s2">
@@ -325,5 +358,9 @@ while($row = mysqli_fetch_assoc($result)){
 </body>
 <script>
   initSideNav();
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
 </script>
 </html>

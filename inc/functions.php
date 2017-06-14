@@ -186,7 +186,7 @@ function createFooter($color = 'teal'){?>
             </div>
             <div class="footer-copyright">
             <div class="container <?php echo changeFontColorByColor($color);?>">
-            &copy 2014 Copyright Text
+            &copy 2017 Dylan Bos & Eddy Vinck
             <a class="<?php echo changeFontColorByColor($color);?> text-lighten-4 right" href="#!">More Links</a>
             </div>
         </div>
