@@ -14,7 +14,22 @@ if(isset($_GET['select'])){
   $select = $_GET['select'];
 }
 if(isset($_POST['delete'])){
-  
+  $deleteId= $_POST['delete'];
+  $query = "SELECT * FROM messages WHERE id=?";
+  $prepare_GetSingleMessageInfo = $db->prepare($query);
+  $prepare_GetSingleMessageInfo->bind_param("i",$deleteId);
+  $prepare_GetSingleMessageInfo->execute();
+  $sqlResult = $prepare_GetSingleMessageInfo->get_result();
+  $messageDetails = [];
+  while($row=mysqli_fetch_Assoc($sqlResult)){
+    $messageDetails = $row;
+  }
+  if ($messageDetails['to_id'] == $userId){
+    $query = "DELETE FROM `messages` WHERE id = ?";
+    $prepare_delete = $db->prepare($query);
+    $prepare_delete->bind_param("i",$deleteId);
+    $prepare_delete->execute();
+  }
 }
 $getAllMessagesQuery = 
 "SELECT messages.id, 
