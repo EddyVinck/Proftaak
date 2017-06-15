@@ -299,7 +299,6 @@ while($row = mysqli_fetch_assoc($result)){
               <label class="chbxLabel" for="chbxCollege<?=$row?>"><?=$colleges[$row]['naam']?></label>
             <?php } ?>
         </div>
-
         <div class="row">
           <div class="col s12 center">
             <h5>Wanneer is de deadline?</h5>
@@ -310,8 +309,7 @@ while($row = mysqli_fetch_assoc($result)){
               <input type="date" class="datepicker" name="deadline">
               <label for="deadline">Deadline</label>              
             </div>
-        </div>
-        
+        </div>        
         <div class="row">
           <?php if ($rol == "adm" || $rol == "doc"){?>
           <div class="col s4 offset-s2">

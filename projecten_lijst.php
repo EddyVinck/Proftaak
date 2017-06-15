@@ -46,7 +46,8 @@ if(isset($_POST['search']))
 }
 
 $query = 
-"   SELECT projecten.naam AS project_naam, projecten.id AS project_id, projecten.status, projecten.omschrijving,
+"   SELECT projecten.naam AS project_naam, projecten.id AS project_id, 
+    projecten.status, projecten.omschrijving,
     users.naam AS user_naam, 
     colleges.naam AS college_naam,
     colleges.id as college_id,
@@ -76,8 +77,7 @@ if(isset($_GET['college'])){
     }
 }
 else{
-    $query .= " WHERE projecten.status = '$status'";
-    
+    $query .= " WHERE projecten.status = '$status'";    
 }
 
 if(!empty($projectSearch)){
@@ -90,12 +90,18 @@ if(!empty($projectSearch)){
 $query .= " GROUP BY projecten.id";
     // op de lege plek komt de where college = 1 als je die hebt
 $collegeId = $_SESSION['college_id'];
-$collegeNaamQuery = "SELECT naam FROM colleges WHERE id = '$collegeId' LIMIT 1";
-$result = mysqli_query($db, $collegeNaamQuery);
-$collegeNaam = "";
-if($row = mysqli_fetch_assoc($result)){
-    $collegeNaam = $row['naam'];
+
+if(isset($_GET['college']) && is_numeric($_GET['college']))
+{
+    $getCollege = $_GET['college'];
+    $pageCollegeQuery = "SELECT naam FROM colleges WHERE id = $getCollege LIMIT 1";
+    $pageCollegeResult = mysqli_query($db, $pageCollegeQuery);
+    while($row = mysqli_fetch_assoc($pageCollegeResult))
+    {
+        $pageCollegeName = $row['naam'];
+    }
 }
+
 $result = mysqli_query($db,$query);
 $data = [];
 while($row = mysqli_fetch_assoc($result)){
@@ -130,7 +136,20 @@ checkUserVerification();
 <main>
   <div class="container">
     <div class="section">
-    <!--buttons for mobile-->
+        <div class="row" style="padding: 0 24px;">
+            <div class="col s12 center-on-small-only">
+                <?php if( !empty($pageCollegeName) ){ ?> 
+            
+                    <h3 class="hide-on-med-and-up"><?= $pageCollegeName;?></h3>
+                    <h3 class="hide-on-small-only"><?= $pageCollegeName;?> College</h3>
+                <?php } else {?>
+                    <h3>Alle Colleges</h3>
+                <?php } ?>
+                    
+            </div>
+        </div>
+    
+    <!--buttons for mobile-->    
       <div class="row hide-on-med-and-up" style="">
             <?php if ($status == "bezig" || $status == "ongeverifieerd"){?>
                 <div class="col s10 offset-s1" style="margin-bottom: 4px;">
@@ -232,7 +251,7 @@ checkUserVerification();
                         <li><label for="search"><i class="material-icons">search</i></label></li>
                         </ul>
                         <form method="post">
-                        <div class="input-field">
+                        <div class="input-field z-depth-1 hoverable">
                             <input id="search" type="search" name="search" value="<?=$projectSearch?>">
                             <i class="mdi-navigation-close"></i>
                         </div>
