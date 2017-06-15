@@ -41,7 +41,7 @@ if(isset($_GET['user']) && is_numeric($_GET['user'])){
 }
 
 $userDataQuery = 
-    "   SELECT users.naam user_name, users.email user_email, users.rol user_role,
+    "   SELECT users.naam user_name, users.email user_email, users.rol user_role, users.id AS user_id,
         klassen.naam class_name, colleges.naam college_name, scholen.naam school_name
         FROM users
         INNER JOIN klassen
@@ -124,7 +124,19 @@ checkUserVerification();
     <div class="section">
         <div class="row" style="padding: 0 24px;">
             <div class="col s12 center-on-small-only">                
-                <h3>Jouw profiel</h3>                    
+                <h3><?php 
+                
+                if($userData['user_id'] == $_SESSION['id']){
+                        echo 'Jouw profiel';
+                    } else {
+                        $nameLength = count($userData['user_name']);
+                        if( strtolower(substr($userData['user_name'], -1) == 's') )
+                        {
+                            echo $userData['user_name']."' profiel";                            
+                        } else {
+                            echo $userData['user_name']."'s profiel";                            
+                        }
+                    } ?></h3>                    
             </div>
         </div>
 
