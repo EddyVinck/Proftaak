@@ -20,6 +20,11 @@ if (isset($_POST['action'])){
             SET `status` = '$action'
             WHERE `id` = $projectId";
             $result = mysqli_query($connection,$query);
+
+            if($action == 'bezig'){
+                // send message
+                // one time message
+            }
         }
     }
 }
@@ -81,6 +86,7 @@ while ($data = $result->fetch_assoc()){
     $responses[] = $data;
 }
 $pageColor = changePageColors($connection, $projectData[0]['college_id']);
+
 ?>
 <!DOCTYPE html>
 
