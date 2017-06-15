@@ -76,8 +76,35 @@ function truncate($text, $maxLength)
 	}
 }
 
-// return a proper string based on user role
 function properRole($rol){
+    switch ($rol) {
+		// unverified						
+        case 'ost':
+            return "Ongeverifi&euml;erde student";
+            break;
+		// verified						
+        case 'stu':
+            return "Student";
+            break;
+		// unverified						
+        case 'odo':
+            return "Ongeverifi&euml;erde docent";
+            break;
+		// verified						
+        case 'doc':
+            return "Geverifi&euml;erde docent";
+            break;
+        case 'adm':
+            return "Uniplan Overlord";
+            break;
+        default:
+            return "unknown";
+            break;
+    }
+}
+
+// return a proper string based on user role
+function properVerifiedStatus($rol){
     switch ($rol) {
 		// unverified						
         case 'ost':
@@ -96,7 +123,7 @@ function properRole($rol){
             return "Geverifi&euml;erd";
             break;
         default:
-            return "butt";
+            return "unknown";
             break;
     }
 }
@@ -120,6 +147,11 @@ function createHeader($color = 'teal') {
                             <?php echo count($messages) > 0 ? 'notifications_active' : 'notifications'?></i>
                             <?php if (count($messages) > 0){?><span class="new badge" data-badge-caption="Nieuwe">
                             <?=count($messages)?></span><?php }?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="profiel.php" class="<?= changeFontColorByColor($color);?> waves-effect">
+                            <i class="small material-icons">account_circle</i>                            
                         </a>
                     </li>
                     <?php if($_SESSION['rol'] == 'adm' || $_SESSION['rol'] == 'sch' || $_SESSION['rol'] == 'doc'){ ?>

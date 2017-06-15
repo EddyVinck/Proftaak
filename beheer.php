@@ -438,7 +438,7 @@ if(isset($_SESSION['college_id']))
                                             onclick="updateVerifiedStatusAjax(
                                                 <?= $docenten[$x]['id'];?>,
                                                 '<?=$x; ?>','verifyLeraren')">
-                                                <?= properRole($docenten[$x]['rol']);?>
+                                                <?= properVerifiedStatus($docenten[$x]['rol']);?>
                                             </a> 
                                         </div>
                                     </div>
@@ -662,7 +662,7 @@ if(isset($_SESSION['college_id']))
                                                 <?php echo $unverifiedStudents[$i]['id'];?>, 
                                                 '<?php echo $i;?>','verifiedButton'                                            
                                             )">
-                                                <?php echo properRole($unverifiedStudents[$i]['rol']);?>
+                                                <?php echo properVerifiedStatus($unverifiedStudents[$i]['rol']);?>
                                             </a>                                        
                                         </td>                                    
                                     </tr>
