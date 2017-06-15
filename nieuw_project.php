@@ -161,7 +161,7 @@ if(isset($_POST['action'])){
     for($x = 0;$x <count($users);$x++){
       $new = $users[$x]['id'];
       $insertMessagesQuery .= "(
-      NULL ,  'Er is een nieuw project dat gemaakt dat jouw college nodig heeft!',  '0', 
+      NULL ,  'Er is een nieuw project gemaakt dat jouw college nodig heeft!',  '0', 
       CURRENT_TIMESTAMP ,  '$newId',  '20',  '$new'
       ), ";
     }
