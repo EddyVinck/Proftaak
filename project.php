@@ -100,7 +100,14 @@ $statuses = ['Bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond'];
 if(isset($_POST['onStatusChanged'])){
     if(isset($_POST['newStatus'])){
         // change project status4
-        // $query = "UPDATE";
+        $newStatus = $_POST['newStatus'];
+        $query = "UPDATE projecten SET status= ? WHERE id = ?";
+        $preparedStatusUpdate = $connection->prepare($query);
+        $preparedStatusUpdate->bind_param("si", $newStatus, $projectId);
+        $preparedStatusUpdate->execute();
+
+        mysqli_query($connection, $query);
+        header("location: project.php?id=".$projectId);
     }
 }
 
@@ -109,7 +116,7 @@ if(isset($_POST['onStatusChanged'])){
 
 <head>
 	<head>
-      <!--Import Google Icon Font-->
+    <!--Import Google Icon Font-->
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
@@ -189,16 +196,14 @@ if(isset($_POST['onStatusChanged'])){
                             <h5 class="center">Selecteer status</h5>
                         </div>
                         <div class="col s10 offset-s1 m6 offset-m3 center">
-                            <form>
-                                <select name="newStatus" method="post">
-                                    <option selected  value="<?= $projectData['status'];?>">Huidige status: <?= $projectData[0]['status'];?></option>
+                            <form method="post">
+                                <select name="newStatus">
+                                    <option selected  value="<?= $projectData[0]['status'];?>">Huidige status: <?= $projectData[0]['status'];?></option>
                                     <?php 
                                     for ($i=0; $i < count($statuses); $i++) { 
                                         if(strtolower($statuses[$i]) != strtolower($projectData[0]['status'])){
-                                        ?>
-                                        
-                                        <option value=""><?= $statuses[$i]; ?></option>
-                                        
+                                        ?>                                        
+                                        <option value="<?= $statuses[$i]; ?>"><?= $statuses[$i]; ?></option>                                        
                                         <?php }
                                     }
                                     ?>
@@ -211,8 +216,7 @@ if(isset($_POST['onStatusChanged'])){
                 </div>
                 
             </div>
-        </div>  
-        
+        </div>        
         <?php
     }
 ?>
