@@ -377,3 +377,57 @@ function checkUserVerification()
         header("location: registratie_success.php");
     }
 }
+function sendMessagesFromUniplan($project_id){
+    $db = ConnectToDatabase();
+    $hulpcol_array = getHulpCollegesFromDB($project_id,$db);
+    $querySelectKlassenForMessages = 
+      "SELECT id FROM klassen WHERE ";
+      for($x = 0;$x < count($hulpcol_array); $x++){
+        $new = $hulpcol_array[$x]['id'];
+        $querySelectKlassenForMessages .= "colleges_id = $new OR ";
+      }
+      $querySelectKlassenForMessages = substr($querySelectKlassenForMessages, 0, -4);
+      $querySelectKlassenForMessages .= ";";
+      dump($querySelectKlassenForMessages);
+      $getKlassenResult = mysqli_query($db, $querySelectKlassenForMessages);
+      $klassen = [];
+      while ($row = mysqli_fetch_assoc($getKlassenResult)){
+        $klassen[] = $row;
+      }
+      
+      $querySelectUsersForMessages = 
+      "SELECT id FROM users WHERE ";
+      for($x = 0;$x < count($klassen); $x++){
+        $new = $klassen[$x]['id'];
+        $querySelectUsersForMessages .= "klassen_id = $new OR ";
+      }
+      $querySelectUsersForMessages = substr($querySelectUsersForMessages, 0, -4);
+      $querySelectUsersForMessages .= ";";
+      $usersResult  = mysqli_query($db,$querySelectUsersForMessages);
+      $users = [];
+      while($row = mysqli_fetch_assoc($usersResult)){
+        $users[] = $row;
+      }
+      
+      $insertMessagesQuery = 
+      "INSERT INTO `messages` (
+      `id` ,
+      `message` ,
+      `is_read` ,
+      `CreationDate` ,
+      `projecten_id` ,
+      `from_id` ,
+      `to_id`
+      )
+      VALUES ";
+      for($x = 0;$x <count($users);$x++){
+        $new = $users[$x]['id'];
+        $insertMessagesQuery .= "(
+        NULL ,  'Er is een nieuw project gemaakt dat jouw college nodig heeft!',  '0', 
+        CURRENT_TIMESTAMP ,  '$project_id',  '20',  '$new'
+        ), ";
+      }
+      $insertMessagesQuery = substr($insertMessagesQuery, 0, -2);
+      $insertMessagesQuery .= ";";
+      mysqli_query($db,$insertMessagesQuery);
+}
