@@ -138,7 +138,7 @@ function createHeader($color = 'teal') {
                 <div class="col s12" style="padding: 0 .75rem;">
                 <ul>
                 <?php if (changeFontColorByColor($color) == "black-text"){$logo_col = "black";}else{$logo_col="white";}?>       
-                   <li> <a href="index.php" class="brand-logo <?php echo changeFontColorByColor($color);?>"><img style="width:5rem;margin-top:12%;" src="img/logo_<?=$logo_col?>.svg"></a></li>  
+                   <li> <a href="index.php" style="height: 100%" class="brand-logo <?php echo changeFontColorByColor($color);?>"><img style="width:5rem;margin-top:12%;" src="img/logo_<?=$logo_col?>.svg"></a></li>  
                 </ul>  
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">home</i>Projecten</a></li>
