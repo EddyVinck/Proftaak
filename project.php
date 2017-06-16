@@ -95,12 +95,28 @@ while ($data = $result->fetch_assoc()){
 }
 $pageColor = changePageColors($connection, $projectData[0]['college_id']);
 
+$statuses = ['Bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond'];
+
+if(isset($_POST['onStatusChanged'])){
+    if(isset($_POST['newStatus'])){
+        // change project status4
+        $newStatus = $_POST['newStatus'];
+        $query = "UPDATE projecten SET status= ? WHERE id = ?";
+        $preparedStatusUpdate = $connection->prepare($query);
+        $preparedStatusUpdate->bind_param("si", $newStatus, $projectId);
+        $preparedStatusUpdate->execute();
+
+        mysqli_query($connection, $query);
+        header("location: project.php?id=".$projectId);
+    }
+}
+
 ?>
 <!DOCTYPE html>
 
 <head>
 	<head>
-      <!--Import Google Icon Font-->
+    <!--Import Google Icon Font-->
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
@@ -163,29 +179,44 @@ $pageColor = changePageColors($connection, $projectData[0]['college_id']);
     && $projectData[0]['status'] != "ongeverifieerd" 
     && $projectData[0]['status'] != "gearchiveerd")
     {
-        ?>  
-        <div class="container z-depth-4" id="status-dialog-container">        
-            <div class="row valign-wrapper no-margin z-depth-1" style="background-color: lightgrey;">
-                <div class="col s12">
-                    <h5 class="left">&nbsp;Status veranderen</h5>
-                    <a class="btn red right col s2 m1" onclick="closeStatusDialog()"><i class="material-icons">close</i></a>
+        ?>
+        <div class="row">
+            <div class="col s12 m6">
+
+                <div class="container z-depth-4" id="status-dialog-container">        
+                    <div class="row valign-wrapper no-margin z-depth-1" style="background-color: lightgrey;">
+                        <div class="col s12">
+                            <h5 class="left">&nbsp;Status veranderen</h5>
+                            <a class="btn red right col s2 m1" onclick="closeStatusDialog()"><i class="material-icons">close</i></a>
+                        </div>
+                    </div>
+                    <div class="section">
+                    <div class="row">
+                        <div class="col s10 offset-s1">
+                            <h5 class="center">Selecteer status</h5>
+                        </div>
+                        <div class="col s10 offset-s1 m6 offset-m3 center">
+                            <form method="post">
+                                <select name="newStatus">
+                                    <option selected  value="<?= $projectData[0]['status'];?>">Huidige status: <?= $projectData[0]['status'];?></option>
+                                    <?php 
+                                    for ($i=0; $i < count($statuses); $i++) { 
+                                        if(strtolower($statuses[$i]) != strtolower($projectData[0]['status'])){
+                                        ?>                                        
+                                        <option value="<?= $statuses[$i]; ?>"><?= $statuses[$i]; ?></option>                                        
+                                        <?php }
+                                    }
+                                    ?>
+                                </select>
+                                <button type="submit" name="onStatusChanged" class="btn purple darken-1">Verander status</button>                                
+                            </form>
+                        </div>
+                    </div>
+                    </div>
                 </div>
+                
             </div>
-            <div class="section">
-            <div class="row">
-                <div class="col s10 offset-s1">
-                    <h5 class="center">Selecteer status</h5>
-                </div>
-                <div class="col s10 offset-s1 m6 offset-m3">
-                    <select name="" id="">
-                        <option value="">1</option>
-                        <option value="">2</option>
-                        <option value="">3</option>
-                    </select>
-                </div>
-            </div>
-            </div>
-        </div>
+        </div>        
         <?php
     }
 ?>

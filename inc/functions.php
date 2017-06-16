@@ -353,7 +353,7 @@ function neededOrNot($id,$arr){
 }
 function getProjectStatusIcon($projectStatus)
 {
-    switch ($projectStatus) 
+    switch (strtolower($projectStatus)) 
     {
     case 'gestaakt':
         return "cancel";
@@ -366,6 +366,15 @@ function getProjectStatusIcon($projectStatus)
         break;
     case 'archief':
         return "archive";
+        break;
+    case 'onderzoek':
+        return 'search';
+        break;
+    case 'onderzoek':
+        return 'people';
+        break;
+    case 'afgerond':
+        return 'people';
         break;
     default:
         return "help";
