@@ -269,9 +269,15 @@ checkUserVerification();
                     <div class="card-panel <?php echo $pageColor; ?> lighten-2 <?php echo changeFontColorBasedOn('lighten')?>">
                         <div class="row valign-wrapper " style="margin-bottom: 0">
                             <div class="col m2 s12 truncate no-padding">Projectnaam</div>
-                            <div class="col m2 hide-on-small-only">Projectstarter</div>
-                            <div class="col m3 hide-on-small-only">Opleiding</div>
-                            <div class="col m2 hide-on-small-only">Jouw hulp nodig</div>
+                            <div class="col m2 hide-on-small-only">Projectlijder</div>
+                            <div class="col m3 hide-on-small-only tooltipped"
+                             data-position="bottom"
+                            data-delay="10"
+                            data-tooltip="Het college waar dit project is aangemaakt">Aangemaakt door<i class="<?=changeFontColorByColor($pageColor)?> material-icons tiny">help</i></div>
+                            <div class="col m2 hide-on-small-only tooltipped"
+                             data-position="bottom"
+                            data-delay="10"
+                            data-tooltip="Heeft het project hulp van jouw college nodig?">Jouw hulp nodig<i class="<?=changeFontColorByColor($pageColor)?> material-icons tiny">help</i></div>
                             <div class="col m2 hide-on-small-only">Status</div>    
                             <div class="col m1 hide-on-small-only"></div>
                         </div>
@@ -283,6 +289,7 @@ checkUserVerification();
                         $hulpColleges = getHulpCollegesFromDB($data[$i]['project_id'],$db);
                         $nodig = neededOrNot($collegeId,$hulpColleges);
                         ?>
+                        
                         <li>
                         <div class="collapsible-header">
                             <div class="row valign-wrapper" style="margin-bottom: 0">
@@ -293,7 +300,7 @@ checkUserVerification();
                                 <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
                                 <div class="col m1 truncate">
                                     <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content">
-                                        <i class="material-icons <?php echo $pageColor."-text text-darken-3"?>">send</i>
+                                        <i class="material-icons">send</i>
                                     </a>
                                 </div>                        
                             </div>
