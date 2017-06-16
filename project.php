@@ -22,8 +22,16 @@ if (isset($_POST['action'])){
             $result = mysqli_query($connection,$query);
 
             if($action == 'bezig'){
-                // send message
-                // one time message
+                $query = "SELECT messages_sent FROM projecten WHERE id = $projectId;";
+                $result = mysqli_query($connection,$query);
+                while($row = mysqli_fetch_assoc($result)){
+                    $projectMessagesSent = $row['messages_sent'];
+                }
+                if ($projectMessagesSent == 0){
+                    $query= "UPDATE projecten SET messages_sent = 1 WHERE id = $projectId";
+                    mysqli_query($connection,$query);
+                    sendMessagesFromUniplan($projectId);
+                }
             }
         }
     }

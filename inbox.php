@@ -21,6 +21,7 @@ if(isset($_POST['delete'])){
   $prepare_GetSingleMessageInfo->execute();
   $sqlResult = $prepare_GetSingleMessageInfo->get_result();
   $messageDetails = [];
+  
   while($row=mysqli_fetch_Assoc($sqlResult)){
     $messageDetails = $row;
   }
@@ -30,6 +31,7 @@ if(isset($_POST['delete'])){
     $prepare_delete->bind_param("i",$deleteId);
     $prepare_delete->execute();
   }
+  header("location: inbox.php");
 }
 $getAllMessagesQuery = 
 "SELECT messages.id, 

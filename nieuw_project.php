@@ -43,6 +43,12 @@ if(isset($_POST['action'])){
       $images_array = explodeStr($_POST['images']);
     }
    $hulpcol_array = explodeStr($_POST['hulpcolleges']);
+   if ($status == "bezig"){
+     $messages_sent = 1;
+   }
+   else{
+     $messages_sent = 0;
+   }
    $insertProjectQuery = 
    "INSERT INTO `projecten` (
     `id` ,
@@ -52,6 +58,7 @@ if(isset($_POST['action'])){
     `status`,
     `date`,
     `deadline`,
+    `messages_sent`,
     `users_id`
     )
     VALUES (
@@ -62,10 +69,11 @@ if(isset($_POST['action'])){
     '$status',
      NULL,
     '$deadline',
+    '$messages_sent',
     '$userID');
     ";
+    dump($insertProjectQuery);
     /* 
-
     WORK IN PROGRESS
 
     */
@@ -119,55 +127,9 @@ if(isset($_POST['action'])){
     mysqli_query($db,$insertImages);
 
     //this next part is to send messages to all the users that are involved
-    $querySelectKlassenForMessages = 
-    "SELECT id FROM klassen WHERE ";
-    for($x = 0;$x < count($hulpcol_array); $x++){
-      $new = $hulpcol_array[$x];
-      $querySelectKlassenForMessages .= "colleges_id = $new OR ";
+    if ($messages_sent == 1){
+      sendMessagesFromUniplan($newId);
     }
-    $querySelectKlassenForMessages = substr($querySelectKlassenForMessages, 0, -4);
-    $querySelectKlassenForMessages .= ";";
-    $getKlassenResult = mysqli_query($db, $querySelectKlassenForMessages);
-    $klassen = [];
-    while ($row = mysqli_fetch_assoc($getKlassenResult)){
-      $klassen[] = $row;
-    }
-    
-    $querySelectUsersForMessages = 
-    "SELECT id FROM users WHERE ";
-    for($x = 0;$x < count($klassen); $x++){
-      $new = $klassen[$x]['id'];
-      $querySelectUsersForMessages .= "klassen_id = $new OR ";
-    }
-    $querySelectUsersForMessages = substr($querySelectUsersForMessages, 0, -4);
-    $querySelectUsersForMessages .= ";";
-    $usersResult  = mysqli_query($db,$querySelectUsersForMessages);
-    $users = [];
-    while($row = mysqli_fetch_assoc($usersResult)){
-      $users[] = $row;
-    }
-    
-    $insertMessagesQuery = 
-    "INSERT INTO `messages` (
-    `id` ,
-    `message` ,
-    `is_read` ,
-    `CreationDate` ,
-    `projecten_id` ,
-    `from_id` ,
-    `to_id`
-    )
-    VALUES ";
-    for($x = 0;$x <count($users);$x++){
-      $new = $users[$x]['id'];
-      $insertMessagesQuery .= "(
-      NULL ,  'Er is een nieuw project gemaakt dat jouw college nodig heeft!',  '0', 
-      CURRENT_TIMESTAMP ,  '$newId',  '20',  '$new'
-      ), ";
-    }
-    $insertMessagesQuery = substr($insertMessagesQuery, 0, -2);
-    $insertMessagesQuery .= ";";
-    mysqli_query($db,$insertMessagesQuery);
   }
   else{ //what happens when 1 field is empty
     $beschrijving = $_POST['beschrijving'];
