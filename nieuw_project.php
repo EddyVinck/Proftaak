@@ -63,32 +63,18 @@ if(isset($_POST['action'])){
     )
     VALUES (
     NULL ,  
-    '$naam',  
-    '$beschrijving',  
-    '$nodig',  
-    '$status',
-     NULL,
-    '$deadline',
-    '$messages_sent',
-    '$userID');
-    ";
-    dump($insertProjectQuery);
+    ?, ?, ?, ?,NULL,?,?,?);";
     /* 
     WORK IN PROGRESS
-
     */
-    $resultaat = mysqli_query($db,$insertProjectQuery);
-    if(!$resultaat){
-      echo mysqli_error($db);
-    }
+    $prepare_InsertProject = $db->prepare($insertProjectQuery);
+    $prepare_InsertProject->bind_param("sssssii", $naam, $beschrijving, $nodig, $status, $deadline,$messages_sent,$userID);
+    $prepare_InsertProject->execute();
     $newId = mysqli_insert_id($db);
     // echo "deadline: ".$deadline;
     // $dateFormat ="F j, Y";
     // $deadline = date($dateFormat, $deadline);
     // echo " & formatted deadline: ". $deadline;
-    
-
-
     $insertHulpColleges = 
     "INSERT INTO `hulpcolleges` (
       `projecten_id`,
@@ -132,6 +118,7 @@ if(isset($_POST['action'])){
     }
   }
   else{ //what happens when 1 field is empty
+    $naam= $_POST['naam'];
     $beschrijving = $_POST['beschrijving'];
     $nodig = $_POST['nodig'];
     if (!empty($_POST['images'])){
@@ -145,6 +132,7 @@ if(isset($_POST['action'])){
       $hulpcol_array = explodeStr($hulpcol_string);
     }
   }
+  dump("asdasd");
 }
 else{
   //nope
@@ -226,19 +214,19 @@ while($row = mysqli_fetch_assoc($result)){
         <input value="<?=$hulpcol_string?>" name="hulpcolleges" type="hidden" id="invisColleges">
         <div class="row">
           <div class="input-field col offset-l2 l8 s10">
-            <input name="naam" id="projectNaam" type="text" value="<?=$naam?>" class="validate">
+            <input required name="naam" id="projectNaam" type="text" value="<?=$naam?>" class="validate">
             <label for="projectNaam">Naam</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col offset-l2 l8 s10">
-            <textarea name="beschrijving" id="beschrijving" class="materialize-textarea"><?=$beschrijving?></textarea>
+            <textarea required name="beschrijving" id="beschrijving" class="materialize-textarea validate"><?=$beschrijving?></textarea>
             <label for="beschrijving">Beschrijving</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col offset-l2 l8 s10">
-            <textarea name="nodig" id="nodig" class="materialize-textarea"><?=$nodig?></textarea>
+            <textarea required name="nodig" id="nodig" class="materialize-textarea validate"><?=$nodig?></textarea>
             <label for="nodig">Wat en wie heb je nodig?</label>
           </div>
         </div>
