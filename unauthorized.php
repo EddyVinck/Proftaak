@@ -29,12 +29,12 @@ if($_SESSION['rol'] == ""){
     <div class="container">
         <div class="section">
             <div class="row valign-wrapper">
-                <div class="col s8 center">
-                    <h3>Je hebt geen toegang tot deze pagina.</h3>
-                    <h5>Probeer op pagina's te blijven binnen jouw school.</h5>                    
+                <div class="col s12 l8 m8 center">
+                    <h3>Oeps!</h3>
+                    <h5>Je hebt geen toegang tot deze pagina, Probeer op pagina's te blijven binnen jouw school.</h5>                    
                 </div>
-                <div class="col s4">
-                    <i class="material-icons large">lock</i>
+                <div class="col s4 l8 m8 hide-on-small-only">
+                    <i class="material-icons large ">lock</i>
                 </div>
             </div>
         </div>

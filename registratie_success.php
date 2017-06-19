@@ -94,11 +94,11 @@ dump($_SESSION);
     <div class="container">
         <div class="section">
             <div class="row valign-wrapper">
-                <div class="col s8 center">
+                <div class="col s12 l8 m8 center">
                     <h3>Je account is geregistreerd!</h3>
                     <h5>Het account moet nog eerst geverifi&euml;erd worden door een <?=$textVar?></h5>                    
                 </div>
-                <div class="col s4">
+                <div class="col s4 l8 m8 hide-on-small-only">
                     <i class="material-icons large">watch_later</i>
                 </div>
             </div>
