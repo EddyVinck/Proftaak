@@ -132,7 +132,6 @@ if(isset($_POST['action'])){
       $hulpcol_array = explodeStr($hulpcol_string);
     }
   }
-  dump("asdasd");
 }
 else{
   //nope

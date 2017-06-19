@@ -1,8 +1,14 @@
 <?php
 function ConnectToDatabase(){
+    // localhost
 	$db = mysqli_connect("localhost","root","usbw",'mydb');	//connects to the database from MyPHPAdmin
 	mysqli_query($db, "SET NAMES 'utf8'");			// to make sure all quotation marks are not weird symbols	
 	return $db;
+
+    //non local host
+    // $db = mysqli_connect("localhost:3306","dylanBos","admin1",'mydb');  //connects to the database from MyPHPAdmin
+    // mysqli_query($db, "SET NAMES 'utf8'");          // to make sure all quotation marks are not weird symbols   
+    // return $db;
 }
 function dump($var, $varname = false, $file = false, $line = false)
 {
@@ -170,14 +176,8 @@ function createHeader($color = 'teal') {
     </header>
     <sidenav>
         <ul id="slide-out" class="side-nav">
-            <li><div class="userView">
-                <div class="background">
-                    <img src="">
-                </div>
-                    <a href="#!user"><img class="circle" src=""></a>
-                    <a href="#!name"><span class="white-text name">John Doe</span></a>
-                    <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-                </div>
+            <li><div style="padding-left: 32px !important;" class="userView">
+                <a href="index.php" style="height: 100%" class="brand-logo"><img style="width: 50%" src="img/logo_black.svg"></a>
             </li>
             <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
             <li><a href="colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
@@ -392,54 +392,96 @@ function checkUserVerification()
 function sendMessagesFromUniplan($project_id){
     $db = ConnectToDatabase();
     $hulpcol_array = getHulpCollegesFromDB($project_id,$db);
+    $project_info = getprojectInfoById($project_id, $db, 1);
     $querySelectKlassenForMessages = 
-      "SELECT id FROM klassen WHERE ";
-      for($x = 0;$x < count($hulpcol_array); $x++){
+    "SELECT id FROM klassen WHERE ";
+    for($x = 0;$x < count($hulpcol_array); $x++){
         $new = $hulpcol_array[$x]['id'];
         $querySelectKlassenForMessages .= "colleges_id = $new OR ";
-      }
-      $querySelectKlassenForMessages = substr($querySelectKlassenForMessages, 0, -4);
-      $querySelectKlassenForMessages .= ";";
-      dump($querySelectKlassenForMessages);
-      $getKlassenResult = mysqli_query($db, $querySelectKlassenForMessages);
-      $klassen = [];
-      while ($row = mysqli_fetch_assoc($getKlassenResult)){
+    }
+    $querySelectKlassenForMessages = substr($querySelectKlassenForMessages, 0, -4);
+    $querySelectKlassenForMessages .= ";";
+    $getKlassenResult = mysqli_query($db, $querySelectKlassenForMessages);
+    $klassen = [];
+    while ($row = mysqli_fetch_assoc($getKlassenResult)){
         $klassen[] = $row;
-      }
-      
-      $querySelectUsersForMessages = 
-      "SELECT id FROM users WHERE ";
-      for($x = 0;$x < count($klassen); $x++){
+    }
+    
+    $querySelectUsersForMessages = 
+    "SELECT id, email FROM users WHERE ";
+    for($x = 0;$x < count($klassen); $x++){
         $new = $klassen[$x]['id'];
         $querySelectUsersForMessages .= "klassen_id = $new OR ";
-      }
-      $querySelectUsersForMessages = substr($querySelectUsersForMessages, 0, -4);
-      $querySelectUsersForMessages .= ";";
-      $usersResult  = mysqli_query($db,$querySelectUsersForMessages);
-      $users = [];
-      while($row = mysqli_fetch_assoc($usersResult)){
+    }
+    $querySelectUsersForMessages = substr($querySelectUsersForMessages, 0, -4);
+    $querySelectUsersForMessages .= ";";
+    $usersResult  = mysqli_query($db,$querySelectUsersForMessages);
+    $users = [];
+    while($row = mysqli_fetch_assoc($usersResult)){
         $users[] = $row;
-      }
-      
-      $insertMessagesQuery = 
-      "INSERT INTO `messages` (
-      `id` ,
-      `message` ,
-      `is_read` ,
-      `CreationDate` ,
-      `projecten_id` ,
-      `from_id` ,
-      `to_id`
-      )
-      VALUES ";
-      for($x = 0;$x <count($users);$x++){
+    }
+    
+    $insertMessagesQuery = 
+    "INSERT INTO `messages` (
+    `id` ,
+    `message` ,
+    `is_read` ,
+    `CreationDate` ,
+    `projecten_id` ,
+    `from_id` ,
+    `to_id`
+    )
+    VALUES ";
+    for($x = 0;$x <count($users);$x++){
         $new = $users[$x]['id'];
         $insertMessagesQuery .= "(
         NULL ,  'Er is een nieuw project gemaakt dat jouw college nodig heeft!',  '0', 
         CURRENT_TIMESTAMP ,  '$project_id',  '20',  '$new'
         ), ";
-      }
-      $insertMessagesQuery = substr($insertMessagesQuery, 0, -2);
-      $insertMessagesQuery .= ";";
-      mysqli_query($db,$insertMessagesQuery);
+        // send emails
+        // $param->content = "<div>
+        // <div><b>".$project_info['project_naam']."</b></div><br/>
+        // <div><img src='".$project_info['img_path']."'/></div><br/>
+        // </div>";
+        // $param->sendTo = "dylan_bos@live.nl"
+        // $param->subject = "Er is een nieuw project!";
+        // sendMailFunction($param);
+    }
+    require_once 'swiftmailer-master/lib/swift_required.php';
+
+    $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
+    ->setUsername('dylanbos1996@gmail.com')
+    ->setPassword('runnirun1');
+
+    $mailer = Swift_Mailer::newInstance($transport);
+
+    $message = Swift_Message::newInstance('Test Subject')
+    ->setFrom(array('abc@example.com' => 'ABC'))
+    ->setTo(array('xyz@test.com'))
+    ->setBody('This is a test mail.');
+
+    $result = $mailer->send($message);
+
+}
+function getprojectInfoById($tempId, $db, $mode = 0){
+    $getProjectInfoQuery = 
+    "SELECT projecten.naam AS project_naam, 
+    projecten.id AS project_id, 
+    projecten.status, 
+    projecten.omschrijving,
+    images.path AS img_path
+    FROM projecten
+    LEFT OUTER JOIN images
+    ON projecten.id = images.projecten_id
+    WHERE projecten.id = $tempId";
+    $result = mysqli_query($db,$getProjectInfoQuery);
+    while($row = mysqli_fetch_assoc($result)){
+        if ($mode == 0){
+            $project_info[$tempId] =$row;
+        }
+        else{
+            $project_info = $row;
+        }
+    }
+    return $project_info;
 }

@@ -60,20 +60,7 @@ $execute = false;
 for ($x = 0; $x < count($messages);$x++){
   if ($messages[$x]['projecten_id'] != null){
     $tempId = $messages[$x]['projecten_id'];
-    $getProjectInfoQuery = 
-    "SELECT projecten.naam AS project_naam, 
-    projecten.id AS project_id, 
-    projecten.status, 
-    projecten.omschrijving,
-    images.path AS img_path
-    FROM projecten
-    LEFT OUTER JOIN images
-    ON projecten.id = images.projecten_id
-    WHERE projecten.id = $tempId";
-    $result = mysqli_query($db,$getProjectInfoQuery);
-    while($row = mysqli_fetch_assoc($result)){
-      $project_info[$tempId] =$row;
-    }
+    $project_info = getprojectInfoById($tempId, $db);
   }
 }
 $setAllMessagesAsReadQuery = "UPDATE messages SET is_read = 1 WHERE is_read = 0 AND to_id = $userId;";
