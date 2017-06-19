@@ -1,6 +1,6 @@
 <?php
 function ConnectToDatabase(){
-    $num = 0;
+    $num = 1;
     if($num == 0){
         // localhost
         $db = mysqli_connect("localhost","root","usbw",'mydb');	//connects to the database from MyPHPAdmin
@@ -442,27 +442,28 @@ function sendMessagesFromUniplan($project_id){
         NULL ,  'Er is een nieuw project gemaakt dat jouw college nodig heeft!',  '0', 
         CURRENT_TIMESTAMP ,  '$project_id',  '20',  '$new'
         ), ";
-        // send emails
-        // $param->content = "<div>
-        // <div><b>".$project_info['project_naam']."</b></div><br/>
-        // <div><img src='".$project_info['img_path']."'/></div><br/>
-        // </div>";
-        // $param->sendTo = "dylan_bos@live.nl"
-        // $param->subject = "Er is een nieuw project!";
-        // sendMailFunction($param);
     }
-    require 'phpMailer/PHPMailerAutoload.php';
-    $mail = new PHPMailer;
-    $mail->setFrom('info@uniplan.com', 'Uniplan');
-    $mail->addAddress('dylan_bos@live.nl', 'My Friend');
-    $mail->Subject  = 'First PHPMailer Message';
-    $mail->Body     = 'Hi! This is my first e-mail sent through PHPMailer.';
-    if(!$mail->send()) {
-    //echo 'Message was not sent.';
-    //echo 'Mailer error: ' . $mail->ErrorInfo;
-    } else {
-    echo 'Message has been sent.';
-    }
+    // require 'phpMailer/PHPMailerAutoload.php';
+    // $mail = new PHPMailer(); // create a new object
+    // $mail->IsSMTP(); // enable SMTP
+    // $mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
+    // $mail->SMTPAuth = true; // authentication enabled
+    // $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
+    // $mail->Host = "smtp.gmail.com";
+    // $mail->Port = 465; // or 587
+    // $mail->IsHTML(true);
+    // $mail->Username = "dylanbos1996@gmail.com";
+    // $mail->Password = "runnirun1";
+    // $mail->SetFrom("uniplan@gmail.com");
+    // $mail->Subject = "Test";
+    // $mail->Body = "hello";
+    // $mail->AddAddress("dylan_bos@live.nl");
+
+    // if(!$mail->Send()) {
+    //     echo "Mailer Error: " . $mail->ErrorInfo;
+    // } else {
+    //     echo "Message has been sent";
+    // }
 
 
 }
