@@ -1,14 +1,18 @@
 <?php
 function ConnectToDatabase(){
-    // localhost
-	$db = mysqli_connect("localhost","root","usbw",'mydb');	//connects to the database from MyPHPAdmin
-	mysqli_query($db, "SET NAMES 'utf8'");			// to make sure all quotation marks are not weird symbols	
-	return $db;
-
-    //non local host
-    // $db = mysqli_connect("localhost:3306","dylanBos","admin1",'mydb');  //connects to the database from MyPHPAdmin
-    // mysqli_query($db, "SET NAMES 'utf8'");          // to make sure all quotation marks are not weird symbols   
-    // return $db;
+    $num = 0;
+    if($num == 0){
+        // localhost
+        $db = mysqli_connect("localhost","root","usbw",'mydb');	//connects to the database from MyPHPAdmin
+        mysqli_query($db, "SET NAMES 'utf8'");			// to make sure all quotation marks are not weird symbols	
+        return $db;
+    }
+    else{
+        //non local host
+        $db = mysqli_connect("localhost:3306","dylanBos","admin1",'mydb');  //connects to the database from MyPHPAdmin
+        mysqli_query($db, "SET NAMES 'utf8'");          // to make sure all quotation marks are not weird symbols   
+        return $db;
+    }
 }
 function dump($var, $varname = false, $file = false, $line = false)
 {
@@ -447,20 +451,19 @@ function sendMessagesFromUniplan($project_id){
         // $param->subject = "Er is een nieuw project!";
         // sendMailFunction($param);
     }
-    require_once 'swiftmailer-master/lib/swift_required.php';
+    require 'phpMailer/PHPMailerAutoload.php';
+    $mail = new PHPMailer;
+    $mail->setFrom('info@uniplan.com', 'Uniplan');
+    $mail->addAddress('dylan_bos@live.nl', 'My Friend');
+    $mail->Subject  = 'First PHPMailer Message';
+    $mail->Body     = 'Hi! This is my first e-mail sent through PHPMailer.';
+    if(!$mail->send()) {
+    //echo 'Message was not sent.';
+    //echo 'Mailer error: ' . $mail->ErrorInfo;
+    } else {
+    echo 'Message has been sent.';
+    }
 
-    $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
-    ->setUsername('dylanbos1996@gmail.com')
-    ->setPassword('runnirun1');
-
-    $mailer = Swift_Mailer::newInstance($transport);
-
-    $message = Swift_Message::newInstance('Test Subject')
-    ->setFrom(array('abc@example.com' => 'ABC'))
-    ->setTo(array('xyz@test.com'))
-    ->setBody('This is a test mail.');
-
-    $result = $mailer->send($message);
 
 }
 function getprojectInfoById($tempId, $db, $mode = 0){
