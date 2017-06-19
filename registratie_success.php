@@ -102,6 +102,7 @@ dump($_SESSION);
                     <i class="material-icons large">watch_later</i>
                 </div>
             </div>
+        </div>
     </div>
 </main>
 <footer class="page-footer teal">

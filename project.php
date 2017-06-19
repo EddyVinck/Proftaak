@@ -9,7 +9,12 @@ else if ($_SESSION['rol'] == "odo" || $_SESSION['rol'] == "ost"){
 }
 
 $connection = ConnectToDatabase();
-$projectId = $_GET['id'];
+if(isset($_GET['id'])){
+    $projectId = $_GET['id'];
+}
+else{
+    $projectId = 0;
+}
 
 // next part happens if one of the buttons: archiveren, publicatie intrekken, publiceren is pressed
 if (isset($_POST['action'])){
@@ -40,7 +45,7 @@ $prepare_getProjectData = $connection->prepare( "SELECT projecten.id AS project_
     projecten.omschrijving, projecten.omschrijving_nodig,
     projecten.status, projecten.naam AS project_naam,
     date_format(projecten.date, '%d-%m-%Y') AS startdatum, projecten.deadline AS deadline,
-    users.naam AS projectstarter, users.id AS user_id,
+    users.naam AS projectstarter, users.id AS user_id, users.rol AS user_rol,
     klassen.id AS klas_id,
     colleges.naam AS college_naam,
      colleges.id AS college_id
@@ -55,62 +60,72 @@ $prepare_getProjectData = $connection->prepare( "SELECT projecten.id AS project_
 $prepare_getProjectData->bind_param("i", $projectId);
 $prepare_getProjectData->execute();
 $result=$prepare_getProjectData->get_result();
+$projectData = [];
 while ($data = $result->fetch_assoc()){
-    $projectData[] = $data;
+    $projectData = $data;
 }
+if(isset($projectData['project_id'])){
+    if ($projectData['status'] == 'ongeverifieerd' && ($_SESSION['rol'] != "adm" && $_SESSION['rol'] != "doc" && $_SESSION['rol'] != "sch")){
+        unset($projectData['project_id']);
+        $pageColor = "teal";
+    }
+    else{
+        $hulpColleges = getHulpCollegesFromDB($projectId,$connection);
 
-$hulpColleges = getHulpCollegesFromDB($projectId,$connection);
+        $queryGetImages = 
+        "   SELECT path
+            FROM images
+            WHERE projecten_id = ?;
+        ";
+        $prepare_getProjectImages = $connection->prepare($queryGetImages);
+        $prepare_getProjectImages->bind_param("i", $projectId);
+        $prepare_getProjectImages->execute();
+        $result=$prepare_getProjectImages->get_result();
+        $images = [];
+        while ($data = $result->fetch_assoc()){
+            $images[] = $data;
+        }
 
-$queryGetImages = 
-"   SELECT path
-    FROM images
-    WHERE projecten_id = ?;
-";
-$prepare_getProjectImages = $connection->prepare($queryGetImages);
-$prepare_getProjectImages->bind_param("i", $projectId);
-$prepare_getProjectImages->execute();
-$result=$prepare_getProjectImages->get_result();
-$images = [];
-while ($data = $result->fetch_assoc()){
-    $images[] = $data;
-}
+        $responses = [];
 
-$responses = [];
+        $queryGetReacties = 
+        "   SELECT reacties.id AS response_id, reacties.text AS response_text,
+            users.id AS user_id, users.naam AS user_name
+            FROM reacties
+            INNER JOIN users
+            ON reacties.user_id = users.id
+            WHERE reacties.projecten_id = ?
+            ORDER BY response_id;
+        ";
+        $prepare_getProjectReacties = $connection->prepare($queryGetReacties);
+        $prepare_getProjectReacties->bind_param("i", $projectId);
+        $prepare_getProjectReacties->execute();
+        $result=$prepare_getProjectReacties->get_result();
+        while ($data = $result->fetch_assoc()){
+            $responses[] = $data;
+        }
+        $pageColor = changePageColors($connection, $projectData['college_id']);
 
-$queryGetReacties = 
-"   SELECT reacties.id AS response_id, reacties.text AS response_text,
-    users.id AS user_id, users.naam AS user_name
-    FROM reacties
-    INNER JOIN users
-    ON reacties.user_id = users.id
-    WHERE reacties.projecten_id = ?
-    ORDER BY response_id;
-";
-$prepare_getProjectReacties = $connection->prepare($queryGetReacties);
-$prepare_getProjectReacties->bind_param("i", $projectId);
-$prepare_getProjectReacties->execute();
-$result=$prepare_getProjectReacties->get_result();
-while ($data = $result->fetch_assoc()){
-    $responses[] = $data;
-}
-$pageColor = changePageColors($connection, $projectData[0]['college_id']);
+        $statuses = ['Bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond'];
 
-$statuses = ['Bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond'];
+        if(isset($_POST['onStatusChanged'])){
+            if(isset($_POST['newStatus'])){
+                // change project status4
+                $newStatus = $_POST['newStatus'];
+                $query = "UPDATE projecten SET status= ? WHERE id = ?";
+                $preparedStatusUpdate = $connection->prepare($query);
+                $preparedStatusUpdate->bind_param("si", $newStatus, $projectId);
+                $preparedStatusUpdate->execute();
 
-if(isset($_POST['onStatusChanged'])){
-    if(isset($_POST['newStatus'])){
-        // change project status4
-        $newStatus = $_POST['newStatus'];
-        $query = "UPDATE projecten SET status= ? WHERE id = ?";
-        $preparedStatusUpdate = $connection->prepare($query);
-        $preparedStatusUpdate->bind_param("si", $newStatus, $projectId);
-        $preparedStatusUpdate->execute();
-
-        mysqli_query($connection, $query);
-        header("location: project.php?id=".$projectId);
+                mysqli_query($connection, $query);
+                header("location: project.php?id=".$projectId);
+            }
+        }
     }
 }
-
+else{
+    $pageColor = "teal";
+}
 ?>
 <!DOCTYPE html>
 
@@ -130,7 +145,7 @@ if(isset($_POST['onStatusChanged'])){
 </head>
 <body >
 <?php createHeader($pageColor);?>
-<main>
+<main class="<?php if(!isset($projectData['project_id'])){echo "valign-wrapper";}?>" >
 
 <div id="reply-container">
     <form action="projectReply.php" method="post">
@@ -167,7 +182,7 @@ if(isset($_POST['onStatusChanged'])){
                 </div>
             </div>
         </div>
-        <input type="hidden" name="project_id" value="<?= $projectData[0]['project_id'] ?>">
+        <input type="hidden" name="project_id" value="<?= $projectData['project_id'] ?>">
     </div>
     </form>
 </div>
@@ -175,9 +190,10 @@ if(isset($_POST['onStatusChanged'])){
 
   <div class="container">
       <?php // change status button as projectstarter
-    if($_SESSION['id'] == $projectData[0]['user_id'] 
-    && $projectData[0]['status'] != "ongeverifieerd" 
-    && $projectData[0]['status'] != "gearchiveerd")
+    if(isset($projectData['project_id'])){
+    if($_SESSION['id'] == $projectData['user_id'] 
+    && $projectData['status'] != "ongeverifieerd" 
+    && $projectData['status'] != "gearchiveerd")
     {
         ?>
         <div class="row">
@@ -198,10 +214,10 @@ if(isset($_POST['onStatusChanged'])){
                         <div class="col s10 offset-s1 m6 offset-m3 center">
                             <form method="post">
                                 <select name="newStatus">
-                                    <option selected  value="<?= $projectData[0]['status'];?>">Huidige status: <?= $projectData[0]['status'];?></option>
+                                    <option selected  value="<?= $projectData['status'];?>">Huidige status: <?= $projectData['status'];?></option>
                                     <?php 
                                     for ($i=0; $i < count($statuses); $i++) { 
-                                        if(strtolower($statuses[$i]) != strtolower($projectData[0]['status'])){
+                                        if(strtolower($statuses[$i]) != strtolower($projectData['status'])){
                                         ?>                                        
                                         <option value="<?= $statuses[$i]; ?>"><?= $statuses[$i]; ?></option>                                        
                                         <?php }
@@ -222,15 +238,15 @@ if(isset($_POST['onStatusChanged'])){
 ?>
       <div class="section">
         <div class="row hide-on-med-and-up center">
-            <h5 class="hide-on-med-and-up"><?= $projectData[0]['project_naam'];?></h5> 
+            <h5 class="hide-on-med-and-up"><?= $projectData['project_naam'];?></h5> 
         </div>
         <div class="row valign-wrapper">
             <div class="col s12 m8 hide-on-small-only">
-                <h3><?= $projectData[0]['project_naam'];?></h3>
+                <h3><?= $projectData['project_naam'];?></h3>
             </div>
             <div class="col s12 m4">
                 <form method="POST">
-                <?php if ($projectData[0]['status'] == "ongeverifieerd" && 
+                <?php if ($projectData['status'] == "ongeverifieerd" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
                     <button class="btn purple darken-1 col m10 s10 offset-s1" 
                         type="submit" 
@@ -242,14 +258,14 @@ if(isset($_POST['onStatusChanged'])){
                         name="action"
                         value="gearchiveerd">Archiveren
                     </button>
-                <?php }else if ($projectData[0]['status'] == "gearchiveerd" && 
+                <?php }else if ($projectData['status'] == "gearchiveerd" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
                     <button class="btn purple darken-1 col m12 l12 s10 offset-s1" 
                         type="submit" 
                         name="action"
                         value="bezig">Opnieuw publiceren
                     </button>
-                <?php }else if ($projectData[0]['status'] == "bezig" && 
+                <?php }else if ($projectData['status'] == "bezig" && 
                 ($_SESSION['rol'] == "adm" || $_SESSION['rol'] == "doc")){?>
                     <button class="btn purple darken-1 col m12 l12 s10 offset-s1" 
                         type="submit" 
@@ -263,9 +279,9 @@ if(isset($_POST['onStatusChanged'])){
                     </button>
                 <?php }?>
                 <?php // change status button as projectstarter
-                if($_SESSION['id'] == $projectData[0]['user_id'] 
-                && $projectData[0]['status'] != "ongeverifieerd" 
-                && $projectData[0]['status'] != "gearchiveerd")
+                if($_SESSION['id'] == $projectData['user_id'] 
+                && $projectData['status'] != "ongeverifieerd" 
+                && $projectData['status'] != "gearchiveerd")
                 {
                     ?>
                     <a class='dropdown-button btn purple darken-1 col m12 l12 s10 offset-s1 waves-effect waves-light' 
@@ -313,7 +329,7 @@ if(isset($_POST['onStatusChanged'])){
             <div class="row">
                 <div class="col s12 center">
                     <p id="omschrijving">
-                        <?php echo $projectData[0]['omschrijving']; ?>
+                        <?php echo $projectData['omschrijving']; ?>
                     </p>
                 </div>
             </div>
@@ -329,19 +345,19 @@ if(isset($_POST['onStatusChanged'])){
                         <tbody>
                             <tr>
                                 <td><div class="row">Projectstarter:</div></td>
-                                <td class="right-align truncate"><?php echo $projectData[0]['projectstarter']; ?></td>                                                        
+                                <td class="right-align truncate"><?php echo $projectData['projectstarter']; ?></td>                                                        
                             </tr>
                             <tr>
                                 <td><div class="row">Opleiding:</div></td>
-                                <td class="right-align truncate"><?php echo $projectData[0]['college_naam']; ?></td>                                           
+                                <td class="right-align truncate"><?php echo $projectData['college_naam']; ?></td>                                           
                             </tr>
                             <tr>
                                 <td><div class="row">Startdatum:</div></td>
-                                <td class="right-align truncate"><?php echo $projectData[0]['startdatum']; ?></td>                                           
+                                <td class="right-align truncate"><?php echo $projectData['startdatum']; ?></td>                                           
                             </tr>
                             <tr>
                                 <td><div class="row">Deadline:</div></td>
-                                <td class="right-align truncate"><?php echo $projectData[0]['deadline']; ?></td>                                           
+                                <td class="right-align truncate"><?php echo $projectData['deadline']; ?></td>                                           
                             </tr>                                                                       
                         </tbody>
                     </table>
@@ -350,7 +366,7 @@ if(isset($_POST['onStatusChanged'])){
         </div>
         <div class="row">
             <div class="col s12 center">
-                <a class="btn purple darken-1" href="bericht.php?send=<?=$projectData[0]['user_id']?>">
+                <a class="btn purple darken-1" href="bericht.php?send=<?=$projectData['user_id']?>">
                     Stuur Priv&eacute;bericht<i class="material-icons right">message</i>
                 </a>
             </div>
@@ -366,7 +382,7 @@ if(isset($_POST['onStatusChanged'])){
             <div class="row">
                 <div class="col s12">
                     <p>
-                        <?php echo $projectData[0]['omschrijving_nodig'];?>
+                        <?php echo $projectData['omschrijving_nodig'];?>
                     </p>
                 </div>
             </div>
@@ -399,18 +415,18 @@ if(isset($_POST['onStatusChanged'])){
             <div class="row">                     
                 <div class="col s12 m4 offset-m4">
                     <i class="material-icons medium">
-                    <?php echo getProjectStatusIcon($projectData[0]['status']); ?>                    
+                    <?php echo getProjectStatusIcon($projectData['status']); ?>                    
                     </i>
-                    <p><?php echo $projectData[0]['status'];?></p>
+                    <p><?php echo $projectData['status'];?></p>
                 </div>
             </div>
                 <form action="pdf.php" method="post" target="_blank">
-                    <input type="hidden" name="project_title" value="<?= $projectData[0]['project_naam'];?>">                
+                    <input type="hidden" name="project_title" value="<?= $projectData['project_naam'];?>">                
                     <input type="hidden" name="image" value="<?php if(isset($images[0]['path'])){echo $images[0]['path'];};?>">
-                    <input type="hidden" name="project_description" value="<?php echo $projectData[0]['omschrijving']; ?>">                    
-                    <input type="hidden" name="project_starter" value="<?php echo $projectData[0]['projectstarter']; ?>">
-                    <input type="hidden" name="college_name" value="<?php echo $projectData[0]['college_naam']; ?>">
-                    <input type="hidden" name="omschrijving_nodig" value="<?php echo $projectData[0]['omschrijving_nodig'];?>">
+                    <input type="hidden" name="project_description" value="<?php echo $projectData['omschrijving']; ?>">                    
+                    <input type="hidden" name="project_starter" value="<?php echo $projectData['projectstarter']; ?>">
+                    <input type="hidden" name="college_name" value="<?php echo $projectData['college_naam']; ?>">
+                    <input type="hidden" name="omschrijving_nodig" value="<?php echo $projectData['omschrijving_nodig'];?>">
                     <?php 
                     /*  
                     because PHP is poop it surrounds json_encoded array values and keys with
@@ -423,7 +439,7 @@ if(isset($_POST['onStatusChanged'])){
                     <input type="hidden" name="hulpcolleges" value="<?php echo $json_colleges ?>">
                     <div class="row">
                         <div class="col s12 m8 offset-m2">
-                            <?php if($projectData[0]['user_id'] == $_SESSION['id']) { ;?>
+                            <?php if($projectData['user_id'] == $_SESSION['id']) { ;?>
                             <div class="card">
                                 <div class="card-content">
                                     
@@ -481,7 +497,20 @@ if(isset($_POST['onStatusChanged'])){
                     <?php } ?>
                 </div>
             </div>
-        </div>
+        <?php }else{?>
+            <div class="section">
+                <div class="row valign-wrapper">
+                    <div class="col s8 center">
+                        <h3>Oeps!</h3>
+                        <h5>Je bent bij een project aangekomen dat niet bestaat of niet zichtbaar is voor jou</h5>                    
+                    </div>
+                    <div class="col s4">
+                        <i class="material-icons large">error_outline</i>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
 </main>
 <?php createFooter($pageColor);?>
 <script type="text/javascript" src="js/ajaxfunctions.js"></script>

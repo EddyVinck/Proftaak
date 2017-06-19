@@ -37,6 +37,7 @@ if($_SESSION['rol'] == ""){
                     <i class="material-icons large">lock</i>
                 </div>
             </div>
+        </div>
     </div>
 </main>
 <<?php createFooter();?>
