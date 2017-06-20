@@ -24,7 +24,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college']))
     checkSchool();
 }
 
-// Set the right header when the searchbar is used
+// Set the right header when there is a search value in POST
 if(isset($_POST['search']))
 {
     $projectSearch = $_POST['search'];
@@ -43,7 +43,7 @@ if(isset($_POST['search']))
             header("location: projecten_lijst.php?search=".$projectSearch);            
         }
     }
-} else {
+} else { // if there is a search in GET
     if(isset($_GET['search']))
     {
         $projectSearch = $_GET['search'];       
@@ -91,12 +91,12 @@ if(isset($_GET['college'])){
     }
 }
 else{ // if college isnt in GET
-    if($status == "ongeverifieerd") 
+    if($status == "ongeverifieerd" || $status =="gearchiveerd") 
     {
-        $query .=" WHERE projecten.status = 'ongeverifieerd'";        
+        $query .=" WHERE projecten.status = '$status'";        
     } else {
         $query .= " WHERE projecten.status  IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";                   
-    }   
+    }  
 }
 
 if(!empty($projectSearch)){
