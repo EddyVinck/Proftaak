@@ -204,32 +204,32 @@ function createHeader($color = 'teal') {
     </ul>
     </sidenav>
 <?php }
-function createFooter($color = 'teal'){?>
-    <footer class="page-footer <?php echo $color; ?>">
-        <div class="container">
-            <div class="row">
-                <div class="col l6 s12">
-                <h5 class="<?php echo changeFontColorByColor($color);?>">Footer Content</h5>
-                <p class="<?php echo changeFontColorByColor($color);?> text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-                </div>
-                <div class="col l4 offset-l2 s12">
-                <h5 class="<?php echo changeFontColorByColor($color);?>">Links</h5>
-                <ul>
-                    <li><a class="<?= changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 1</a></li>
-                    <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 2</a></li>
-                    <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="#!">Link 3</a></li>
-                    <li><a class="<?php echo changeFontColorByColor($color);?> text-lighten-3" href="https://github.com/EddyVinck/Proftaak">GitHub</a></li>
-                </ul>
-                </div>
+function createFooter($color = 'teal'){
+$tempCol = changeFontColorByColor($color);
+?>
+<footer class="page-footer <?php echo $color; ?>">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+            <h5 class="<?=$tempCol?>">Footer Content</h5>
+            <p class="<?=$tempCol?> text-lighten-4">You can use rows and columns here to organize your footer content.</p>
             </div>
-            </div>
-            <div class="footer-copyright">
-            <div class="container <?php echo changeFontColorByColor($color);?>">
-            &copy 2017 Dylan Bos & Eddy Vinck
-            <a class="<?php echo changeFontColorByColor($color);?> text-lighten-4 right" href="#!">More Links</a>
+            <div class="col l4 offset-l2 s12">
+            <h5 class="<?=$tempCol?>">Links</h5>
+            <ul>
+                <li><a class="<?=$tempCol?> text-lighten-3" href="http://materializecss.com/">MaterializeCSS</a></li>
+                <li><a class="<?=$tempCol?> text-lighten-3" href="https://github.com/EddyVinck/Proftaak">GitHub</a></li>
+            </ul>
             </div>
         </div>
-    </footer>
+        </div>
+        <div class="footer-copyright">
+        <div class="container <?php echo changeFontColorByColor($color);?>">
+        &copy 2017 Dylan Bos & Eddy Vinck
+        <a class="<?php echo changeFontColorByColor($color);?> text-lighten-4 right" href="#!">More Links</a>
+        </div>
+    </div>
+</footer>
 <?php }
 // return a color based on user role
 function properButtonColorForRole($rol){
