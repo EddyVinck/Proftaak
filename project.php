@@ -430,6 +430,9 @@ else{
                     <input type="hidden" name="project_starter" value="<?php echo $projectData['projectstarter']; ?>">
                     <input type="hidden" name="college_name" value="<?php echo $projectData['college_naam']; ?>">
                     <input type="hidden" name="omschrijving_nodig" value="<?php echo $projectData['omschrijving_nodig'];?>">
+                    <input type="hidden" name="omschrijving_nodig" value="<?php echo $projectData['date'];?>">
+                    <input type="hidden" name="deadline" value="<?php echo $projectData['deadline'];?>">
+                    
                     <?php 
                     /*  
                     because PHP is poop it surrounds json_encoded array values and keys with
@@ -486,14 +489,16 @@ else{
                     <div class="card">
                         <div class="card-stacked">
                             <div class="card-content center">
-                                <img class="circle responsive-img profile-image" src="http://lorempixel.com/100/190/nature/6">
-                                <span class="card-title"><?=$responses[$i]['user_name'];?></span>
+                                <!--<img class="circle responsive-img profile-image" src="http://lorempixel.com/100/190/nature/6">-->
+                                <span class="card-title"><a href="profiel.php?user=<?=$responses[$i]['user_id'];?>"><?=$responses[$i]['user_name'];?></a></span>
                                 <p><?=$responses[$i]['response_text'];?></p>                               
                             </div>                
                             <div class="card-action">
                                 <a class="btn purple darken-1" href="bericht.php?send=<?=$responses[$i]['user_id']?>">
                                     Priv&eacute;bericht<i class="material-icons right">message</i>
                                 </a>
+                                <button class="btn white waves-effect hide-on-small-only"><i class="material-icons black-text">delete</i></button>
+                                <button class="btn-flat waves-effect right col s2 hide-on-med-and-up"><i class="material-icons large">delete</i></button>                                
                             </div>
                         </div>
                     </div>
