@@ -207,7 +207,7 @@ function createHeader($color = 'teal') {
 function createFooter($color = 'teal'){
 $tempCol = changeFontColorByColor($color);
 ?>
-<footer class="page-footer <?php echo $color; ?>">
+<!--<footer class="page-footer <?php echo $color; ?>">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
@@ -228,6 +228,16 @@ $tempCol = changeFontColorByColor($color);
         &copy 2017 Dylan Bos & Eddy Vinck
         <a class="<?php echo changeFontColorByColor($color);?> text-lighten-4 right" href="#!">More Links</a>
         </div>
+    </div>
+</footer>-->
+<footer style="padding-top:0px;" class="page-footer <?php echo $color; ?>">
+    <div class="footer-copyright <?=$color?>">
+    <div class="container <?=$color?> <?php echo changeFontColorByColor($color);?>">
+    &copy 2017 Dylan Bos & Eddy Vinck
+    <a style="margin-right: 5px;" class="<?=$tempCol?> text-lighten-4 right" href="https://github.com/EddyVinck/Proftaak">Github</a>
+    <a style="margin-right: 5px;" class="<?=$tempCol?> text-lighten-4 right" href="#">LinkedIn</a>
+    <a style="margin-right: 5px;" class="<?=$tempCol?> text-lighten-4 right" href="#">Portfolio</a>
+    </div>
     </div>
 </footer>
 <?php }
