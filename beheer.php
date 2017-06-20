@@ -570,7 +570,7 @@ if(isset($_SESSION['college_id']))
                                         <?php }?>
                                     </select>
                                     <a id="addnewKlasRows" class="btn-floating btn-large red tooltipped" 
-                                    onclick="hrefNewKlasRows();"
+                                    onclick="hrefNewKlasRows(<?=$schoolId?>);"
                                     data-position="bottom"
                                     data-delay="10"
                                     data-tooltip="Klik om aantal nieuwe rijen toe te voegen">

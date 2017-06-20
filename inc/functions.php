@@ -1,6 +1,6 @@
 <?php
 function ConnectToDatabase(){
-    $num = 1;
+    $num = 0;
     if($num == 0){
         // localhost
         $db = mysqli_connect("localhost","root","usbw",'mydb');	//connects to the database from MyPHPAdmin
