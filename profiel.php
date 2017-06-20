@@ -2,7 +2,7 @@
 $db = ConnectToDatabase();
 checkSession();
 $rol = $_SESSION['rol'];
-
+$userId = $_SESSION['id'];
 if($rol == ""){
     header("location: index.php");
 }
@@ -39,24 +39,55 @@ if(isset($_GET['user']) && is_numeric($_GET['user'])){
 } else {
     $user = $_SESSION['id'];
 }
-
+if ($userId == $user){
+    $profileType = 0;
+}
+else{
+    $profileType = 1;
+}
+$error = 0;
 $userDataQuery = 
-    "   SELECT users.naam user_name, users.email user_email, users.rol user_role, users.id AS user_id,
-        klassen.naam class_name, colleges.naam college_name, scholen.naam school_name
-        FROM users
-        INNER JOIN klassen
-        ON users.klassen_id = klassen.id
-        INNER JOIN colleges
-        ON klassen.colleges_id = colleges.id
-        INNER JOIN scholen
-        ON colleges.scholen_id = scholen.id
-        WHERE users.id = $user";
-$result = mysqli_query($db, $userDataQuery);
-while($row = mysqli_fetch_assoc($result)){
+"SELECT users.naam user_name, users.email user_email, users.rol user_role, users.id AS user_id,
+    klassen.naam class_name, colleges.naam college_name,scholen.id AS school_id, scholen.naam school_name
+    FROM users
+    INNER JOIN klassen
+    ON users.klassen_id = klassen.id
+    INNER JOIN colleges
+    ON klassen.colleges_id = colleges.id
+    INNER JOIN scholen
+    ON colleges.scholen_id = scholen.id
+    WHERE users.id = ?";
+$prepare_GetUserData = $db->prepare($userDataQuery);
+$prepare_GetUserData->bind_param("i",$user);
+$prepare_GetUserData->execute();
+$sqlResult = $prepare_GetUserData->get_result();
+while($row = mysqli_fetch_assoc($sqlResult)){
     $userData = $row;
 }
-if(!$result){
+if (!isset($userData['user_id'])){
+    $error = 1;
+}
+else{
+    if ($userData['school_id'] != $_SESSION['school_id']){
+        if ($rol != "adm"){
+            $error = 2;
+        }
+    }
+}
+if(!$sqlResult){
     echo mysqli_error($db);
+}
+$collegeId = $_SESSION['college_id'];
+
+if(isset($_GET['college']) && is_numeric($_GET['college']))
+{
+    $getCollege = $_GET['college'];
+    $pageCollegeQuery = "SELECT naam FROM colleges WHERE id = $getCollege LIMIT 1";
+    $pageCollegeResult = mysqli_query($db, $pageCollegeQuery);
+    while($row = mysqli_fetch_assoc($pageCollegeResult))
+    {
+        $pageCollegeName = $row['naam'];
+    }
 }
 
 $query = 
@@ -79,29 +110,16 @@ $query =
 	ON colleges.scholen_id = scholen.id
 	LEFT OUTER JOIN images
 	ON projecten.id = images.projecten_id
-    WHERE users.id = $user
+    WHERE users.id = ?
     GROUP BY projecten.id";
-
-    // op de lege plek komt de where college = 1 als je die hebt
-$collegeId = $_SESSION['college_id'];
-
-if(isset($_GET['college']) && is_numeric($_GET['college']))
-{
-    $getCollege = $_GET['college'];
-    $pageCollegeQuery = "SELECT naam FROM colleges WHERE id = $getCollege LIMIT 1";
-    $pageCollegeResult = mysqli_query($db, $pageCollegeQuery);
-    while($row = mysqli_fetch_assoc($pageCollegeResult))
-    {
-        $pageCollegeName = $row['naam'];
-    }
-}
-
-$result = mysqli_query($db,$query);
+$prepare_GetUserData = $db->prepare($query);
+$prepare_GetUserData->bind_param("i",$user);
+$prepare_GetUserData->execute();
+$result = $prepare_GetUserData->get_result();
 $data = [];
 while($row = mysqli_fetch_assoc($result)){
     $data[] = $row; 	//places everything in the array
 }
-
 checkUserVerification();
 ?>
 <!DOCTYPE html>
@@ -119,14 +137,15 @@ checkUserVerification();
 </head>
 <body >
 <?php createHeader($pageColor);?>
-<main>
+<main class="<?php if($error != 0){echo "valign-wrapper";}?>">
   <div class="container">
+  <?php if ($error == 0){?>
     <div class="section">
         <div class="row" style="padding: 0 24px;">
-            <div class="col s12 center-on-small-only">                
+            <div class="col s6 offset-s3 center-on-small-only">                
                 <h3><?php 
                 
-                if($userData['user_id'] == $_SESSION['id']){
+                if($profileType == 0){
                         echo 'Jouw profiel';
                     } else {
                         $nameLength = count($userData['user_name']);
@@ -143,7 +162,7 @@ checkUserVerification();
     <!--actual profile stuff-->
     <div class="section">
         <div class="row" style="padding: 0 24px;">
-            <div class="col s12">
+            <div class="col s6 offset-s3">
                 <table>
                     <tbody>
                         <tr>
@@ -173,6 +192,7 @@ checkUserVerification();
                 
             </div>
         </div>
+        <?php if($profileType != 0){ ?>
         <div class="row">
             <div class="col s12 center">
                 <a class="btn purple darken-1" href="bericht.php?send=<?=$user;?>">
@@ -180,22 +200,23 @@ checkUserVerification();
                 </a>
             </div>
         </div>
+        <?php } ?>
     </div>
       <?php 
         if($data != NULL) {
-      ?>      
+      ?>
+      <div class="row center">
+        <h5>Hieronder staan de projecten van deze gebruiker</h5>
+      </div>
       <div class="row">
-          <div class="col s12">
+          <div class="col offset-s3 s6">
             <ul id="collapsable" class="collapsible popout" data-collapsible="accordion">                   
                 <li>
                     <div class="card-panel <?php echo $pageColor; ?> lighten-2 <?php echo changeFontColorBasedOn('lighten')?>">
-                        <div class="row valign-wrapper " style="margin-bottom: 0">
-                            <div class="col m2 s12 truncate no-padding">Projectnaam</div>
-                            <div class="col m2 hide-on-small-only">Projectstarter</div>
-                            <div class="col m3 hide-on-small-only">Opleiding</div>
-                            <div class="col m2 hide-on-small-only">Jouw hulp nodig</div>
-                            <div class="col m2 hide-on-small-only">Status</div>    
-                            <div class="col m1 hide-on-small-only"></div>
+                        <div class="row " style="margin-bottom: 0">
+                            <div class="col m6 s12 truncate no-padding">Projectnaam</div>
+                            <div class="col m4 hide-on-small-only">Status</div>
+                            <div class="col m2 hide-on-small-only"></div>
                         </div>
                     </div>
                 </li>
@@ -207,13 +228,10 @@ checkUserVerification();
                         ?>
                         <li>
                         <div class="collapsible-header">
-                            <div class="row valign-wrapper" style="margin-bottom: 0">
-                                <div class="col m2 s12 truncate"><?php echo $data[$i]['project_naam'];?></div>
-                                <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['user_naam'];?></div>
-                                <div class="col m3 hide-on-small-only truncate"><?php echo $data[$i]['college_naam'];?></div>
-                                <div class="col m2 hide-on-small-only truncate"><?= $nodig?></div>
-                                <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
-                                <div class="col m1 truncate">
+                            <div class="row " style="margin-bottom: 0">
+                                <div class="col m6 s12 truncate"><?php echo $data[$i]['project_naam'];?></div>
+                                <div class="col m4 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
+                                <div class="col m2 truncate">
                                     <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content">
                                         <i class="material-icons <?php echo $pageColor."-text text-darken-3"?>">send</i>
                                     </a>
@@ -255,7 +273,11 @@ checkUserVerification();
                 <div class="section">
                     <div class="row valign-wrapper">
                         <div class="col s12 center">
-                            <h5>Deze gebruiker heeft geen projecten</h5>
+                            <?php if ($profileType != 0){?>
+                                <h5>Deze gebruiker heeft geen projecten</h5>
+                            <?php }else if ($profileType == 0){?>
+                                <h5>Je hebt nog geen projecten. <a href="nieuw_project.php">Klik hier</a> om een nieuw project te maken.</h5>
+                            <?php }?>
                         </div>
                     </div>
                 </div>                 
@@ -264,6 +286,31 @@ checkUserVerification();
           </div>
       </div>
     </div>
+  <?php }else if ($error == 1){ ?>
+    <div class="section">
+        <div class="row valign-wrapper">
+            <div class="col s12 l8 m8 center">
+                <h3>Oeps!</h3>
+                <h5>Dit profiel bestaat niet</h5>                    
+            </div>
+            <div class="col s4 l8 m8 hide-on-small-only">
+                <i class="material-icons large">error_outline</i>
+            </div>
+        </div>
+    </div>
+  <?php }else if ($error == 2){ ?>
+    <div class="section">
+        <div class="row valign-wrapper">
+            <div class="col s12 l8 m8 center">
+                <h3>Oeps!</h3>
+                <h5>Dit profiel is niet zichtbaar voor jou</h5>                    
+            </div>
+            <div class="col s4 l8 m8 hide-on-small-only">
+                <i class="material-icons large">lock</i>
+            </div>
+        </div>
+    </div>
+    <?php }?>
   </div>
 </main>
 <?php createFooter($pageColor);?>

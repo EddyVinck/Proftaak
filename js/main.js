@@ -210,9 +210,9 @@ function closeStatusDialog()
     // document.body.classList.remove("noscroll");
     
 }
-function hrefNewKlasRows(){
+function hrefNewKlasRows(schId){
     elem = document.getElementById("newKlasRowsSelect");
-    location.href = "beheer.php?active=klassen&new=" + elem.value;
+    location.href = "beheer.php?id="+schId+"&active=klassen&new=" + elem.value;
 }
 
 (function($) {

@@ -1,14 +1,18 @@
 <?php
 function ConnectToDatabase(){
-    // localhost
-	$db = mysqli_connect("localhost","root","usbw",'mydb');	//connects to the database from MyPHPAdmin
-	mysqli_query($db, "SET NAMES 'utf8'");			// to make sure all quotation marks are not weird symbols	
-	return $db;
-
-    //non local host
-    // $db = mysqli_connect("localhost:3306","dylanBos","admin1",'mydb');  //connects to the database from MyPHPAdmin
-    // mysqli_query($db, "SET NAMES 'utf8'");          // to make sure all quotation marks are not weird symbols   
-    // return $db;
+    $num = 0;
+    if($num == 0){
+        // localhost
+        $db = mysqli_connect("localhost","root","usbw",'mydb');	//connects to the database from MyPHPAdmin
+        mysqli_query($db, "SET NAMES 'utf8'");			// to make sure all quotation marks are not weird symbols	
+        return $db;
+    }
+    else{
+        //non local host
+        $db = mysqli_connect("localhost:3306","dylanBos","admin1",'mydb');  //connects to the database from MyPHPAdmin
+        mysqli_query($db, "SET NAMES 'utf8'");          // to make sure all quotation marks are not weird symbols   
+        return $db;
+    }
 }
 function dump($var, $varname = false, $file = false, $line = false)
 {
@@ -438,29 +442,29 @@ function sendMessagesFromUniplan($project_id){
         NULL ,  'Er is een nieuw project gemaakt dat jouw college nodig heeft!',  '0', 
         CURRENT_TIMESTAMP ,  '$project_id',  '20',  '$new'
         ), ";
-        // send emails
-        // $param->content = "<div>
-        // <div><b>".$project_info['project_naam']."</b></div><br/>
-        // <div><img src='".$project_info['img_path']."'/></div><br/>
-        // </div>";
-        // $param->sendTo = "dylan_bos@live.nl"
-        // $param->subject = "Er is een nieuw project!";
-        // sendMailFunction($param);
     }
-    require_once 'swiftmailer-master/lib/swift_required.php';
+    // require 'phpMailer/PHPMailerAutoload.php';
+    // $mail = new PHPMailer(); // create a new object
+    // $mail->IsSMTP(); // enable SMTP
+    // $mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
+    // $mail->SMTPAuth = true; // authentication enabled
+    // $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
+    // $mail->Host = "smtp.gmail.com";
+    // $mail->Port = 465; // or 587
+    // $mail->IsHTML(true);
+    // $mail->Username = "dylanbos1996@gmail.com";
+    // $mail->Password = "runnirun1";
+    // $mail->SetFrom("uniplan@gmail.com");
+    // $mail->Subject = "Test";
+    // $mail->Body = "hello";
+    // $mail->AddAddress("dylan_bos@live.nl");
 
-    $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
-    ->setUsername('dylanbos1996@gmail.com')
-    ->setPassword('runnirun1');
+    // if(!$mail->Send()) {
+    //     echo "Mailer Error: " . $mail->ErrorInfo;
+    // } else {
+    //     echo "Message has been sent";
+    // }
 
-    $mailer = Swift_Mailer::newInstance($transport);
-
-    $message = Swift_Message::newInstance('Test Subject')
-    ->setFrom(array('abc@example.com' => 'ABC'))
-    ->setTo(array('xyz@test.com'))
-    ->setBody('This is a test mail.');
-
-    $result = $mailer->send($message);
 
 }
 function getprojectInfoById($tempId, $db, $mode = 0){
