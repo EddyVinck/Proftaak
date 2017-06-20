@@ -206,7 +206,11 @@ checkUserVerification();
         if($data != NULL) {
       ?>
       <div class="row center">
-        <h5>Hieronder staan de projecten van deze gebruiker</h5>
+        <?php if ($profileType == 0){ ?>
+            <h5>Hieronder staan al jouw projecten</h5>
+        <?php }else{?>
+            <h5>Hieronder staan de projecten van deze gebruiker</h5>
+        <?php }?>
       </div>
       <div class="row">
           <div class="col offset-s3 s6">

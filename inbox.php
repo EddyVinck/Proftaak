@@ -85,7 +85,15 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
 <?php createHeader($pageColor);?>
 <main class="valign-wrapper">
   <div class="container">
+  
     <div class="section ">
+    <?php if (count($messages) > 0){?>
+      <div class="row ">
+          <div class="col s12">
+            <a class="btn" href="bericht.php"><i class="material-icons right">reply</i>Schrijf een nieuw bericht</a>
+          </div>
+      </div>
+    <?php }?>
       <?php for($x = 0; $x < count($messages); $x++) {
         $id = $messages[$x]['projecten_id'];
         $set = false;
@@ -116,6 +124,7 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
               <form method="post" class="right" style="display:inline-flex !important;">
                 <button class="custom-a" type="submit" name="delete" value="<?=$messages[$x]['id']?>">Delete</button>
               </form>
+              <a href="profiel.php?user=<?=$messages[$x]['user-id']?>">Profiel</a>
             </div>
           </div>
         </div>
@@ -124,7 +133,8 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
         <div class="row valign-wrapper">
           <div class="col s8 center">
               <h3>Er zijn geen berichten</h3>
-              <h5>Je hebt geen berichten in je inbox!</h5>                    
+              <h5>Je hebt geen berichten in je inbox!</h5>
+              <a class="btn" href="bericht.php"><i class="material-icons right">reply</i>Schrijf een nieuw bericht</a>
           </div>
           <div class="col s4">
               <i class="material-icons large">mail</i>
