@@ -1,6 +1,7 @@
 <?php include("inc/functions.php");
 checkSession();
 checkUserVerification();
+$userId = $_SESSION['id'];
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
@@ -65,7 +66,9 @@ while ($data = $result->fetch_assoc()){
     $projectData = $data;
 }
 if(isset($projectData['project_id'])){
-    if ($projectData['status'] == 'ongeverifieerd' && ($_SESSION['rol'] != "adm" && $_SESSION['rol'] != "doc" && $_SESSION['rol'] != "sch")){
+    if ($projectData['status'] == 'ongeverifieerd' && 
+    ($_SESSION['rol'] != "adm" && $_SESSION['rol'] != "doc" && $_SESSION['rol'] != "sch") && 
+    $projectData['user_id'] != $userId){
         unset($projectData['project_id']);
         $pageColor = "teal";
     }
