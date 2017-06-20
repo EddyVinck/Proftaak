@@ -124,7 +124,7 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
               <form method="post" class="right" style="display:inline-flex !important;">
                 <button class="custom-a" type="submit" name="delete" value="<?=$messages[$x]['id']?>">Delete</button>
               </form>
-              <a href="profiel.php?user=<?=$messages[$x]['user-id']?>">Profiel</a>
+              <a href="profiel.php?user=<?=$messages[$x]['from_id']?>">Profiel</a>
             </div>
           </div>
         </div>
