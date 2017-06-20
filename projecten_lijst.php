@@ -24,17 +24,24 @@ if(isset($_GET['college']) && is_numeric($_GET['college']))
     checkSchool();
 }
 
-// Set the right header and search value for the query
+// Set the right header when the searchbar is used
 if(isset($_POST['search']))
 {
     $projectSearch = $_POST['search'];
 
-    if(isset($_GET['college']) && is_numeric($_GET['college']))
+    if(isset($_GET['college']) && is_numeric($_GET['college']) && isset($_GET['status']))
     {
         $collegeGet = $_GET['college'];
+        header("location: projecten_lijst.php?college=".$collegeGet."&search=".$projectSearch."&status=ongeverifieerd");
+    } else if (isset($_GET['college']) && is_numeric($_GET['college'])){
         header("location: projecten_lijst.php?college=".$collegeGet."&search=".$projectSearch);
-    } else {
-        header("location: projecten_lijst.php?search=".$projectSearch);
+    }     
+    else { // if college isn't set
+        if (isset($_GET['status'])) { // if there was a search but also a status GET parameter
+            header("location: projecten_lijst.php?status=".$status."&search=".$projectSearch);
+        } else {
+            header("location: projecten_lijst.php?search=".$projectSearch);            
+        }
     }
 } else {
     if(isset($_GET['search']))
@@ -70,14 +77,26 @@ if(isset($_GET['college'])){
     // check of de ingevulde get variabele wel een nummer is
     if(is_numeric($_GET['college'])){
         $college = $_GET['college'];
-        $query .= (" WHERE (hulpcolleges.colleges_id = " . $college
-                ." OR colleges.id = ".$college . ") AND projecten.status = '$status'");
-    } else{
-        $query .= " WHERE projecten.status = '$status'";
+        $query .= " WHERE (hulpcolleges.colleges_id = " . $college
+                ." OR colleges.id = ".$college . ")";
+                if($status == "ongeverifieerd") 
+                {
+                    $query .=" AND projecten.status = '$status'";
+                    
+                } else {
+                    $query .= " AND projecten.status  IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";                   
+                }
+    } else{ // if college is NOT numeric i.e. a word
+        $query .= " WHERE projecten.status IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";     
     }
 }
-else{
-    $query .= " WHERE projecten.status = '$status'";    
+else{ // if college isnt in GET
+    if($status == "ongeverifieerd") 
+    {
+        $query .=" WHERE projecten.status = 'ongeverifieerd'";        
+    } else {
+        $query .= " WHERE projecten.status  IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";                   
+    }   
 }
 
 if(!empty($projectSearch)){
@@ -269,7 +288,7 @@ checkUserVerification();
                     <div class="card-panel <?php echo $pageColor; ?> lighten-2 <?php echo changeFontColorBasedOn('lighten')?>">
                         <div class="row valign-wrapper " style="margin-bottom: 0">
                             <div class="col m2 s12 truncate no-padding">Projectnaam</div>
-                            <div class="col m2 hide-on-small-only">Projectlijder</div>
+                            <div class="col m2 hide-on-small-only">Projectleider</div>
                             <div class="col m3 hide-on-small-only tooltipped"
                              data-position="bottom"
                             data-delay="10"
@@ -300,7 +319,7 @@ checkUserVerification();
                                 <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
                                 <div class="col m1 truncate">
                                     <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content">
-                                        <i class="material-icons">send</i>
+                                        <i class="material-icons <?php echo $pageColor."-text text-darken-3"?>">send</i>
                                     </a>
                                 </div>                        
                             </div>
