@@ -449,6 +449,9 @@ function sendMessagesFromUniplan($project_id){
         CURRENT_TIMESTAMP ,  '$project_id',  '20',  '$new'
         ), ";
     }
+    $insertMessagesQuery =  substr($insertMessagesQuery, 0, -2);
+    dump($insertMessagesQuery);
+    mysqli_query($db,$insertMessagesQuery);
 }
 function getprojectInfoById($tempId, $db, $mode = 0){
     $getProjectInfoQuery = 
