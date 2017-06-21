@@ -151,8 +151,8 @@ function createHeader($color = 'teal') {
                    <li> <a href="index.php" style="height: 100%" class="brand-logo <?php echo changeFontColorByColor($color);?>"><img style="width:5rem;margin-top:12%;" src="img/logo_<?=$logo_col?>.svg"></a></li>  
                 </ul>  
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="<?php echo changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">home</i>Projecten</a></li>
-                    <li><a href="colleges.php" class="<?= changeFontColorByColor($color);?> waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
+                    <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class="waves-effect <?php echo changeFontColorByColor($color);?> "><i class="small material-icons left">home</i>Projecten</a></li>
+                    <li><a href="colleges.php" class="waves-effect <?=changeFontColorByColor($color);?> "><i class="small material-icons left">view_module</i>Colleges</a></li>
                     <li>
                         <a href="inbox.php" data-constrainwidth="false"
                             class="<?= changeFontColorByColor($color);?> waves-effect" data-activates=''>
@@ -197,10 +197,6 @@ function createHeader($color = 'teal') {
             </li>
             <li><a href="beheer.php"><i class="small material-icons left">settings</i> Beheer </a></li>
             <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
-            <li><a href="#!">Second Link</a></li>
-            <li><div class="divider"></div></li>
-            <li><a class="subheader">Subheader</a></li>
-            <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
     </ul>
     </sidenav>
 <?php }
@@ -453,29 +449,6 @@ function sendMessagesFromUniplan($project_id){
         CURRENT_TIMESTAMP ,  '$project_id',  '20',  '$new'
         ), ";
     }
-    // require 'phpMailer/PHPMailerAutoload.php';
-    // $mail = new PHPMailer(); // create a new object
-    // $mail->IsSMTP(); // enable SMTP
-    // $mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
-    // $mail->SMTPAuth = true; // authentication enabled
-    // $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
-    // $mail->Host = "smtp.gmail.com";
-    // $mail->Port = 465; // or 587
-    // $mail->IsHTML(true);
-    // $mail->Username = "dylanbos1996@gmail.com";
-    // $mail->Password = "runnirun1";
-    // $mail->SetFrom("uniplan@gmail.com");
-    // $mail->Subject = "Test";
-    // $mail->Body = "hello";
-    // $mail->AddAddress("dylan_bos@live.nl");
-
-    // if(!$mail->Send()) {
-    //     echo "Mailer Error: " . $mail->ErrorInfo;
-    // } else {
-    //     echo "Message has been sent";
-    // }
-
-
 }
 function getprojectInfoById($tempId, $db, $mode = 0){
     $getProjectInfoQuery = 

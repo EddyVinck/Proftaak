@@ -47,6 +47,11 @@ if(isset($_POST['hulpcolleges'])){
     {
         $mpdf->WriteHTML("<li style='padding-left: 5mm;'>".$hulpcolleges[$i]['naam']."</li>");      
     }
+    if(isset($_POST['deadline'])){
+        $mpdf->WriteHTML('<h3 style="font-family: arial;">Deadline</h3>');
+        $mpdf->WriteHTML('<label>'.$_POST['deadline'].'</label>');
+        $mpdf->WriteHTML('<br>');        
+    }
 }
 if(isset($_POST['contact'])){
     if(!empty($_POST['contact']))

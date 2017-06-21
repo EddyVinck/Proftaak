@@ -430,7 +430,7 @@ else{
                     <input type="hidden" name="project_starter" value="<?php echo $projectData['projectstarter']; ?>">
                     <input type="hidden" name="college_name" value="<?php echo $projectData['college_naam']; ?>">
                     <input type="hidden" name="omschrijving_nodig" value="<?php echo $projectData['omschrijving_nodig'];?>">
-                    <input type="hidden" name="omschrijving_nodig" value="<?php echo $projectData['date'];?>">
+                    <input type="hidden" name="startdatum" value="<?php echo $projectData['startdatum'];?>">
                     <input type="hidden" name="deadline" value="<?php echo $projectData['deadline'];?>">
                     
                     <?php 
