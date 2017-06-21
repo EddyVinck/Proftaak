@@ -119,12 +119,16 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
               <?php if ($set){?>
                 <a href="project.php?id=<?=$messages[$x]['projecten_id']?>">Ga naar dit project</a>
               <?php }?>
-              <a href="bericht.php?send=<?=$messages[$x]['from_id']?>">Reageer</a>
+              <!--Reageer en profiel knoppen worden alleen weergegeven als de sender niet uniplan is-->
+              <?php if ($messages[$x]['users_naam'] != "Uniplan"){?>
+                <a href="bericht.php?send=<?=$messages[$x]['from_id']?>">Reageer</a>
+                <a href="profiel.php?user=<?=$messages[$x]['from_id']?>">Profiel</a>
+              <?php }?>
               <label class="right"><?=$messages[$x]['CreationDate']?></label>
               <form method="post" class="right" style="display:inline-flex !important;">
                 <button class="custom-a" type="submit" name="delete" value="<?=$messages[$x]['id']?>">Delete</button>
               </form>
-              <a href="profiel.php?user=<?=$messages[$x]['from_id']?>">Profiel</a>
+              
             </div>
           </div>
         </div>
