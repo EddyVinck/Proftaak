@@ -51,7 +51,7 @@ else{
     }
 }
 
-dump($_SESSION);
+// dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <head>

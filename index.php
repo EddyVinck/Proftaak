@@ -182,7 +182,7 @@ if($_SESSION['loggedIn'] == true)
                 <div class="row">
                   <div class="col s12 m6 center-on-small-only vpadding-on-s-only">
                     <button class="btn purple darken-1 waves-effect waves-light" type="submit" value="1" name="rol">Log in
-                      <i class="material-icons right">send</i>
+                      <i class="material-icons right  ">send</i>
                     </button>
                   </div>
                   <div class="col s12 m6 center-on-small-only">

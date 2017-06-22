@@ -20,7 +20,7 @@ for($x = 0; $x < 5; $x++){
 }
 $errorWhenEmptyCount = 0;
 if (isset($_POST['submit'])){
-    dump($_POST);
+    // dump($_POST);
     if ($_POST['naam'] == ""){
         $errorWhenEmptyCount++;
         $errors[0] = "De naam moet ingevuld worden";
@@ -54,7 +54,7 @@ if (isset($_POST['submit'])){
         $school = $_POST['school'];
         $college = $_POST['college'];
         $checkEmailQuery = "SELECT * FROM users WHERE email = '$email'";
-        dump($checkEmailQuery);
+        // dump($checkEmailQuery);
         $checkEmailResult = mysqli_query($db,$checkEmailQuery);
         if (mysqli_num_rows($checkEmailResult)>0){
             $errors[1] = "Dit email is al in gebruik";

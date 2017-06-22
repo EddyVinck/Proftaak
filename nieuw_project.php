@@ -213,19 +213,19 @@ while($row = mysqli_fetch_assoc($result)){
         <input value="<?=$hulpcol_string?>" name="hulpcolleges" type="hidden" id="invisColleges">
         <div class="row">
           <div class="input-field col offset-l2 l8 s10">
-            <input required name="naam" id="projectNaam" type="text" value="<?=$naam?>" class="validate">
+            <input required name="naam" id="projectNaam" type="text" value="<?=$naam?>" class="validate" spellcheck="false">
             <label for="projectNaam">Naam</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col offset-l2 l8 s10">
-            <textarea required name="beschrijving" id="beschrijving" class="materialize-textarea validate"><?=$beschrijving?></textarea>
+            <textarea required name="beschrijving" id="beschrijving" class="materialize-textarea validate" spellcheck="false"><?=$beschrijving?></textarea>
             <label for="beschrijving">Beschrijving</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col offset-l2 l8 s10">
-            <textarea required name="nodig" id="nodig" class="materialize-textarea validate"><?=$nodig?></textarea>
+            <textarea required name="nodig" id="nodig" class="materialize-textarea validate" spellcheck="false"><?=$nodig?></textarea>
             <label for="nodig">Wat en wie heb je nodig?</label>
           </div>
         </div>
