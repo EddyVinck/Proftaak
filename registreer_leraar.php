@@ -66,7 +66,7 @@ if (isset($_POST['submit'])){
             "SELECT id FROM klassen WHERE rol = 'docenten' AND colleges_id = $college";
             $docKlasResult = mysqli_query($db,$getDocKlasQuery);
             $docKlasId = mysqli_fetch_assoc($docKlasResult)['id'];
-            
+            $hashedPass = hash('sha512', (get_magic_quotes_gpc() ? stripslashes($wachtwoord) : $wachtwoord));
             $CreateUserQuery = "INSERT INTO `users` (
                 `id` ,
                 `naam` ,
@@ -76,8 +76,10 @@ if (isset($_POST['submit'])){
                 `klassen_id`
                 )
                 VALUES (
-                NULL ,  '$naam',  '$wachtwoord',  '$email',  'odo',  '$docKlasId');";
-            mysqli_query($db,$CreateUserQuery);
+                NULL ,  ?,  ?,  ?,  'odo',  ?);";
+            $prepare_CreatUser= $db->prepare($CreateUserQuery);
+            $prepare_CreatUser->bind_param("sssi", $naam, $hashedPass,$email,$docKlasId);
+            $prepare_CreatUser->execute();
             $newId = mysqli_insert_id($db);
             $_SESSION['register'] = $newId;
             header("location: registratie_success.php");

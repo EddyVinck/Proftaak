@@ -33,19 +33,23 @@ if (isset($_POST['rol'])){
   if($email != '' && $pass != ''){
     $loginSuccess = true;
     $queryVar = " SELECT users.id , users.rol , users.naam, 
-                  klassen.id AS klas_id,
-                  colleges.id AS college_id,
-                  scholen.id AS school_id                  
-                  FROM users
-                  INNER JOIN klassen
-                  ON klassen.id = users.klassen_id
-                  INNER JOIN colleges
-                  ON klassen.colleges_id = colleges.id
-                  INNER JOIN scholen
-                  ON colleges.scholen_id = scholen.id
-                  WHERE `email` = '$email' 
-                  AND `wachtwoord` = '$pass'";
-    $sqlResult = mysqli_query($db, $queryVar);
+      klassen.id AS klas_id,
+      colleges.id AS college_id,
+      scholen.id AS school_id                  
+      FROM users
+      INNER JOIN klassen
+      ON klassen.id = users.klassen_id
+      INNER JOIN colleges
+      ON klassen.colleges_id = colleges.id
+      INNER JOIN scholen
+      ON colleges.scholen_id = scholen.id
+      WHERE `email` = ? 
+      AND `wachtwoord` = ?";
+    $prepare_login = $db->prepare($queryVar);
+    $prepare_login->bind_param("ss", $email,$pass);
+    $prepare_login->execute();
+    $sqlResult=$prepare_login->get_result();
+
     $data = [];
     if (mysqli_num_rows($sqlResult)== 1) {
       while($result = mysqli_fetch_assoc($sqlResult))

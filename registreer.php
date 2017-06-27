@@ -79,8 +79,10 @@ if (isset($_POST['submit'])){
                 `klassen_id`
                 )
                 VALUES (
-                NULL ,  '$naam',  '$hashedPass',  '$email',  'ost',  '$klas');";
-            mysqli_query($db,$CreateUserQuery);
+                NULL ,  ?,  ?,  ?,  'ost',  ?);";
+            $prepare_CreatUser= $db->prepare($CreateUserQuery);
+            $prepare_CreatUser->bind_param("sssi", $naam,$hashedPass,$email,$klas);
+            $prepare_CreatUser->execute();
             $newId = mysqli_insert_id($db);
             $_SESSION['register'] = $newId;
             header("location: registratie_success.php");
