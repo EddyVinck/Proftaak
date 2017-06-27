@@ -231,8 +231,8 @@ $tempCol = changeFontColorByColor($color);
     <div class="container <?=$color?> <?php echo changeFontColorByColor($color);?>">
     &copy 2017 Dylan Bos & Eddy Vinck
     <a style="margin-right: 5px;" class="<?=$tempCol?> text-lighten-4 right" href="https://github.com/EddyVinck/Proftaak">Github</a>
-    <a style="margin-right: 5px;" class="<?=$tempCol?> text-lighten-4 right" href="#">LinkedIn</a>
-    <a style="margin-right: 5px;" class="<?=$tempCol?> text-lighten-4 right" href="#">Portfolio</a>
+    <a style="margin-right: 5px;" class="<?=$tempCol?> text-lighten-4 right" href="https://www.linkedin.com/in/eddyvinck/">LinkedIn</a>
+    <a style="margin-right: 5px;" class="<?=$tempCol?> text-lighten-4 right" href="http://77712.webserver.roc-teraa.nl/">Portfolio</a>
     </div>
     </div>
 </footer>
