@@ -292,11 +292,11 @@ checkUserVerification();
                             <div class="col m3 hide-on-small-only tooltipped"
                              data-position="bottom"
                             data-delay="10"
-                            data-tooltip="Het college waar dit project is aangemaakt">Aangemaakt door<i class="<?=changeFontColorByColor($pageColor)?> material-icons tiny">help</i></div>
+                            data-tooltip="Het college waar dit project is aangemaakt">Aangemaakt door<i class=" material-icons tiny">help</i></div>
                             <div class="col m2 hide-on-small-only tooltipped"
                              data-position="bottom"
                             data-delay="10"
-                            data-tooltip="Heeft het project hulp van jouw college nodig?">Jouw hulp nodig<i class="<?=changeFontColorByColor($pageColor)?> material-icons tiny">help</i></div>
+                            data-tooltip="Heeft het project hulp van jouw college nodig?">Jouw hulp nodig<i class="material-icons tiny">help</i></div>
                             <div class="col m2 hide-on-small-only">Status</div>    
                             <div class="col m1 hide-on-small-only"></div>
                         </div>

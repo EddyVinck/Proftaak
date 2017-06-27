@@ -69,6 +69,7 @@ if (isset($_POST['submit'])){
             $errorWithDataCount++;
         }
         if ($errorWithDataCount == 0){
+            $hashedPass = hash('sha512', (get_magic_quotes_gpc() ? stripslashes($wachtwoord) : $wachtwoord));
             $CreateUserQuery = "INSERT INTO `users` (
                 `id` ,
                 `naam` ,
@@ -78,7 +79,7 @@ if (isset($_POST['submit'])){
                 `klassen_id`
                 )
                 VALUES (
-                NULL ,  '$naam',  '$wachtwoord',  '$email',  'ost',  '$klas');";
+                NULL ,  '$naam',  '$hashedPass',  '$email',  'ost',  '$klas');";
             mysqli_query($db,$CreateUserQuery);
             $newId = mysqli_insert_id($db);
             $_SESSION['register'] = $newId;

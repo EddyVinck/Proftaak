@@ -29,7 +29,7 @@ if (isset($_POST['rol'])){
   // dump($_POST);
   $email = $_POST['email'];
   $formRol = $_POST['rol'];
-$pass  = $_POST['password'];
+  $pass  =  hash('sha512', (get_magic_quotes_gpc() ? stripslashes($_POST['password']) : $_POST['password']));
   if($email != '' && $pass != ''){
     $loginSuccess = true;
     $queryVar = " SELECT users.id , users.rol , users.naam, 
