@@ -51,7 +51,6 @@ else{
     }
 }
 
-// dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <head>

@@ -26,7 +26,6 @@ $hideCards = ['','hide','hide','hide']; //this array is used in the HTML to hide
 # inloggen
 # checken of de combinatie van een email en wachtwoord in de database bestaat
 if (isset($_POST['rol'])){
-  // dump($_POST);
   $email = $_POST['email'];
   $formRol = $_POST['rol'];
   $pass  =  hash('sha512', (get_magic_quotes_gpc() ? stripslashes($_POST['password']) : $_POST['password']));
@@ -69,7 +68,6 @@ if (isset($_POST['rol'])){
       
       $college = $data[0]['college_id'];
       header("Location: projecten_lijst.php?college=" . $college);
-      // dump($data);
     }
     else{
       $loginSuccess = false;
@@ -100,7 +98,6 @@ if($_SESSION['loggedIn'] == true)
 // while($result2 = mysqli_fetch_assoc($result)){
 //     $data[] = $result2; 	//places everything in the array
 // }
-// dump($data);
 ?>
 <!DOCTYPE html>
 <head>

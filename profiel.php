@@ -30,9 +30,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
 } else {
     $pageColor = changePageColors($db, $_SESSION["college_id"]);
 }
-// dump($pageColor, __FILE__, __LINE__);
 
-// dump($data);
 $userData = [];
 if(isset($_GET['user']) && is_numeric($_GET['user'])){
     $user = $_GET['user'];    

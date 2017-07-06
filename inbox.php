@@ -60,7 +60,7 @@ $execute = false;
 for ($x = 0; $x < count($messages);$x++){
   if ($messages[$x]['projecten_id'] != null){
     $tempId = $messages[$x]['projecten_id'];
-    $project_info = getprojectInfoById($tempId, $db);
+    $project_info[$tempId] = getMessageImage($tempId, $db);
   }
 }
 $setAllMessagesAsReadQuery = "UPDATE messages SET is_read = 1 WHERE is_read = 0 AND to_id = $userId;";

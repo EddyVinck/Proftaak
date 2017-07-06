@@ -450,7 +450,7 @@ function sendMessagesFromUniplan($project_id){
         ), ";
     }
     $insertMessagesQuery =  substr($insertMessagesQuery, 0, -2);
-    dump($insertMessagesQuery);
+    // dump($insertMessagesQuery);
     mysqli_query($db,$insertMessagesQuery);
 }
 function getprojectInfoById($tempId, $db, $mode = 0){
@@ -470,8 +470,26 @@ function getprojectInfoById($tempId, $db, $mode = 0){
             $project_info[$tempId] =$row;
         }
         else{
-            $project_info = $row;
+            $project_info[] = $row;
         }
+    }
+    return $project_info;
+}
+function getMessageImage($tempId, $db){
+    $getProjectInfoQuery = 
+    "SELECT projecten.naam AS project_naam, 
+    projecten.id AS project_id, 
+    projecten.status, 
+    projecten.omschrijving,
+    images.path AS img_path
+    FROM projecten
+    LEFT OUTER JOIN images
+    ON projecten.id = images.projecten_id
+    WHERE projecten.id = $tempId";
+    $result = mysqli_query($db,$getProjectInfoQuery);
+    $project_info = [];
+    while($row = mysqli_fetch_assoc($result)){
+        $project_info =$row;
     }
     return $project_info;
 }

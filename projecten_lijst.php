@@ -132,9 +132,7 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
 } else {
     $pageColor = changePageColors($db, $_SESSION["college_id"]);
 }
-// dump($pageColor, __FILE__, __LINE__);
 
-// dump($data);
 checkUserVerification();
 ?>
 <!DOCTYPE html>
