@@ -138,6 +138,8 @@ checkUserVerification();
 <!DOCTYPE html>
 <head>
 	<head>
+        <meta charset="UTF-8">
+
       <!--Import Google Icon Font-->
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
