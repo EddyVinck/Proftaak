@@ -105,7 +105,7 @@ if (isset($_POST['submit'])){
         <div class="nav-wrapper">
         <!--<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>-->
             <div class="col s12" style="padding: 0 .75rem;">                
-                <a href="index.php" class="brand-logo"><img style="width:5rem;margin-top:12%;" src="img/logo_white.svg"></a>        
+                <a href="index.php" class="brand-logo"><img style="width:5rem;margin-top:12%;" src="img/logo_white_tiny.svg"></a>        
             </div>       
             <!--<a href="#" class="brand-logo">Logo</a>-->        
         </div>  
