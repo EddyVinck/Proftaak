@@ -183,10 +183,10 @@ function createHeader($color = 'teal') {
             <li><div style="padding-left: 32px !important;" class="userView">
                 <a href="index.php" style="height: 100%" class="brand-logo"><img style="width: 50%" src="img/logo_black.svg"></a>
             </li>
-            <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
+            <li><a href="projecten_lijst.php?college=<?php echo $_SESSION['college_id'];?>" class=" waves-effect"><i class="small material-icons left">home</i>Projecten</a></li>
             <li><a href="colleges.php" class=" waves-effect"><i class="small material-icons left">view_module</i>Colleges</a></li>
             <li>
-                <a href="#inbox.php" 
+                <a href="inbox.php" 
                     class="waves-effect">
                     <i class="small material-icons left">message</i>Priveberichten
                     <?php if (count($messages) > 0){?>
@@ -195,7 +195,12 @@ function createHeader($color = 'teal') {
                     <?php }?>
                 </a>
             </li>
-            <li><a href="beheer.php"><i class="small material-icons left">settings</i> Beheer </a></li>
+            <li>
+                <a href="profiel.php" class=" waves-effect">
+                    <i class="small material-icons left">account_circle</i>Jouw Profiel                          
+                </a>
+            </li>
+            <li><a href="beheer.php"><i class="small material-icons left">settings</i>Beheer</a></li>
             <li><a href="index.php?logout=true" class=" waves-effect"><i class="small material-icons left">exit_to_app</i> Log uit </a></li>
     </ul>
     </sidenav>

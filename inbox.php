@@ -136,12 +136,15 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
       if (count($messages) == 0){?>
         <div class="row valign-wrapper">
           <div class="col s8 center">
-              <h3>Er zijn geen berichten</h3>
-              <h5>Je hebt geen berichten in je inbox!</h5>
-              <a class="btn" href="bericht.php"><i class="material-icons right">reply</i>Schrijf een nieuw bericht</a>
+              <h3>Er zijn geen berichten</h3>              
           </div>
           <div class="col s4">
               <i class="material-icons large">mail</i>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-s1 s10 m6 offset-m3">
+              <a class="btn" href="bericht.php"><i class="material-icons right">reply</i>Schrijf een nieuw bericht</a>
           </div>
         </div>
       <?php } ?>
