@@ -23,6 +23,13 @@ function loginFade2(key){
     }
     elemArray[key].classList.remove("hide");
 }
+function loginFade3(key) {
+    for(var i = 0; i < elemArray.length; i++){
+        addClass(elemArray[i], "hide");
+    }
+    removeClass(elemArray[key], "hide");
+}
+
 function addTableRow(school_id){
     var tbodyElement = document.getElementById("collegeTbody");
     var lastRow = tbodyElement.rows[ tbodyElement.rows.length - 1 ];
@@ -172,19 +179,19 @@ function setParam(name, value) {
     /* execute search */
     l.search = search;
 }
-function openReply(id = "", naam="")
-{
+// function openReply(id = "", naam="")
+// {
     
-    document.getElementById("reply-container").style.height = "100%";
-    document.body.classList.add("noscroll");
-    if (id != ""){
-        $("#hiddenBox").attr("value", id);
-    }
-    if (naam != ""){
-        document.getElementById("nameLabel").innerHTML = naam;
+//     document.getElementById("reply-container").style.height = "100%";
+//     document.body.classList.add("noscroll");
+//     if (id != ""){
+//         $("#hiddenBox").attr("value", id);
+//     }
+//     if (naam != ""){
+//         document.getElementById("nameLabel").innerHTML = naam;
         
-    }
-}
+//     }
+// }
 function closeReply()
 {
     document.getElementById("reply-container").style.height = "0%";
@@ -228,3 +235,23 @@ $('.dropdown-button').dropdown({
 
 		}); // End Document Ready
 })(jQuery); // End of jQuery name space
+
+function addClass(elem, className){
+    if(elem.className.indexOf(className) == -1) {
+        elem.classList.add(className);
+    }          
+}
+function removeClass(elem, name) {
+   if (myHasClass(elem, name)) {
+      elem.className=elem.className.replace(new RegExp('(\\s|^)'+name+'(\\s|$)'),' ').replace(/^\s+|\s+$/g, '');
+    }
+}
+function myHasClass (element, myClass) {
+    // if (element.contains(class) ) {
+    //     return true;
+    // }
+    if ( element.classList.contains(myClass)) {
+        return true;
+    }
+    
+}

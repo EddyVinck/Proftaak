@@ -11,17 +11,28 @@
     color:red;    
 }
 .center-with-bg {
+    position: relative;
     height: 78vh;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
     background: url(../img/ROC-gebouw-klein-blur.jpg);
     background-size: cover;
 }
-#login_as_student{
-    margin-top: 1.93rem !important;
+.center-with-bg .container {
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
 }
+.center-with-bg .container > .row {
+    margin-bottom: 0;
+}
+/*#login_as_student{
+    margin-top: 1.93rem !important;
+}*/
 #reply-container {
     height:0%;
     width: 100%;
@@ -56,4 +67,10 @@
     text-transform: uppercase;
     border: 0px;
     text-decoration: none;
+}
+.padding-top-xlarge {
+    padding-top: 8rem;
+}
+.padding-bottom-xlarge {
+    padding-bottom: 8rem;
 }

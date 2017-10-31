@@ -135,35 +135,31 @@ if($_SESSION['loggedIn'] == true)
 </header>
 <main>
   <div class="center-with-bg">
-    <!--log in selector-->
     <div class="container">
       <div class="row">
         <div class="col s12 m6 offset-m3 l4 offset-l4 center-align">
-          <!--login home -->
           <div class="card <?=$hideCards[0]?>" id="home">
             <div class="card-content ">
-              <span class="card-title">Log in als</span>
+              <span class="card-title">Ik ben een:</span>
               <div class="row">
                 <div class="divider"></div>
               </div>
               <p>
                 <div class="row">
                   <a class="waves-effect waves-light btn col s10 offset-s1" 
-                  onclick="loginFade2(1);Materialize.fadeInImage('#login_as_school',400);">school</a>
+                  onclick="loginFade3(1); Materialize.fadeInImage('#login_as_school',400);">school</a>
                 </div>
                 <div class="row">
                   <a class="waves-effect waves-light btn col s10 offset-s1" 
-                  onclick="loginFade2(2);Materialize.fadeInImage('#login_as_leraar',400);">leraar</a>
+                  onclick="loginFade3(2); Materialize.fadeInImage('#login_as_leraar',400);">leraar</a>
                   </div>
                 <div class="row">
                   <a class="waves-effect waves-light btn col s10 offset-s1" 
-                  onclick="loginFade2(3);Materialize.fadeInImage('#login_as_student',400);">student</a>
+                  onclick="loginFade3(3); Materialize.fadeInImage('#login_as_student',400);">student</a>
                 </div>
               </p>
             </div>
           </div>
-          <!--end of login home -->
-          <!--login as school -->
           <div class="card <?=$hideCards[1]?>" id="login_as_school">
             <div class="card-content">
             <span class="card-title center-align">Log in als school</span>
@@ -188,7 +184,7 @@ if($_SESSION['loggedIn'] == true)
                     </button>
                   </div>
                   <div class="col s12 m6 center-on-small-only">
-                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
+                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade3(0);Materialize.fadeInImage('#home',400);">Terug
                       <i class="material-icons left">arrow_back</i>
                     </button>
                   </div>                  
@@ -203,7 +199,7 @@ if($_SESSION['loggedIn'] == true)
                 <?php }?>
               </form>
             </div>
-          </div><!-- end of #login_as_school begin login as leraar-->
+          </div>
           <div class="card <?=$hideCards[2]?>" id="login_as_leraar">
             <div class="card-content">
               <span class="card-title center-align">Log in als leraar</span>
@@ -228,7 +224,7 @@ if($_SESSION['loggedIn'] == true)
                       </button>
                     </div>
                     <div class="col s12 m6 center-on-small-only">
-                      <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
+                      <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade3(0);Materialize.fadeInImage('#home',400);">Terug
                         <i class="material-icons left">arrow_back</i>
                       </button>
                     </div>                  
@@ -246,7 +242,7 @@ if($_SESSION['loggedIn'] == true)
                   <?php }?>
                 </form>
             </div>
-          </div><!-- end of #login_as_leraar begin login_as_student -->
+          </div>
           <div class="card <?=$hideCards[3]?>" id="login_as_student">
             <div class="card-content">
               <span class="card-title center-align">Log in als student</span>
@@ -271,7 +267,7 @@ if($_SESSION['loggedIn'] == true)
                     </button>
                   </div>
                   <div class="col s12 m6 center-on-small-only">
-                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
+                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade3(0);Materialize.fadeInImage('#home',400);">Terug
                       <i class="material-icons left">arrow_back</i>
                     </button>
                   </div>                  
@@ -289,8 +285,8 @@ if($_SESSION['loggedIn'] == true)
                 <?php }?>
               </form>
             </div>
-          </div><!-- end of #login_as_student -->
-        </div>  <!-- end of column -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -337,9 +333,9 @@ if($_SESSION['loggedIn'] == true)
 <?php createFooter();?>
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>  
   <!--https://code.jquery.com/jquery-3.2.1.js ???-->
-  <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/ajaxfunctions.js"></script>
-	<script type="text/javascript" src="js/materialize.js"></script>
+  <script type="text/javascript" src="js/materialize.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
   <script>
     // smooth scroll. Give an element an id(myID) and another element a href of #myID
     $('a[href*="#"]:not([href="#"])').click(function() {
