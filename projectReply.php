@@ -41,5 +41,45 @@ if(isset($_POST['reply']))
     }
 }
 
+// Deleting a comment
+// Either a teacher or the author of a comment can delete a comment.
+if(isset($_POST['delete-trigger']))
+{
+    dump($_SESSION);
+    // checking for POST keys and setting them to actual variables
+    if(isset($_POST['project_id']) && isset($_POST['reply_author']) && isset($_SESSION['id']) && isset($_SESSION['rol']) && isset($_POST['reply_id'])) {
+
+        // POST
+        $replyId = $_POST['reply_id'];
+        $replyAuthor = $_POST['reply_author'];
+        $projectId = $_POST['project_id'];
+
+        // SESSIONS
+        $replyDeleter = $_SESSION['id'];
+        $deleterRole = $_SESSION['rol'];
+
+        // DATABASE
+        $connection = ConnectToDatabase();
+
+        if ($replyAuthor == $replyDeleter || $deleterRole == 'doc') {
+            echo "deleting a reply with id ".$replyId." from project with id ".$projectId . " from author:   ". $replyAuthor.". The person deleting the post has the role: ".$deleterRole;
+
+            // PREPARED STATEMENT
+            $stmt = $connection->prepare("
+                DELETE FROM reacties
+                WHERE id = ?
+                ");
+            $stmt->bind_param("i", $replyId);
+            $stmt->execute();
+            $stmt->close();
+            $connection->close();
+
+            // send user back to project
+            header("location: project.php?id=".$projectId);
+            exit; 
+        }     
+   }   
+}
+
 
 ?>

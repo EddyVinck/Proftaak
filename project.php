@@ -488,22 +488,27 @@ else{
             <div class="row">
                 <div class="col s12 m6 offset-m3">                  
                     <?php for($i = 0; $i < count($responses); $i++) { ?>
-                    <div class="card">
-                        <div class="card-stacked">
-                            <div class="card-content center">
-                                <!--<img class="circle responsive-img profile-image" src="http://lorempixel.com/100/190/nature/6">-->
-                                <span class="card-title"><a href="profiel.php?user=<?=$responses[$i]['user_id'];?>"><?=$responses[$i]['user_name'];?></a></span>
-                                <p><?=$responses[$i]['response_text'];?></p>                               
-                            </div>                
-                            <div class="card-action">
-                                <a class="btn purple darken-1" href="bericht.php?send=<?=$responses[$i]['user_id']?>">
-                                    Priv&eacute;bericht<i class="material-icons right">message</i>
-                                </a>
-                                <button class="btn white waves-effect hide-on-small-only"><i class="material-icons black-text">delete</i></button>
-                                <button class="btn-flat waves-effect right col s2 hide-on-med-and-up"><i class="material-icons large">delete</i></button>                                
+                    <form action="projectReply.php" method="post">
+                        <div class="card">                        
+                            <div class="card-stacked">
+                                <div class="card-content center">
+                                    <!--<img class="circle responsive-img profile-image" src="http://lorempixel.com/100/190/nature/6">-->
+                                    <span class="card-title"><a href="profiel.php?user=<?=$responses[$i]['user_id'];?>"><?=$responses[$i]['user_name'];?></a></span>
+                                    <p><?=$responses[$i]['response_text'];?></p>                               
+                                </div>                
+                                <div class="card-action">
+                                    <a class="btn purple darken-1" href="bericht.php?send=<?=$responses[$i]['user_id']?>">
+                                        Priv&eacute;bericht<i class="material-icons right">message</i>
+                                    </a>
+                                    <button name="delete-trigger" class="btn white waves-effect hide-on-small-only"><i class="material-icons black-text">delete</i></button>
+                                    <button name="delete-trigger" class="btn-flat waves-effect right col s2 hide-on-med-and-up"><i class="material-icons large">delete</i></button>
+                                    <input type="hidden" name="reply_id" value="<?= $responses[$i]['response_id'] ?>">                               
+                                    <input type="hidden" name="project_id" value="<?= $projectData['project_id'];?>">                                
+                                    <input type="hidden" name="reply_author" value="<?= $responses[$i]['user_id'];?>">
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                     <?php } ?>
                 </div>
             </div>
