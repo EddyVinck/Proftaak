@@ -179,24 +179,23 @@ function setParam(name, value) {
     /* execute search */
     l.search = search;
 }
-// function openReply(id = "", naam="")
-// {
+function openReply(id = "", naam="")
+{
     
-//     document.getElementById("reply-container").style.height = "100%";
-//     document.body.classList.add("noscroll");
-//     if (id != ""){
-//         $("#hiddenBox").attr("value", id);
-//     }
-//     if (naam != ""){
-//         document.getElementById("nameLabel").innerHTML = naam;
+    document.getElementById("reply-container").style.height = "100%";
+    document.body.classList.add("noscroll");
+    if (id != ""){
+        $("#hiddenBox").attr("value", id);
+    }
+    if (naam != ""){
+        document.getElementById("nameLabel").innerHTML = naam;
         
-//     }
-// }
+    }
+}
 function closeReply()
 {
     document.getElementById("reply-container").style.height = "0%";
-    document.body.classList.remove("noscroll");
-    
+    document.body.classList.remove("noscroll");    
 }
 function openStatusDialog()
 {
@@ -247,9 +246,6 @@ function removeClass(elem, name) {
     }
 }
 function myHasClass (element, myClass) {
-    // if (element.contains(class) ) {
-    //     return true;
-    // }
     if ( element.classList.contains(myClass)) {
         return true;
     }
