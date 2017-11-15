@@ -179,8 +179,10 @@ function setParam(name, value) {
     /* execute search */
     l.search = search;
 }
-function openReply(id = "", naam="")
+function openReply(id, naam)
 {
+    id = id || "";
+    naam = naam || "";
     
     document.getElementById("reply-container").style.height = "100%";
     document.body.classList.add("noscroll");
