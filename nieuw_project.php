@@ -116,8 +116,6 @@ if(isset($_POST['action'])){
     if ($messages_sent == 1){
       sendMessagesFromUniplan($newId);
     }
-    // project is OK, sending user to project
-    header("location: project.php?id=".$newId);
   }
   else{ //what happens when 1 field is empty
     $naam= $_POST['naam'];

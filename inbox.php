@@ -60,7 +60,7 @@ $execute = false;
 for ($x = 0; $x < count($messages);$x++){
   if ($messages[$x]['projecten_id'] != null){
     $tempId = $messages[$x]['projecten_id'];
-    $project_info[$tempId] = getMessageImage($tempId, $db);
+    $project_info = getprojectInfoById($tempId, $db);
   }
 }
 $setAllMessagesAsReadQuery = "UPDATE messages SET is_read = 1 WHERE is_read = 0 AND to_id = $userId;";
@@ -136,15 +136,12 @@ $pageColor = changePageColors($db, $_SESSION["college_id"]);
       if (count($messages) == 0){?>
         <div class="row valign-wrapper">
           <div class="col s8 center">
-              <h3>Er zijn geen berichten</h3>              
+              <h3>Er zijn geen berichten</h3>
+              <h5>Je hebt geen berichten in je inbox!</h5>
+              <a class="btn" href="bericht.php"><i class="material-icons right">reply</i>Schrijf een nieuw bericht</a>
           </div>
           <div class="col s4">
               <i class="material-icons large">mail</i>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col offset-s1 s10 m6 offset-m3">
-              <a class="btn" href="bericht.php"><i class="material-icons right">reply</i>Schrijf een nieuw bericht</a>
           </div>
         </div>
       <?php } ?>

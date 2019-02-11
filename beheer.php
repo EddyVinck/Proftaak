@@ -41,7 +41,7 @@ $invalidKlasId = -1;
 $klasAttemptDelete = 0; //0 = no try, 1 = try success, 2 = try fail due to students, 3 = try fail unexpected
 if (isset($_GET['klasdel'])){
     $klasToDelete = $_GET['klasdel'];
-    $delKlasGetStudentQuery = 
+    $delKlasGetStudentQuery =
     "SELECT * FROM users WHERE klassen_id = ?";
     $prepare_KlasDelGetStudent = $db->prepare($delKlasGetStudentQuery);
     $prepare_KlasDelGetStudent->bind_param("i", $klasToDelete);
@@ -52,7 +52,7 @@ if (isset($_GET['klasdel'])){
         $invalidKlasId = $klasToDelete;
     }
     else{
-        $sqlDeleteKlas = 
+        $sqlDeleteKlas =
         "DELETE FROM klassen WHERE id = ?";
         $prepare_KlasDel = $db->prepare($sqlDeleteKlas);
         $prepare_KlasDel->bind_param("i", $klasToDelete);
@@ -69,7 +69,7 @@ if (isset($_GET['klasdel'])){
     }
 }
 $invalidCollegeId = -1;
-$collegeAttemptDelete = 0; 
+$collegeAttemptDelete = 0;
 //0 = no try, 1 = try success, 2 = try fail due to students, 3 = try fail due to leraren, 4 = try fail unexpected
 if (isset($_GET['deleteCollege'])){
     $collegeToDel = $_GET['deleteCollege'];
@@ -99,7 +99,7 @@ if (isset($_GET['deleteCollege'])){
         $getDocentenKlasIdResult = $prepare_getLerarenKlas->get_result();
         $docKlasToDel = mysqli_fetch_assoc($getDocentenKlasIdResult)['id'];
 
-        $delCollegeGetKlassemQuery = 
+        $delCollegeGetKlassemQuery =
         "SELECT * FROM klassen WHERE colleges_id = ? AND rol != 'docenten'";
         $prepare_getLerarenKlas = $db->prepare($delCollegeGetKlassemQuery);
         $prepare_getLerarenKlas->bind_param("i", $collegeToDel);
@@ -110,14 +110,14 @@ if (isset($_GET['deleteCollege'])){
             $invalidCollegeId = $collegeToDel;
         }
         else{
-            $sqlDeleteCol = 
+            $sqlDeleteCol =
             "DELETE FROM klassen WHERE id = ?;";
             $prepare_getLerarenKlas = $db->prepare($sqlDeleteCol);
             $prepare_getLerarenKlas->bind_param("i", $docKlasToDel);
             $prepare_getLerarenKlas->execute();
 
-            $sqlDeleteCol = 
-            "DELETE FROM colleges 
+            $sqlDeleteCol =
+            "DELETE FROM colleges
             WHERE id = ?;";
             $prepare_getLerarenKlas = $db->prepare($sqlDeleteCol);
             $prepare_getLerarenKlas->bind_param("i", $collegeToDel);
@@ -197,7 +197,7 @@ while($row = mysqli_fetch_assoc($sqlResult)){
     $docenten[] = $row; 	//places everything in the array
 }
 // query for unverified students
-$query = 
+$query =
 "SELECT users.id, users.naam, users.email, users.klassen_id, users.rol,
     klassen.naam AS klas_naam,
     colleges.naam AS college_naam, colleges.id AS college_id,
@@ -209,7 +209,7 @@ $query =
 	ON klassen.colleges_id = colleges.id
     INNER JOIN scholen
     ON colleges.scholen_id = scholen.id
-    WHERE users.rol = ? AND scholen.id = $schoolId"; 
+    WHERE users.rol = ? AND scholen.id = $schoolId";
 
 $prepare_getStudenten = $db->prepare($query);
 $prepare_getStudenten->bind_param("s", $studentenVerificatie);
@@ -285,7 +285,7 @@ if(isset($_SESSION['college_id']))
                     <div class="card-content grey lighten-4">
                     <!--begin Tabje colleges-->
                     <?php if($rol == "sch" || $rol == 'adm'){?>
-                    <div id="colleges"> 
+                    <div id="colleges">
                         <table id="collegeTable">
                         <thead>
                         <tr>
@@ -299,7 +299,7 @@ if(isset($_SESSION['college_id']))
                             <th class="center" style="width: 15%">Selecteer</th>
                         </tr>
                         </thead>
-                        <tfoot> 
+                        <tfoot>
                             <tr>
                                 <td class="center">
                                     <a class="btn-floating btn-large red" onclick="addTableRow(<?=$schoolId?>);">
@@ -309,7 +309,7 @@ if(isset($_SESSION['college_id']))
                                 <td>
                                     <div class="row nomargin-bot">
                                         <div class="col s10 offset-s1">
-                                        <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
+                                        <a id="saveAllRows" class="btn-floating btn-large red tooltipped"
                                         data-position="bottom"
                                         data-delay="10"
                                         data-tooltip="Klik om alle nieuwe rijen op te slaan"
@@ -320,7 +320,7 @@ if(isset($_SESSION['college_id']))
                                     </div>
                                 </td>
                             </tr>
-                        </tfoot>    
+                        </tfoot>
                         <tbody id="collegeTbody">
                         <?php
                         for($tableRow=0;$tableRow<count($colleges);$tableRow++){
@@ -345,7 +345,7 @@ if(isset($_SESSION['college_id']))
                         ?>
                             <tr id="<?=$tableRow?>">
                                 <td class="center">
-                                <a onclick="editCollegeAjax(<?=$colleges[$tableRow]['id']?>);" 
+                                <a onclick="editCollegeAjax(<?=$colleges[$tableRow]['id']?>);"
                                         class="btn-floating btn-medium waves-effect waves-light red tooltipped"
                                         data-position="bottom"
                                     data-delay="10"
@@ -356,15 +356,15 @@ if(isset($_SESSION['college_id']))
                                 <div class="row center ">
                                     <form method="POST">
                                     <div  class="input-field beheer-inputs col s10 offset-s1 center">
-                                        <input value="<?=$colleges[$tableRow]['naam']?>" 
-                                        id="input<?=$colleges[$tableRow]['id']?>" 
+                                        <input value="<?=$colleges[$tableRow]['naam']?>"
+                                        id="input<?=$colleges[$tableRow]['id']?>"
                                         type="text" class="validate <?=$validOrInvalid?>">
-                                        <label id="lbl<?=$colleges[$tableRow]['id']?>" class="active" 
-                                        data-error="<?=$dataError?>" 
+                                        <label id="lbl<?=$colleges[$tableRow]['id']?>" class="active"
+                                        data-error="<?=$dataError?>"
                                         data-success=""
                                         for="input<?=$colleges[$tableRow]['id']?>"> </label>
                                     </div>
-                                    
+
                                     </form>
                                 </dv>
                                 </td>
@@ -372,7 +372,7 @@ if(isset($_SESSION['college_id']))
                                     <input id="col<?=$colleges[$tableRow]['id']?>" class='colorpicker' value='<?=$colleges[$tableRow]['kleur']?>'/>
                                 </td>
                                 <td class="center">
-                                   <a href="beheer.php?active=colleges&deleteCollege=<?=$colleges[$tableRow]['id']?>" 
+                                   <a href="beheer.php?active=colleges&deleteCollege=<?=$colleges[$tableRow]['id']?>"
                                         class="btn-floating btn-medium waves-effect waves-light red tooltipped"
                                         data-position="bottom"
                                         data-delay="10"
@@ -389,7 +389,7 @@ if(isset($_SESSION['college_id']))
                         <div class="row ">
                         <?php if ($docentenVerificatie == "doc"){?>
                             <div class="col s12 m3 l3">
-                                <a href="?doc=odo&active=leraren<?=$hrefText?>" 
+                                <a href="?doc=odo&active=leraren<?=$hrefText?>"
                                 class="waves-effect waves-light btn tooltipped"
                                 data-position="bottom"
                                 data-delay="10"
@@ -413,7 +413,7 @@ if(isset($_SESSION['college_id']))
                         </tr>
                         </thead>
                         <tbody id="lerarenTbody">
-                            <?php 
+                            <?php
                             for($x=0;$x<count($docenten);$x++){
                             ?>
                             <tr>
@@ -439,10 +439,10 @@ if(isset($_SESSION['college_id']))
                                                 <?= $docenten[$x]['id'];?>,
                                                 '<?=$x; ?>','verifyLeraren')">
                                                 <?= properVerifiedStatus($docenten[$x]['rol']);?>
-                                            </a> 
+                                            </a>
                                         </div>
                                     </div>
-                                </td>       
+                                </td>
                             </tr>
                             <?php
                             }
@@ -451,7 +451,7 @@ if(isset($_SESSION['college_id']))
                         </table>
                     </div>
                     <?php } if ($rol == "doc" || $rol == 'adm'){
-                        
+
                     ?>
                     <!--begin tabje klassen-->
                     <div id="klassen">
@@ -488,7 +488,7 @@ if(isset($_SESSION['college_id']))
                             ?>
                             <tr id="<?=$x?>">
                                 <td class="center">
-                                <a onclick="editKlasAjax(<?=$klassen[$x]['id']?>);" 
+                                <a onclick="editKlasAjax(<?=$klassen[$x]['id']?>);"
                                     class="btn-floating btn-medium waves-effect waves-light red tooltipped"
                                     data-position="bottom"
                                     data-delay="10"
@@ -499,11 +499,11 @@ if(isset($_SESSION['college_id']))
                                 <div class="row center ">
                                     <form method="POST">
                                     <div  class="input-field beheer-inputs col s10 offset-s1 center">
-                                        <input class="validate  <?=$validOrInvalidKlas?>" value="<?=$klassen[$x]['naam']?>" 
-                                        id="inputKlas<?=$klassen[$x]['id']?>" 
+                                        <input class="validate  <?=$validOrInvalidKlas?>" value="<?=$klassen[$x]['naam']?>"
+                                        id="inputKlas<?=$klassen[$x]['id']?>"
                                         type="text">
-                                        <label id="lblKlas<?=$klassen[$x]['id']?>" class="active " 
-                                        data-error="<?=$dataKlasError?>" 
+                                        <label id="lblKlas<?=$klassen[$x]['id']?>" class="active "
+                                        data-error="<?=$dataKlasError?>"
                                         data-success=""
                                         for="inputKlas<?=$klassen[$x]['id']?>"> </label>
                                     </div>
@@ -517,7 +517,7 @@ if(isset($_SESSION['college_id']))
                                     <?=mysqli_num_rows($studentsResult)?>
                                 </td>
                                 <td class="center">
-                                    <a href="beheer.php?klasdel=<?=$klassen[$x]['id']?>&active=klassen<?=$hrefText?>" 
+                                    <a href="beheer.php?klasdel=<?=$klassen[$x]['id']?>&active=klassen<?=$hrefText?>"
                                     class="btn-floating btn-medium waves-effect waves-light red tooltipped"
                                     data-position="bottom"
                                     data-delay="10"
@@ -534,11 +534,11 @@ if(isset($_SESSION['college_id']))
                             <td>
                                 <div class="row center ">
                                     <div  class="input-field beheer-inputs col s10 offset-s1 center">
-                                        <input class="validate" value="" 
-                                        id="newInpKlas<?=$y?>" 
+                                        <input class="validate" value=""
+                                        id="newInpKlas<?=$y?>"
                                         type="text">
-                                        <label id="newLblKlas<?=$y?>" class="active " 
-                                        data-error="" 
+                                        <label id="newLblKlas<?=$y?>" class="active "
+                                        data-error=""
                                         data-success=""
                                         for="newInpKlas<?=$y?>"> </label>
                                     </div>
@@ -546,7 +546,7 @@ if(isset($_SESSION['college_id']))
                             </td>
                             <td>
                             <select id="newSelect<?=$y?>">
-                                <?php 
+                                <?php
                                 for($j=0;$j < count($colleges); $j++)
                                 {?>
                                     <option value="<?= $colleges[$j]['id']?>"><?= $colleges[$j]['naam']?></option>
@@ -569,7 +569,7 @@ if(isset($_SESSION['college_id']))
                                             <option value="<?=$x?>"><?=$x?></option>
                                         <?php }?>
                                     </select>
-                                    <a id="addnewKlasRows" class="btn-floating btn-large red tooltipped" 
+                                    <a id="addnewKlasRows" class="btn-floating btn-large red tooltipped"
                                     onclick="hrefNewKlasRows(<?=$schoolId?>);"
                                     data-position="bottom"
                                     data-delay="10"
@@ -578,7 +578,7 @@ if(isset($_SESSION['college_id']))
                                     </a>
                                 </div>
                                 <div class="col l2 s2">
-                                    <a id="saveAllRows" class="btn-floating btn-large red tooltipped" 
+                                    <a id="saveAllRows" class="btn-floating btn-large red tooltipped"
                                     data-position="bottom"
                                     data-delay="10"
                                     data-tooltip="Klik om alle nieuwe rijen op te slaan"
@@ -589,13 +589,13 @@ if(isset($_SESSION['college_id']))
                             </div>
                         </div>
                     </div>
-                
+
                     <!--begin tabje studenten-->
                     <div id="studenten">
                         <div class="row">
                             <?php if ($studentenVerificatie == "stu"){?>
                                 <div class="col s12 m3 l3">
-                                    <a href="?stu=ost&active=studenten<?=$hrefText?>" 
+                                    <a href="?stu=ost&active=studenten<?=$hrefText?>"
                                     class="waves-effect waves-light btn tooltipped"
                                     data-position="bottom"
                                     data-delay="10"
@@ -603,7 +603,7 @@ if(isset($_SESSION['college_id']))
                                 </div>
                             <?php }else if ($studentenVerificatie == "ost"){ ?>
                                 <div class="col s12 m3 l3">
-                                    <a href="?stu=stu&active=studenten<?=$hrefText?>" 
+                                    <a href="?stu=stu&active=studenten<?=$hrefText?>"
                                     class="waves-effect waves-light btn tooltipped"
                                     data-position="bottom"
                                     data-delay="10"
@@ -615,14 +615,14 @@ if(isset($_SESSION['college_id']))
                             <thead>
                             <tr>
                                 <th>Naam</th>
-                                <th>College</th>                            
+                                <th>College</th>
                                 <th>Klas</th>
                                 <th>rol</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                                for ($i=0; $i < count($unverifiedStudents); $i++) { 
+                                for ($i=0; $i < count($unverifiedStudents); $i++) {
                                 ?>
                                     <tr class="">
                                         <td class="valign-wrapper"><?php echo $unverifiedStudents[$i]['naam'];?></td>
@@ -630,7 +630,7 @@ if(isset($_SESSION['college_id']))
                                         <!--getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect', 'klas')-->
                                             <select id="collegeSelect<?=$i?>" onchange="getSelect_Ajax(this.value,'klassen','colleges_id','klasSelect<?php echo $i;?>', 'klas')">
                                                 <option value="" selected><?= $unverifiedStudents[$i]['college_naam']?></option>
-                                                <?php 
+                                                <?php
                                                 for($j=0;$j < count($colleges); $j++)
                                                 {?>
                                                     <option value="<?= $colleges[$j]['id']?>"><?= $colleges[$j]['naam']?></option>
@@ -639,7 +639,7 @@ if(isset($_SESSION['college_id']))
                                             </select>
                                         </td>
                                         <td>
-                                            <select id="klasSelect<?php echo $i;?>" 
+                                            <select id="klasSelect<?php echo $i;?>"
                                             onchange="changeStudentKlas(this.value,<?= $unverifiedStudents[$i]['id']?>);">
                                                 <option value="" disabled selected><?= $unverifiedStudents[$i]['klas_naam']?></option>
                                                 <?php
@@ -649,25 +649,25 @@ if(isset($_SESSION['college_id']))
                                                 $options = [];
                                                 while ($row = mysqli_fetch_assoc($result)){
                                                     $options[] = $row;
-                                                }                                                                                                                                                                                                                             
+                                                }
                                                 for($k = 0; $k < count($options); $k++){?>
                                                     <option value=""><?= $options[$k]['naam']?></option><?php
                                                 }
-                                            ?>                                    
-                                            </select>                                            
-                                        </td>                                    
+                                            ?>
+                                            </select>
+                                        </td>
                                         <td class="valign-wrapper">
                                             <a style="width: 200px;" id="verifiedButton<?php echo $i; ?>" class="btn waves-effect <?php echo properButtonColorForRole($unverifiedStudents[$i]['rol']); ?>"
                                             onclick="updateVerifiedStatusAjax(
-                                                <?php echo $unverifiedStudents[$i]['id'];?>, 
-                                                '<?php echo $i;?>','verifiedButton'                                            
+                                                <?php echo $unverifiedStudents[$i]['id'];?>,
+                                                '<?php echo $i;?>','verifiedButton'
                                             )">
                                                 <?php echo properVerifiedStatus($unverifiedStudents[$i]['rol']);?>
-                                            </a>                                        
-                                        </td>                                    
+                                            </a>
+                                        </td>
                                     </tr>
                                 <?php
-                            }?>                       
+                            }?>
                             </tbody>
                         </table>
                     </div>
@@ -676,7 +676,7 @@ if(isset($_SESSION['college_id']))
             </div>
         </div>
     </div>
-    
+
 </main>
 <?php createFooter($pageColor);?>
 <!--https://code.jquery.com/jquery-3.2.1.js ???-->

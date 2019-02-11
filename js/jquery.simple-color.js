@@ -284,8 +284,15 @@
 
       $(this).after(container);
       $(this).data('container', container);
+      var temp = $(this).val();
+      var firstChar = temp.charAt(0);
+      if (firstChar == "#") {
+          temp = temp.substring(1);
+      }
+      var temp2 = getColorNameOrKey("hash",temp);
+      $(this).val(temp2);
+      $(this).attr("value", temp2);
     };
-
     this.each(buildChooser);
 
     $('.simpleColorDisplay').each(function() {
@@ -319,8 +326,30 @@
         displayBox.text(color);
       }
     });
-
     return this;
   };
 
 })(jQuery);
+function getColorNameOrKey(mode,str){
+    var colorArray = {
+        'name' :{
+            'red':"f44336",'pink':"e91e63",'purple':"9c27b0",
+            'deep-purple':"673ab7",'indigo':"3f51b5",'blue':"2196f3",
+            'light-blue':"03a9f4",'cyan':"00bcd4",'teal':"009688",
+            'green':"4caf50",'light-green':"8bc34a",'lime':"cddc39",
+            'yellow':"ffeb3b",'amber':"ffc107",'orange':"ff9800",
+            'deep-orange':"ff5722",'brown':"795548",'grey':"9e9e9e",
+            'blue-grey':"607d8b"
+        }, 'hash' :{
+            "f44336":"red","e91e63":"pink","9c27b0":"purple",
+            "673ab7":"deep-purple","3f51b5":"indigo","2196f3":"blue",
+            "03a9f4":"light-blue","00bcd4":"cyan","009688":"teal",
+            "4caf50":"green","8bc34a":"light-green","cddc39":"lime",
+            "ffeb3b":"yellow","ffc107":"amber","ff9800":"orange",
+            "ff5722":"deep-orange","795548":"brown","9e9e9e":"grey",
+            "607d8b":"blue-grey"
+        }
+    };
+    console.log(colorArray[mode][str]);
+    return colorArray[mode][str];
+}

@@ -26,15 +26,16 @@ $hideCards = ['','hide','hide','hide']; //this array is used in the HTML to hide
 # inloggen
 # checken of de combinatie van een email en wachtwoord in de database bestaat
 if (isset($_POST['rol'])){
+  // dump($_POST);
   $email = $_POST['email'];
   $formRol = $_POST['rol'];
   $pass  =  hash('sha512', (get_magic_quotes_gpc() ? stripslashes($_POST['password']) : $_POST['password']));
   if($email != '' && $pass != ''){
     $loginSuccess = true;
-    $queryVar = " SELECT users.id , users.rol , users.naam, 
+    $queryVar = " SELECT users.id , users.rol , users.naam,
       klassen.id AS klas_id,
       colleges.id AS college_id,
-      scholen.id AS school_id                  
+      scholen.id AS school_id
       FROM users
       INNER JOIN klassen
       ON klassen.id = users.klassen_id
@@ -42,7 +43,7 @@ if (isset($_POST['rol'])){
       ON klassen.colleges_id = colleges.id
       INNER JOIN scholen
       ON colleges.scholen_id = scholen.id
-      WHERE `email` = ? 
+      WHERE `email` = ?
       AND `wachtwoord` = ?";
     $prepare_login = $db->prepare($queryVar);
     $prepare_login->bind_param("ss", $email,$pass);
@@ -61,13 +62,14 @@ if (isset($_POST['rol'])){
       $_SESSION['id'] = $data[0]['id'];
       $_SESSION['naam'] = $data[0]['naam'];
       $college = $data[0]['college_id'];
-      $_SESSION['klas_id'] = $data[0]['klas_id'];      
+      $_SESSION['klas_id'] = $data[0]['klas_id'];
       $_SESSION['college_id'] = $data[0]['college_id'];
       $_SESSION['school_id'] = $data[0]['school_id'];
-      
-      
+
+
       $college = $data[0]['college_id'];
       header("Location: projecten_lijst.php?college=" . $college);
+      // dump($data);
     }
     else{
       $loginSuccess = false;
@@ -87,79 +89,80 @@ if (isset($_POST['rol'])){
 }
 if($_SESSION['loggedIn'] == true)
 {
-  $college = $data[0]['college_id'];
-  header("Location: projecten_lijst.php?college=" . $college);
+    if (isset($data)) {
+        $college = $data[0]['college_id'];
+        header("Location: projecten_lijst.php?college=" . $college);
+    }
+    if (isset($_SESSION['college_id'])) {
+        $college = $_SESSION['college_id'];
+        header("Location: projecten_lijst.php?college=" . $college);
+    }
 }
-
-//hieronder de query voor projecten lijst
-//
-//$result = mysqli_query($db,
-//"SELECT  projecten.naam AS projectnaam, projecten.omschrijving, users.naam AS usernaam, colleges.naam AS collegenaam,colleges.idFROM (((projecten INNER JOIN users ON projecten.users_id = users.id) INNER JOIN klassen ON users.klassen_id = klassen.id) INNER JOIN colleges on klassen.colleges_id = colleges.id) WHERE colleges.id = 1");
-// while($result2 = mysqli_fetch_assoc($result)){
-//     $data[] = $result2; 	//places everything in the array
-// }
 ?>
 <!DOCTYPE html>
 <head>
-    <meta charset="UTF-8">
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="css/materializeAddons.css"  media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href = "css/style.css"/>
-    <link type="text/css" rel="stylesheet" href = "css/footer.css"/>
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!--Import Google Icon Font-->
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/materializeAddons.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href = "css/style.css"/>
+  <link type="text/css" rel="stylesheet" href = "css/footer.css"/>
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-<header>    
+<header>
     <nav class="top-nav teal">
       <div class="container">
         <div class="nav-wrapper">
         <!--<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>-->
-            <div class="col s12" style="padding: 0 .75rem;">                
-                <a href="#" class="brand-logo"><img style="width:5rem;margin-top:12%;" src="img/logo_white_tiny.svg"></a>        
+            <div class="col s12" style="padding: 0 .75rem;">
+                <a href="#" class="brand-logo"><img style="width:5rem;margin-top:12%;" src="img/logo_white.svg"></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <!--<li><a href="#" class=" waves-effect"><i class="small material-icons left">home</i>Mijn College</a></li>
                 <li><a href="#"><i class="small material-icons left">view_module</i>Colleges</a></li>
                 <li><a href="#"><i class="small material-icons left">message</i>Priveberichten</a></li>-->
                 <!--<li><a href="#"><i class="small material-icons left">info_outline</i>Wat is dit? </a></li>-->
-                <li><a href="#info">Wat is dit?</a></li>                
+                <li><a href="#info">Wat is dit?</a></li>
             </ul>
-            </div>       
-            <!--<a href="#" class="brand-logo">Logo</a>-->        
-        </div>  
-      </div>      
-    </nav>    
+            </div>
+            <!--<a href="#" class="brand-logo">Logo</a>-->
+        </div>
+      </div>
+    </nav>
 </header>
 <main>
   <div class="center-with-bg">
+    <!--log in selector-->
     <div class="container">
       <div class="row">
         <div class="col s12 m6 offset-m3 l4 offset-l4 center-align">
+          <!--login home -->
           <div class="card <?=$hideCards[0]?>" id="home">
             <div class="card-content ">
-              <span class="card-title">Ik ben een:</span>
+              <span class="card-title">Log in als</span>
               <div class="row">
                 <div class="divider"></div>
               </div>
               <p>
                 <div class="row">
-                  <a class="waves-effect waves-light btn col s10 offset-s1" 
-                  onclick="loginFade3(1); Materialize.fadeInImage('#login_as_school',400);">school</a>
+                  <a class="waves-effect waves-light btn col s10 offset-s1"
+                  onclick="loginFade2(1);Materialize.fadeInImage('#login_as_school',400);">school</a>
                 </div>
                 <div class="row">
-                  <a class="waves-effect waves-light btn col s10 offset-s1" 
-                  onclick="loginFade3(2); Materialize.fadeInImage('#login_as_leraar',400);">leraar</a>
+                  <a class="waves-effect waves-light btn col s10 offset-s1"
+                  onclick="loginFade2(2);Materialize.fadeInImage('#login_as_leraar',400);">leraar</a>
                   </div>
                 <div class="row">
-                  <a class="waves-effect waves-light btn col s10 offset-s1" 
-                  onclick="loginFade3(3); Materialize.fadeInImage('#login_as_student',400);">student</a>
+                  <a class="waves-effect waves-light btn col s10 offset-s1"
+                  onclick="loginFade2(3);Materialize.fadeInImage('#login_as_student',400);">student</a>
                 </div>
               </p>
             </div>
           </div>
+          <!--end of login home -->
+          <!--login as school -->
           <div class="card <?=$hideCards[1]?>" id="login_as_school">
             <div class="card-content">
             <span class="card-title center-align">Log in als school</span>
@@ -184,14 +187,14 @@ if($_SESSION['loggedIn'] == true)
                     </button>
                   </div>
                   <div class="col s12 m6 center-on-small-only">
-                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade3(0);Materialize.fadeInImage('#home',400);">Terug
+                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
                       <i class="material-icons left">arrow_back</i>
                     </button>
-                  </div>                  
+                  </div>
                 </div>
                 <?php if($loginSuccess == false && $loginAttempt == true){?>
                   <div class="row">
-                    <div class="divider"></div>                  
+                    <div class="divider"></div>
                     <div class="invalid col offset-l2 offset-s2 offset-m2">
                       Het ingevulde email of wachtwoord is fout.
                     </div>
@@ -199,7 +202,7 @@ if($_SESSION['loggedIn'] == true)
                 <?php }?>
               </form>
             </div>
-          </div>
+          </div><!-- end of #login_as_school begin login as leraar-->
           <div class="card <?=$hideCards[2]?>" id="login_as_leraar">
             <div class="card-content">
               <span class="card-title center-align">Log in als leraar</span>
@@ -224,17 +227,17 @@ if($_SESSION['loggedIn'] == true)
                       </button>
                     </div>
                     <div class="col s12 m6 center-on-small-only">
-                      <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade3(0);Materialize.fadeInImage('#home',400);">Terug
+                      <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
                         <i class="material-icons left">arrow_back</i>
                       </button>
-                    </div>                  
+                    </div>
                   </div>
-                  <div class="">                    
-                      <a class="" href="registreer_leraar.php">Of klik hier om te registreren</a>                    
+                  <div class="">
+                      <a class="" href="registreer_leraar.php">Of klik hier om te registreren</a>
                   </div>
                   <?php if($loginSuccess == false && $loginAttempt == true){?>
                     <div class="row">
-                      <div class="divider"></div>                  
+                      <div class="divider"></div>
                       <div class="invalid col offset-l2 offset-s2 offset-m2">
                         Het ingevulde email of wachtwoord is fout.
                       </div>
@@ -242,7 +245,7 @@ if($_SESSION['loggedIn'] == true)
                   <?php }?>
                 </form>
             </div>
-          </div>
+          </div><!-- end of #login_as_leraar begin login_as_student -->
           <div class="card <?=$hideCards[3]?>" id="login_as_student">
             <div class="card-content">
               <span class="card-title center-align">Log in als student</span>
@@ -267,17 +270,17 @@ if($_SESSION['loggedIn'] == true)
                     </button>
                   </div>
                   <div class="col s12 m6 center-on-small-only">
-                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade3(0);Materialize.fadeInImage('#home',400);">Terug
+                    <button class="btn white black-text waves-effect waves-light" type="button" onclick="loginFade2(0);Materialize.fadeInImage('#home',400);">Terug
                       <i class="material-icons left">arrow_back</i>
                     </button>
-                  </div>                  
+                  </div>
                 </div>
-                <div class="">                    
-                    <a class="" href="registreer.php">Of klik hier om te registreren</a>                    
+                <div class="">
+                    <a class="" href="registreer.php">Of klik hier om te registreren</a>
                 </div>
                 <?php if($loginSuccess == false && $loginAttempt == true){?>
                 <div class="row">
-                  <div class="divider"></div>                  
+                  <div class="divider"></div>
                   <div class="invalid col offset-l2 offset-s2 offset-m2">
                     Het ingevulde email of wachtwoord is fout.
                   </div>
@@ -285,8 +288,8 @@ if($_SESSION['loggedIn'] == true)
                 <?php }?>
               </form>
             </div>
-          </div>
-        </div>
+          </div><!-- end of #login_as_student -->
+        </div>  <!-- end of column -->
       </div>
     </div>
   </div>
@@ -331,15 +334,15 @@ if($_SESSION['loggedIn'] == true)
   <!--end of info section -->
 </main>
 <?php createFooter();?>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>  
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <!--https://code.jquery.com/jquery-3.2.1.js ???-->
-  <script type="text/javascript" src="js/ajaxfunctions.js"></script>
-  <script type="text/javascript" src="js/materialize.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/ajaxfunctions.js"></script>
+	<script type="text/javascript" src="js/materialize.js"></script>
   <script>
     // smooth scroll. Give an element an id(myID) and another element a href of #myID
     $('a[href*="#"]:not([href="#"])').click(function() {
-      if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') 
+      if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
         && location.hostname == this.hostname) {
         var target = $(this.hash);
         target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');

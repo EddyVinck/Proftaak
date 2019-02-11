@@ -5,6 +5,7 @@ checkUserVerification();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
+// dump($_SESSION);
 $connection = ConnectToDatabase();
 $schoolId = $_SESSION['school_id'];
 $collegeId=$_SESSION['college_id'];

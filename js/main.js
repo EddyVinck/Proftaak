@@ -11,7 +11,7 @@ var elemArray =[
 function resetCounts(){
     colorCount = 0;
     newRowCount = 0;
-} 
+}
 function initializeSelectElements(){
     $(document).ready(function() {
         $('select').material_select();
@@ -23,13 +23,6 @@ function loginFade2(key){
     }
     elemArray[key].classList.remove("hide");
 }
-function loginFade3(key) {
-    for(var i = 0; i < elemArray.length; i++){
-        addClass(elemArray[i], "hide");
-    }
-    removeClass(elemArray[key], "hide");
-}
-
 function addTableRow(school_id){
     var tbodyElement = document.getElementById("collegeTbody");
     var lastRow = tbodyElement.rows[ tbodyElement.rows.length - 1 ];
@@ -80,7 +73,14 @@ function getColorNameOrKey(mode,str){
             "4caf50":"green","8bc34a":"light-green","cddc39":"lime",
             "ffeb3b":"yellow","ffc107":"amber","ff9800":"orange",
             "ff5722":"deep-orange","795548":"brown","9e9e9e":"grey",
-            "607d8b":"blue-grey"
+            "607d8b":"blue-grey",
+            "#f44336":"red","#e91e63":"pink","#9c27b0":"purple",
+            "#673ab7":"deep-purple","#3f51b5":"indigo","#2196f3":"blue",
+            "#03a9f4":"light-blue","#00bcd4":"cyan","#009688":"teal",
+            "#4caf50":"green","#8bc34a":"light-green","#cddc39":"lime",
+            "#ffeb3b":"yellow","#ffc107":"amber","#ff9800":"orange",
+            "#ff5722":"deep-orange","#795548":"brown","#9e9e9e":"grey",
+            "#607d8b":"blue-grey"
         }
     };
     return colorArray[mode][str];
@@ -96,19 +96,23 @@ $(document).ready(function() {
             elems[x].value = "#" + getColorNameOrKey("name",elems[x].value);
         }
         if (elems.length > 0){
-            $('.colorpicker').simpleColor({
-                boxHeight: 40,
-                cellWidth: 20,
-                cellHeight: 20,
-                displayColorCode: true,
-                onSelect: function(hex, element, id) {
-                    var name = getColorNameOrKey("hash",hex);
-                    //editCollegeAjax(collegeIdNr, mode = 0, color = "#000");
-                },
-            });
+            // initColorPicker();
         }
     });
 });
+function initColorPicker(){
+    $('.colorpicker').simpleColor({
+        boxHeight: 40,
+        cellWidth: 20,
+        cellHeight: 20,
+        displayColorCode: true,
+        onSelect: function(hex, element, id) {
+            var name = getColorNameOrKey("hash",hex);
+            $(element).val(name);
+            $(element).attr('value', name);
+        },
+    });
+}
 function initSpecificColorPicker(count){
     $('.newColorPicker' + count).simpleColor({
         boxHeight: 40,
@@ -152,8 +156,8 @@ function setParam(name, value) {
     var l = window.location;
 
     /* build params */
-    var params = {};        
-    var x = /(?:\??)([^=&?]+)=?([^&?]*)/g;        
+    var params = {};
+    var x = /(?:\??)([^=&?]+)=?([^&?]*)/g;
     var s = l.search;
     for(var r = x.exec(s); r; r = x.exec(s))
     {
@@ -179,11 +183,9 @@ function setParam(name, value) {
     /* execute search */
     l.search = search;
 }
-function openReply(id, naam)
+function openReply(id = "", naam="")
 {
-    id = id || "";
-    naam = naam || "";
-    
+
     document.getElementById("reply-container").style.height = "100%";
     document.body.classList.add("noscroll");
     if (id != ""){
@@ -191,32 +193,33 @@ function openReply(id, naam)
     }
     if (naam != ""){
         document.getElementById("nameLabel").innerHTML = naam;
-        
+
     }
 }
 function closeReply()
 {
     document.getElementById("reply-container").style.height = "0%";
-    document.body.classList.remove("noscroll");    
+    document.body.classList.remove("noscroll");
+
 }
 function openStatusDialog()
 {
     document.getElementById("status-dialog-container").style.display = "block";
     setTimeout(function(){
         document.getElementById("status-dialog-container").style.opacity = 1;
-    },10); 
-    
+    },10);
+
     // document.body.classList.add("noscroll");
 }
 function closeStatusDialog()
 {
-    document.getElementById("status-dialog-container").style.opacity = 0;    
+    document.getElementById("status-dialog-container").style.opacity = 0;
     setTimeout(function(){
         document.getElementById("status-dialog-container").style.display = "none";
-    },250); 
+    },250);
     // document.getElementById("status-dialog-container").style.opacity = 0;
     // document.body.classList.remove("noscroll");
-    
+
 }
 function hrefNewKlasRows(schId){
     elem = document.getElementById("newKlasRowsSelect");
@@ -236,20 +239,3 @@ $('.dropdown-button').dropdown({
 
 		}); // End Document Ready
 })(jQuery); // End of jQuery name space
-
-function addClass(elem, className){
-    if(elem.className.indexOf(className) == -1) {
-        elem.classList.add(className);
-    }          
-}
-function removeClass(elem, name) {
-   if (myHasClass(elem, name)) {
-      elem.className=elem.className.replace(new RegExp('(\\s|^)'+name+'(\\s|$)'),' ').replace(/^\s+|\s+$/g, '');
-    }
-}
-function myHasClass (element, myClass) {
-    if ( element.classList.contains(myClass)) {
-        return true;
-    }
-    
-}

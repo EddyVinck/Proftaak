@@ -35,27 +35,27 @@ if(isset($_POST['search']))
         header("location: projecten_lijst.php?college=".$collegeGet."&search=".$projectSearch."&status=ongeverifieerd");
     } else if (isset($_GET['college']) && is_numeric($_GET['college'])){
         header("location: projecten_lijst.php?college=".$collegeGet."&search=".$projectSearch);
-    }     
+    }
     else { // if college isn't set
         if (isset($_GET['status'])) { // if there was a search but also a status GET parameter
             header("location: projecten_lijst.php?status=".$status."&search=".$projectSearch);
         } else {
-            header("location: projecten_lijst.php?search=".$projectSearch);            
+            header("location: projecten_lijst.php?search=".$projectSearch);
         }
     }
 } else { // if there is a search in GET
     if(isset($_GET['search']))
     {
-        $projectSearch = $_GET['search'];       
+        $projectSearch = $_GET['search'];
     } else {
-        $projectSearch = "";        
+        $projectSearch = "";
     }
 }
 
-$query = 
-"   SELECT projecten.naam AS project_naam, projecten.id AS project_id, 
+$query =
+"   SELECT projecten.naam AS project_naam, projecten.id AS project_id,
     projecten.status, projecten.omschrijving,
-    users.naam AS user_naam, 
+    users.naam AS user_naam,
     colleges.naam AS college_naam,
     colleges.id as college_id,
     images.path AS img_path
@@ -79,30 +79,30 @@ if(isset($_GET['college'])){
         $college = $_GET['college'];
         $query .= " WHERE (hulpcolleges.colleges_id = " . $college
                 ." OR colleges.id = ".$college . ")";
-                if($status == "ongeverifieerd") 
+                if($status == "ongeverifieerd" || $status =="gearchiveerd")
                 {
                     $query .=" AND projecten.status = '$status'";
-                    
+
                 } else {
-                    $query .= " AND projecten.status  IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";                   
+                    $query .= " AND projecten.status  IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";
                 }
     } else{ // if college is NOT numeric i.e. a word
-        $query .= " WHERE projecten.status IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";     
+        $query .= " WHERE projecten.status IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";
     }
 }
 else{ // if college isnt in GET
-    if($status == "ongeverifieerd" || $status =="gearchiveerd") 
+    if($status == "ongeverifieerd" || $status =="gearchiveerd")
     {
-        $query .=" WHERE projecten.status = '$status'";        
+        $query .=" WHERE projecten.status = '$status'";
     } else {
-        $query .= " WHERE projecten.status  IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";                   
-    }  
+        $query .= " WHERE projecten.status  IN ('bezig', 'Onderzoek', 'Hulpzoekende', 'Afgerond')";
+    }
 }
 
 if(!empty($projectSearch)){
     $query .= " AND (
                 projecten.naam LIKE '%" .$projectSearch. "%'
-                OR projecten.omschrijving LIKE '%" .$projectSearch. "%' 
+                OR projecten.omschrijving LIKE '%" .$projectSearch. "%'
                 )";
 }
 
@@ -132,14 +132,14 @@ if(isset($_GET['college']) && is_numeric($_GET['college'])){
 } else {
     $pageColor = changePageColors($db, $_SESSION["college_id"]);
 }
+// dump($pageColor, __FILE__, __LINE__);
 
+// dump($data);
 checkUserVerification();
 ?>
 <!DOCTYPE html>
 <head>
 	<head>
-        <meta charset="UTF-8">
-
       <!--Import Google Icon Font-->
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
@@ -157,58 +157,58 @@ checkUserVerification();
     <div class="section">
         <div class="row" style="padding: 0 24px;">
             <div class="col s12 center-on-small-only">
-                <?php if( !empty($pageCollegeName) ){ ?> 
-            
+                <?php if( !empty($pageCollegeName) ){ ?>
+
                     <h3 class="hide-on-med-and-up"><?= $pageCollegeName;?></h3>
                     <h3 class="hide-on-small-only"><?= $pageCollegeName;?> College</h3>
                 <?php } else {?>
                     <h3>Alle Colleges</h3>
                 <?php } ?>
-                    
+
             </div>
         </div>
-    
-    <!--buttons for mobile-->    
+
+    <!--buttons for mobile-->
       <div class="row hide-on-med-and-up" style="">
             <?php if ($status == "bezig" || $status == "ongeverifieerd"){?>
                 <div class="col s10 offset-s1" style="margin-bottom: 4px;">
-                    <a href="javascript:setParam('status', 'gearchiveerd');" 
-                        class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" 
+                    <a href="javascript:setParam('status', 'gearchiveerd');"
+                        class="btn waves-effect waves-light purple darken-1 col s10 offset-s1"
                         name="action" >Gearchiveerd
-                        <i class="material-icons right">archive</i>                    
+                        <i class="material-icons right">archive</i>
                     </a>
                 </div>
             <?php }else if ($status == "gearchiveerd"){?>
                 <div class="col s10 offset-s1" style="margin-bottom: 4px;">
-                    <a href="javascript:setParam('status', 'bezig');" 
-                        class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" 
+                    <a href="javascript:setParam('status', 'bezig');"
+                        class="btn waves-effect waves-light purple darken-1 col s10 offset-s1"
                         name="action" >bezig
-                        <i class="material-icons right">archive</i>                    
+                        <i class="material-icons right">archive</i>
                     </a>
                 </div>
             <?php }
             if ($rol == "adm" || $rol == "sch" || $rol == "doc"){
                 if ($status == "bezig" || $status == "gearchiveerd"){?>
                     <div class="col s10 offset-s1" style="margin-bottom: 4px;">
-                        <a href="javascript:setParam('status', 'ongeverifieerd');" 
-                            class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" 
+                        <a href="javascript:setParam('status', 'ongeverifieerd');"
+                            class="btn waves-effect waves-light purple darken-1 col s10 offset-s1"
                             name="action" >Ongeverifieerd
-                            <i class="material-icons right">close</i>                    
+                            <i class="material-icons right">close</i>
                         </a>
                     </div>
                 <?php }else if ($status == "ongeverifieerd"){?>
                     <div class="col s10 offset-s1" style="margin-bottom: 4px;">
-                        <a href="javascript:setParam('status', 'bezig');" 
-                            class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" 
+                        <a href="javascript:setParam('status', 'bezig');"
+                            class="btn waves-effect waves-light purple darken-1 col s10 offset-s1"
                             name="action" >Geverifieerd
-                            <i class="material-icons right">check</i>                    
+                            <i class="material-icons right">check</i>
                         </a>
                     </div>
         <?php   }
             }?>
             <div class="col s10 offset-s1">
                 <a href="nieuw_project.php" class="btn waves-effect waves-light purple darken-1 col s10 offset-s1" name="action" >Nieuw Project
-                    <i class="material-icons right">library_add</i>                    
+                    <i class="material-icons right">library_add</i>
                 </a>
             </div>
       </div>
@@ -216,52 +216,52 @@ checkUserVerification();
       <div class="row valign-wrapper hide-on-small-only" style="padding: 0 24px;">
             <?php if ($status == "bezig" || $status == "ongeverifieerd"){?>
                 <div class="col s3" style="margin: 0px;">
-                    <a href="javascript:setParam('status', 'gearchiveerd');" 
-                        class="btn waves-effect waves-light purple darken-1 left" 
+                    <a href="javascript:setParam('status', 'gearchiveerd');"
+                        class="btn waves-effect waves-light purple darken-1 left"
                         name="action" >Gearchiveerd
-                        <i class="material-icons right">archive</i>                    
+                        <i class="material-icons right">archive</i>
                     </a>
                 </div>
             <?php }else if ($status == "gearchiveerd"){?>
                 <div class="col s3" style="margin: 0px;">
-                    <a href="javascript:setParam('status', 'bezig');" 
-                        class="btn waves-effect waves-light purple darken-1 left" 
+                    <a href="javascript:setParam('status', 'bezig');"
+                        class="btn waves-effect waves-light purple darken-1 left"
                         name="action" >bezig
-                        <i class="material-icons right">archive</i>                    
+                        <i class="material-icons right">archive</i>
                     </a>
                 </div>
             <?php }
             if ($rol == "adm" || $rol == "sch" || $rol == "doc"){
                 if ($status == "bezig" || $status == "gearchiveerd"){?>
                     <div class="col s3" style="margin: 0px;">
-                        <a href="javascript:setParam('status', 'ongeverifieerd');" 
-                            class="btn waves-effect waves-light purple darken-1 left" 
+                        <a href="javascript:setParam('status', 'ongeverifieerd');"
+                            class="btn waves-effect waves-light purple darken-1 left"
                             name="action" >Ongeverifieerd
-                            <i class="material-icons right">close</i>                    
+                            <i class="material-icons right">close</i>
                         </a>
                     </div>
                 <?php }else if ($status == "ongeverifieerd"){?>
                     <div class="col s3" style="margin: 0px;">
-                        <a href="javascript:setParam('status', 'bezig');" 
-                            class="btn waves-effect waves-light purple darken-1 left" 
+                        <a href="javascript:setParam('status', 'bezig');"
+                            class="btn waves-effect waves-light purple darken-1 left"
                             name="action" >Geverifieerd
-                            <i class="material-icons right">check</i>                    
+                            <i class="material-icons right">check</i>
                         </a>
                     </div>
         <?php   }
             }?>
             <div class="col s4">
                 <a href="nieuw_project.php"  class="btn waves-effect waves-light purple darken-1 right" name="action" >Nieuw Project
-                    <i class="material-icons right">library_add</i>                    
+                    <i class="material-icons right">library_add</i>
                 </a>
             </div>
       </div>
-      <?php 
+      <?php
         if($data != NULL) {
       ?>
       <!--searchbar-->
       <div class="row" style="padding: 0 24px;">
-        <div class="col s12">          
+        <div class="col s12">
             <div class="navbar">
                 <nav class="white">
                     <div class="nav-wrapper">
@@ -280,10 +280,10 @@ checkUserVerification();
             </div>
         </div>
       </div>
-      
+
       <div class="row">
           <div class="col s12">
-            <ul id="collapsable" class="collapsible popout" data-collapsible="accordion">                   
+            <ul id="collapsable" class="collapsible popout" data-collapsible="accordion">
                 <li>
                     <div class="card-panel <?php echo $pageColor; ?> lighten-2 <?php echo changeFontColorBasedOn('lighten')?>">
                         <div class="row valign-wrapper " style="margin-bottom: 0">
@@ -297,18 +297,18 @@ checkUserVerification();
                              data-position="bottom"
                             data-delay="10"
                             data-tooltip="Heeft het project hulp van jouw college nodig?">Jouw hulp nodig<i class="material-icons tiny">help</i></div>
-                            <div class="col m2 hide-on-small-only">Status</div>    
+                            <div class="col m2 hide-on-small-only">Status</div>
                             <div class="col m1 hide-on-small-only"></div>
                         </div>
                     </div>
                 </li>
-                <?php                
+                <?php
                     for($i = 0; $i < count($data); $i++){
                         $hulpColleges = [];
                         $hulpColleges = getHulpCollegesFromDB($data[$i]['project_id'],$db);
                         $nodig = neededOrNot($collegeId,$hulpColleges);
                         ?>
-                        
+
                         <li>
                         <div class="collapsible-header">
                             <div class="row valign-wrapper" style="margin-bottom: 0">
@@ -316,23 +316,23 @@ checkUserVerification();
                                 <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['user_naam'];?></div>
                                 <div class="col m3 hide-on-small-only truncate"><?php echo $data[$i]['college_naam'];?></div>
                                 <div class="col m2 hide-on-small-only truncate"><?= $nodig?></div>
-                                <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>    
+                                <div class="col m2 hide-on-small-only truncate"><?php echo $data[$i]['status'];?></div>
                                 <div class="col m1 truncate">
                                     <a href="project.php?id=<?php echo $data[$i]['project_id'];?>" class="secondary-content">
                                         <i class="material-icons <?php echo $pageColor."-text text-darken-3"?>">send</i>
                                     </a>
-                                </div>                        
+                                </div>
                             </div>
                         </div>
                         <div class="collapsible-body">
                             <div class="row valign-wrapper">
                                 <div class="col s12">
                                     <div class="col m4 s12 center">
-                                        <?php 
+                                        <?php
                                         if($data[$i]['img_path'])
                                         {?>
                                             <img class="img-responsive" width="80%"  src="<?php echo $data[$i]['img_path']; ?>"><?php
-                                        } ?>                            
+                                        } ?>
                                     </div>
                                     <div class="col m8 s12">
                                         <p>
@@ -351,12 +351,12 @@ checkUserVerification();
                         </div>
                         <li>
                         <?php
-                    }?>                
+                    }?>
             </ul>
             <?php } else { // als er geen projecten zijn voor dit college
                 ?>
                 <div class="row" style="padding: 0 24px;">
-        <div class="col s12">          
+        <div class="col s12">
             <div class="navbar">
                 <nav class="white">
                     <div class="nav-wrapper">
@@ -382,8 +382,8 @@ checkUserVerification();
                             <h5>Probeer het eens bij een ander college of een ander filter.</h5>
                         </div>
                     </div>
-                </div>                 
-                
+                </div>
+
             <?php }?>
           </div>
       </div>
@@ -394,7 +394,7 @@ checkUserVerification();
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/ajaxfunctions.js"></script>
-	
+
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 </body>
 <script>

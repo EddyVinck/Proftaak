@@ -5,6 +5,7 @@ checkUserVerification();
 if($_SESSION['rol'] == ""){
     header("location: index.php");
 }
+// dump($_SESSION);
 ?><!DOCTYPE html>
 
 <head>

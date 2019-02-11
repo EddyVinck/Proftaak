@@ -1,0 +1,36 @@
+.college, .docent, .klas, .student{
+    display:flex;
+    justify-content: space-between;
+}
+
+.nooverflow{
+    overflow-x: hidden;
+}
+
+.college-part, .docent-part, .klas-part, .student-part{
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.new-klas-college-select > .dropdown-content{
+    max-height: 130px;
+    overflow-y: scroll;
+}
+.college--header, .docent--header, .klas--header, .student--header{
+    font-weight: bold;
+    margin: 20px 0;
+}
+.simpleColorChooser{
+    z-index:2;
+}
+.modal-button{
+    margin-left: 10px !important;
+}
+input:not([type])+label:after, input[type=text]+label:after, input[type=password]+label:after, input[type=email]+label:after, input[type=url]+label:after, input[type=time]+label:after, input[type=date]+label:after, input[type=datetime]+label:after, input[type=datetime-local]+label:after, input[type=tel]+label:after, input[type=number]+label:after, input[type=search]+label:after, textarea.materialize-textarea+label:after{
+    font-size: 12px;
+    top:35px;
+}
+label.active:after{
+    top: 60px !important;
+}

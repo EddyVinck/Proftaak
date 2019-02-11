@@ -19,10 +19,10 @@ if(isset($_POST['image'])){
     {
         $mpdf->WriteHTML('
         <div style="text-align: center">
-            <img style="max-height: 70mm;" src="'.$_POST['image'].'"/>   
+            <img style="max-height: 70mm;" src="'.$_POST['image'].'"/>
         </div><br>'
         );
-    }    
+    }
 }
 if(isset($_POST['project_description'])){
     $mpdf->WriteHTML('<h3 style="font-family: arial;">Omschrijving</h3>');
@@ -41,28 +41,28 @@ if(isset($_POST['hulpcolleges'])){
     $mpdf->WriteHTML('<h3 style="font-family: arial;">Opleidingen die wij nodig hebben</h3>');
     if(isset($_POST['omschrijving_nodig'])){
         $mpdf->WriteHTML('<label>'.$_POST['omschrijving_nodig'].'</label>');
-        $mpdf->WriteHTML('<br>');        
+        $mpdf->WriteHTML('<br>');
     }
     for($i = 0; $i < count($hulpcolleges); $i++)
     {
-        $mpdf->WriteHTML("<li style='padding-left: 5mm;'>".$hulpcolleges[$i]['naam']."</li>");      
+        $mpdf->WriteHTML("<li style='padding-left: 5mm;'>".$hulpcolleges[$i]['naam']."</li>");
     }
     if(isset($_POST['deadline'])){
         $mpdf->WriteHTML('<h3 style="font-family: arial;">Deadline</h3>');
         $mpdf->WriteHTML('<label>'.$_POST['deadline'].'</label>');
-        $mpdf->WriteHTML('<br>');        
+        $mpdf->WriteHTML('<br>');
     }
 }
 if(isset($_POST['contact'])){
     if(!empty($_POST['contact']))
     {
-        // $mpdf->WriteHTML('<br>');        
+        // $mpdf->WriteHTML('<br>');
         $mpdf->WriteHTML('<h3 style="font-family: arial;">Contact via:</h3>');
-        $mpdf->WriteHTML($_POST['contact']);        
-                
+        $mpdf->WriteHTML($_POST['contact']);
+
     }
 }
 $mpdf->WriteHTML('<p style="font-size: 10px; position: absolute; bottom: 5px; width: 100%;">Gemaakt met Uniplan - &copy; Dylan Bos en Eddy Vinck</p>');
-
+ob_clean();
 $mpdf->Output();
 ?>

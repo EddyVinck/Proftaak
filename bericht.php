@@ -77,6 +77,7 @@ if ($search != ""){
     users.naam LIKE ?
     OR users.email LIKE ?
     )";
+    // dump($getusersQuery);
     $prepare_getusers = $db->prepare($getusersQuery);
     $searchBind = "%" . $search . "%";
     $prepare_getusers->bind_param("iss", $school_id,$searchBind,$searchBind);    
